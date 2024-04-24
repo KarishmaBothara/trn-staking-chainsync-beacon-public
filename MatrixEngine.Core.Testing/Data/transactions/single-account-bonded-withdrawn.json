@@ -1,0 +1,32 @@
+[
+  {
+    account: '0x001',
+    amount: '100',
+    blockNumber: 0,
+    type: "Bonded",
+  },
+  {
+    account: '0x001',
+    amount: '100',
+    blockNumber: 50,
+    type: "Bonded",
+  },
+  {
+    account: '0x001',
+    amount: '100',
+    blockNumber: 150,
+    type: "Bonded",
+  },
+  {
+    account: '0x001',
+    amount: '20',
+    blockNumber: 170,
+    type: "Withdrawn",
+  },
+  {
+    account: '0x001',
+    amount: '100',
+    blockNumber: 200,
+    type: "Bonded",
+  },
+]

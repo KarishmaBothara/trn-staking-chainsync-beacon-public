@@ -1,0 +1,84 @@
+{
+  "data": {
+    "withdrawnsConnection": {
+      "edges": [
+        {
+          "node": {
+            "blockNumber": 11546670,
+            "stash": "0xFFFfFFFf00000000000000000000000000000BbD",
+            "amount": "1000000000000"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11549080,
+            "stash": "0xffffFffF00000000000000000000000000036E02",
+            "amount": "56607000000"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11553166,
+            "stash": "0xFFfFffff00000000000000000000000000038eBD",
+            "amount": "69000000000"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11554958,
+            "stash": "0xFfffFfFf00000000000000000000000000000EA9",
+            "amount": "15000000000"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11557839,
+            "stash": "0xFFfFFfFf000000000000000000000000000391D5",
+            "amount": "44897468600"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11564052,
+            "stash": "0xFFFFFFff0000000000000000000000000000086D",
+            "amount": "18703290000"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11564114,
+            "stash": "0xfffFffFF00000000000000000000000000001149",
+            "amount": "28788690000"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11564830,
+            "stash": "0xFffFFFff000000000000000000000000000384Bd",
+            "amount": "23180000000"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11566324,
+            "stash": "0xFffFFFff00000000000000000000000000000ffe",
+            "amount": "1500000000000"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11566362,
+            "stash": "0xFFffFfFF00000000000000000000000000000C2d",
+            "amount": "47700000000"
+          }
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "startCursor": "11",
+        "endCursor": "20"
+      },
+      "totalCount": 20 
+    }
+  }
+}
