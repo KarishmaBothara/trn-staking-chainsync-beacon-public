@@ -7,7 +7,7 @@ namespace MatrixEngine.Core;
 
 internal class Program
 {
-    private static void Main(string[] args)
+    private static async Task Main(string[] args)
     {
         var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
@@ -23,13 +23,14 @@ internal class Program
                 app.AddJsonFile("appsettings.json", false, true)
                     .AddJsonFile($"appsettings.{environment}.json", true)
             )
-            .ConfigureServices((context, services) => { services.ConfigureServices(context.Configuration); })
+            .ConfigureServices((context, services) => { services.ConfigureConsoleApplicationServices(context.Configuration); })
             .Build();
         var scope = host.Services.CreateScope();
         var services = scope.ServiceProvider;
         try
         {
-            services.GetRequiredService<App>().Run(args);
+            var app = services.GetRequiredService<App>();
+            await app.Run();
         }
         catch (Exception e)
         {

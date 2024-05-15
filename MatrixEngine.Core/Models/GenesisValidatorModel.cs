@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace MatrixEngine.Core.Models;
 
 [BsonIgnoreExtraElements]
-public class GenesisValidatorModel
+public class GenesisValidatorModel: BaseModel
 {
     [BsonId] public ObjectId Id { get; set; }
 

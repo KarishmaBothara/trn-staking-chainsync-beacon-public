@@ -1,5 +1,1 @@
 # TokenomicsEnhancement
-
-
-## EffectiveBalanceResolver Classes
-

@@ -1,49 +1,42 @@
 using MatrixEngine.Core.Constants;
 using MatrixEngine.Core.Models;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
 namespace MatrixEngine.Core.Services;
 
 public interface IBalanceSnapshotService
 {
-    Task<BalanceSnapshotModel> GetBalanceSnapshotByAccount(string account);
-    Task<List<BalanceSnapshotModel>> GetBalanceSnapshotByEndBlock(int endBlock);
-    Task<bool> HasCycleHaveBaseBalance(RewardCycleModel cycle);
+    Task<List<BalanceSnapshotModel>> GetBalanceSnapshotByCycleEndBlock(int cycleEndBlock);
+    Task<bool> HasCycleHaveBaseBalance(int cycleStartBlock);
 
     /// <summary>
     /// Upsert multiple balance snapshots
     /// </summary>
     /// <param name="balanceSnapshots"></param>
+    /// <param name="once"></param>
     Task UpsertBalanceSnapshots(List<BalanceSnapshotModel> balanceSnapshots);
 }
 
 public class BalanceSnapshotService : IBalanceSnapshotService
 {
     private readonly IMongoDatabase _database;
+    private ILogger<BalanceSnapshotService> _logger;
 
-    public BalanceSnapshotService(IMongoDatabase database)
+    public BalanceSnapshotService(IMongoDatabase database, ILogger<BalanceSnapshotService> logger)
     {
+        _logger = logger;
         _database = database;
     }
 
     private IMongoCollection<BalanceSnapshotModel> Collection =>
-        _database.GetCollection<BalanceSnapshotModel>(DbCollection.BalanceSnapshot);
+        _database.GetCollection<BalanceSnapshotModel>(DbCollectionName.BalanceSnapshot);
 
-    public async Task<BalanceSnapshotModel> GetBalanceSnapshotByAccount(string account)
-    {
-        var filter = Builders<BalanceSnapshotModel>.Filter.Eq(x => x.Account, account);
 
-        var sort = Builders<BalanceSnapshotModel>.Sort.Descending(x => x.EndBlock);
-
-        var balanceSnapshot = await Collection.Find(filter).Sort(sort).FirstOrDefaultAsync();
-
-        return balanceSnapshot;
-    }
-
-    public async Task<List<BalanceSnapshotModel>> GetBalanceSnapshotByEndBlock(int endBlock)
+    public async Task<List<BalanceSnapshotModel>> GetBalanceSnapshotByCycleEndBlock(int cycleEndBlock)
     {
         var filter =
-            Builders<BalanceSnapshotModel>.Filter.Eq(x => x.EndBlock, endBlock);
+            Builders<BalanceSnapshotModel>.Filter.Eq(x => x.EndBlock, cycleEndBlock);
 
         var balanceSnapshots = await Collection.Find(filter).ToListAsync();
 
@@ -53,45 +46,47 @@ public class BalanceSnapshotService : IBalanceSnapshotService
     /// <summary>
     /// Check if the cycle has base balance (balance snapshot) 
     /// </summary>
-    /// <param name="cycle"></param>
+    /// <param name="cycleStartBlock"></param>
     /// <returns></returns>
-    public async Task<bool> HasCycleHaveBaseBalance(RewardCycleModel cycle)
+    public async Task<bool> HasCycleHaveBaseBalance(int cycleStartBlock)
     {
-        var filter = Builders<BalanceSnapshotModel>.Filter.Eq(x => x.EndBlock, cycle.StartBlock - 1);
+        var filter = Builders<BalanceSnapshotModel>.Filter.Eq(x => x.EndBlock, cycleStartBlock - 1);
 
         return await Collection.CountDocumentsAsync(filter) > 0;
-    }
-
-    public async Task BuildCycleBalanceSnapshot(RewardCycleModel completedCycle)
-    {
-        //1. get base balance
-        //  check if the reward cycle is the first one
-        //      if yes,
-        //          there is no balance snapshot but need to use genesis validator balance as base balance
-        //      if no,
-        //          get balance snapshot of the last block of the previous cycle
-        //          use previous cycle balance snapshot as base balance
-        //2. fetch all balance changes(or events) in the latest completed cycle
-        //3. use base balance and balance changes to compute the new balance snapshot of the latest completed cycle 
     }
 
     /// <summary>
     /// Upsert multiple balance snapshots
     /// </summary>
     /// <param name="balanceSnapshots"></param>
+    /// <param name="once"></param>
     public async Task UpsertBalanceSnapshots(List<BalanceSnapshotModel> balanceSnapshots)
     {
-        var ops = balanceSnapshots.Select(s =>
-        {
-            var filter = Builders<BalanceSnapshotModel>.Filter.Eq(x => x.Account, s.Account) &
-                         Builders<BalanceSnapshotModel>.Filter.Eq(x => x.EndBlock, s.EndBlock);
-            var update = Builders<BalanceSnapshotModel>.Update
-                .SetOnInsert(x => x.Account, s.Account)
-                .SetOnInsert(x => x.EndBlock, s.EndBlock)
-                .Set(x => x.Balance, s.Balance);
-            return new UpdateOneModel<BalanceSnapshotModel>(filter, update) { IsUpsert = true };
-        });
+        _logger.LogInformation($"Upserting {balanceSnapshots.Count} balance snapshots.");
+        //to reduce db load, page by 500 and insert them
+        const int pageSize = 500;
+        var totalPages = balanceSnapshots.Count / pageSize + 1;
 
-        await Collection.BulkWriteAsync(ops.ToList());
+        for (var pageNumber = 0; pageNumber < totalPages; pageNumber++)
+        {
+            _logger.LogInformation($"Upserting page {pageNumber} of {totalPages}.");
+            var batch = balanceSnapshots.Skip(pageNumber * pageSize).Take(pageSize).ToList();
+            if(batch.Count == 0) break;
+            
+            var ops = batch.Select(s =>
+            {
+                var filter = Builders<BalanceSnapshotModel>.Filter.Eq(x => x.Account, s.Account) &
+                             Builders<BalanceSnapshotModel>.Filter.Eq(x => x.EndBlock, s.EndBlock);
+                var update = Builders<BalanceSnapshotModel>.Update
+                    .SetOnInsert(x => x.Account, s.Account)
+                    .SetOnInsert(x => x.EndBlock, s.EndBlock)
+                    .SetOnInsert(x => x.CreatedAt, DateTime.UtcNow)
+                    .Set(x => x.UpdatedAt, DateTime.UtcNow)
+                    .Set(x => x.Balance, s.Balance);
+                return new UpdateOneModel<BalanceSnapshotModel>(filter, update) { IsUpsert = true };
+            });
+
+            await Collection.BulkWriteAsync(ops.ToList());
+        }
     }
 }

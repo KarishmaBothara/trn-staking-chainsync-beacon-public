@@ -49,12 +49,12 @@ public class DataLoader : IDataLoader
     public async Task LoadCase(string caseName)
     {
         await ClearCase();
-        await _eraFixtures.LoadData($"Data/{caseName}/eras.json", DbCollection.Era);
-        await _transactionFixtures.LoadData($"Data/{caseName}/transactions.json", DbCollection.Transactions);
+        await _eraFixtures.LoadData($"Data/{caseName}/eras.json", DbCollectionName.Era);
+        await _transactionFixtures.LoadData($"Data/{caseName}/transactions.json", DbCollectionName.Transactions);
         await _balanceSnapshotFixtures.LoadData($"Data/{caseName}/balance-snapshots.json",
-            DbCollection.BalanceSnapshot);
-        await _rewardCycleFixtures.LoadData($"Data/{caseName}/reward-circle.json", DbCollection.RewardCycle);
-        await _stakerFixtures.LoadData($"Data/{caseName}/stakers.json", DbCollection.Stakers);
+            DbCollectionName.BalanceSnapshot);
+        await _rewardCycleFixtures.LoadData($"Data/{caseName}/reward-circle.json", DbCollectionName.RewardCycle);
+        await _stakerFixtures.LoadData($"Data/{caseName}/stakers.json", DbCollectionName.Stakers);
     }
 
     private void InitFixtures()
@@ -70,7 +70,7 @@ public class DataLoader : IDataLoader
 
     private void InitCollections()
     {
-        _balanceSnapshotCollection = _database.GetCollection<BalanceSnapshotModel>(DbCollection.BalanceSnapshot);
+        _balanceSnapshotCollection = _database.GetCollection<BalanceSnapshotModel>(DbCollectionName.BalanceSnapshot);
         
         _balanceSnapshotCollection.Indexes.CreateOne(
             new CreateIndexModel<BalanceSnapshotModel>(
@@ -86,7 +86,7 @@ public class DataLoader : IDataLoader
             )
         );
         
-        _eraCollection = _database.GetCollection<EraModel>(DbCollection.Era);
+        _eraCollection = _database.GetCollection<EraModel>(DbCollectionName.Era);
         
         _eraCollection.Indexes.CreateOne(
             new CreateIndexModel<EraModel>(
@@ -95,8 +95,8 @@ public class DataLoader : IDataLoader
             )
         );
         
-        _rewardCycleCollection = _database.GetCollection<RewardCycleModel>(DbCollection.RewardCycle);
-        _stakerCollection = _database.GetCollection<StakerModel>(DbCollection.Stakers);
+        _rewardCycleCollection = _database.GetCollection<RewardCycleModel>(DbCollectionName.RewardCycle);
+        _stakerCollection = _database.GetCollection<StakerModel>(DbCollectionName.Stakers);
         
         _stakerCollection.Indexes.CreateMany(new[]
         {
@@ -110,7 +110,7 @@ public class DataLoader : IDataLoader
             )
         });
         
-        _transactionCollection = _database.GetCollection<TransactionModel>(DbCollection.Transactions);
+        _transactionCollection = _database.GetCollection<TransactionModel>(DbCollectionName.Transactions);
         
         _transactionCollection.Indexes.CreateOne(
             new CreateIndexModel<TransactionModel>(
@@ -119,7 +119,7 @@ public class DataLoader : IDataLoader
             )
         );
 
-        _effectiveBalanceCollection = _database.GetCollection<EffectiveBalanceModel>(DbCollection.EffectiveBalance);
+        _effectiveBalanceCollection = _database.GetCollection<EffectiveBalanceModel>(DbCollectionName.EffectiveBalance);
         
         _effectiveBalanceCollection.Indexes.CreateMany(new[]
         {
@@ -137,7 +137,7 @@ public class DataLoader : IDataLoader
             )
         });
         
-        _balanceChangeCollection = _database.GetCollection<BalanceChangeModel>(DbCollection.Balance);
+        _balanceChangeCollection = _database.GetCollection<BalanceChangeModel>(DbCollectionName.Balance);
         
         _balanceChangeCollection.Indexes.CreateMany(new[]
         {
@@ -158,13 +158,13 @@ public class DataLoader : IDataLoader
 
     public async Task ClearCase()
     {
-        await _effectiveBalanceFixtures.ClearData(DbCollection.EffectiveBalance);
-        await _balanceSnapshotFixtures.ClearData(DbCollection.BalanceSnapshot);
-        await _eraFixtures.ClearData(DbCollection.Era);
-        await _rewardCycleFixtures.ClearData(DbCollection.RewardCycle);
-        await _stakerFixtures.ClearData(DbCollection.Stakers);
-        await _transactionFixtures.ClearData(DbCollection.Transactions);
-        await _balanceChangeFixtures.ClearData(DbCollection.Balance);
+        await _effectiveBalanceFixtures.ClearData(DbCollectionName.EffectiveBalance);
+        await _balanceSnapshotFixtures.ClearData(DbCollectionName.BalanceSnapshot);
+        await _eraFixtures.ClearData(DbCollectionName.Era);
+        await _rewardCycleFixtures.ClearData(DbCollectionName.RewardCycle);
+        await _stakerFixtures.ClearData(DbCollectionName.Stakers);
+        await _transactionFixtures.ClearData(DbCollectionName.Transactions);
+        await _balanceChangeFixtures.ClearData(DbCollectionName.Balance);
     }
 
     public IMongoCollection<EffectiveBalanceModel> EffectiveBalanceCollection
@@ -172,7 +172,7 @@ public class DataLoader : IDataLoader
         get
         {
             return _effectiveBalanceCollection ??=
-                _database.GetCollection<EffectiveBalanceModel>(DbCollection.EffectiveBalance);
+                _database.GetCollection<EffectiveBalanceModel>(DbCollectionName.EffectiveBalance);
         }
     }
     public IMongoCollection<BalanceSnapshotModel> BalanceSnapshotCollection
@@ -180,33 +180,33 @@ public class DataLoader : IDataLoader
         get
         {
             return _balanceSnapshotCollection ??=
-                _database.GetCollection<BalanceSnapshotModel>(DbCollection.BalanceSnapshot);
+                _database.GetCollection<BalanceSnapshotModel>(DbCollectionName.BalanceSnapshot);
         }
     }
 
     public IMongoCollection<EraModel> EraCollection
     {
-        get { return _eraCollection ??= _database.GetCollection<EraModel>(DbCollection.Era); }
+        get { return _eraCollection ??= _database.GetCollection<EraModel>(DbCollectionName.Era); }
     }
 
     public IMongoCollection<RewardCycleModel> RewardCycleCollection
     {
-        get { return _rewardCycleCollection ??= _database.GetCollection<RewardCycleModel>(DbCollection.RewardCycle); }
+        get { return _rewardCycleCollection ??= _database.GetCollection<RewardCycleModel>(DbCollectionName.RewardCycle); }
     }
 
     public IMongoCollection<StakerModel> StakerCollection
     {
-        get { return _stakerCollection ??= _database.GetCollection<StakerModel>(DbCollection.Stakers); }
+        get { return _stakerCollection ??= _database.GetCollection<StakerModel>(DbCollectionName.Stakers); }
     }
 
     public IMongoCollection<TransactionModel> TransactionCollection
     {
-        get { return _transactionCollection ??= _database.GetCollection<TransactionModel>(DbCollection.Transactions); }
+        get { return _transactionCollection ??= _database.GetCollection<TransactionModel>(DbCollectionName.Transactions); }
     }
     
     public IMongoCollection<BalanceChangeModel> BalanceChangeCollection
     {
-        get { return _balanceChangeCollection ??= _database.GetCollection<BalanceChangeModel>(DbCollection.Balance); }
+        get { return _balanceChangeCollection ??= _database.GetCollection<BalanceChangeModel>(DbCollectionName.Balance); }
     }
 
     public void Dispose()

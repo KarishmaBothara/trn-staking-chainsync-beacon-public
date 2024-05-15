@@ -46,7 +46,6 @@ public class BalanceChangeServiceTests: IClassFixture<DatabaseFixture>
         
         await _balanceChangeService.UpsertUserBalanceChanges(changes);
         
-        
         //Assert by querying the data
         var balanceModel1 = await _balanceChangeService.GetBalanceChanges("0xcb1de4FADCA68F601871f7E6E47fd43D707c779A", 7035347, 8851596);
         Assert.NotNull(balanceModel1);

@@ -2,7 +2,6 @@ using GraphQL;
 using GraphQL.Client.Abstractions;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.Newtonsoft;
-using MatrixEngine.GraphQL.Config;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -15,13 +14,13 @@ public interface IGetBondedsCnnection
 
 public class GetBondedsCnnection : IGetBondedsCnnection
 {
-    private ILogger<GetBondedsCnnection> _logger;
-    private IGraphQLClient _client;
+    private readonly ILogger<GetBondedsCnnection> _logger;
+    private readonly IGraphQLClient _client;
 
     private const int FirstFetchBatch = 500;
 
     private const string Query = @"
-        query GetBondedConnection($first: Int!, $after: String, $startBlock: Int!, $endBlock: Int!){
+        query GetBondedsConnection($first: Int!, $after: String, $startBlock: Int!, $endBlock: Int!){
           bondedsConnection(
             first: $first
             after: $after
@@ -52,34 +51,43 @@ public class GetBondedsCnnection : IGetBondedsCnnection
 
     public async Task<List<BondedNodeType>> FetchBondeds(int startBlock, int endBlock)
     {
+        _logger.LogInformation("Starting to fetch bonded events");
         string? after = null;
         var bondeds = new List<BondedNodeType>();
-        bool hasNextPage;
 
-        do
+        try
         {
-            var request = new GraphQLRequest
+            var hasNextPage = false;
+            do
             {
-                Query = Query,
-                OperationName = "GetBondedsCnnection",
-                Variables = new
+                var request = new GraphQLRequest
                 {
-                    first = FirstFetchBatch,
-                    after,
-                    startBlock,
-                    endBlock,
-                }
-            };
+                    Query = Query,
+                    OperationName = "GetBondedsConnection",
+                    Variables = new
+                    {
+                        first = FirstFetchBatch,
+                        after,
+                        startBlock,
+                        endBlock,
+                    }
+                };
 
-            var response = await _client.SendQueryAsync<GetBondedsConnectionResponseType>(request);
-            var connection = response.Data.BondedsConnection;
-            hasNextPage = connection.PageInfo.HasNextPage;
+                var response = await _client.SendQueryAsync<GetBondedsConnectionResponseType>(request);
+                var connection = response.Data.BondedsConnection;
+                hasNextPage = connection.PageInfo.HasNextPage;
 
-            bondeds.AddRange(connection.Edges.Select(e => e.Node));
+                bondeds.AddRange(connection.Edges.Select(e => e.Node));
 
-            after = connection.PageInfo.EndCursor;
-        } while (hasNextPage);
+                after = connection.PageInfo.EndCursor;
+            } while (hasNextPage);
 
-        return bondeds;
+            return bondeds;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            return new List<BondedNodeType>();
+        }
     }
 }

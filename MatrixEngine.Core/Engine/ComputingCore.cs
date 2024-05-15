@@ -1,4 +1,5 @@
-using MatrixEngine.Core.Models;
+using MatrixEngine.Core.Exceptions;
+using MatrixEngine.Core.Models.DTOs;
 using MatrixEngine.Core.Resolvers;
 using Microsoft.Extensions.Logging;
 
@@ -14,13 +15,16 @@ public class ComputingCore : IComputingCore
     private readonly IRewardCycleResolver _rewardCycleResolver;
     private readonly IBalanceChangeResolver _balanceChangeResolver;
     private readonly IEffectiveBalanceResolver _effectiveBalanceResolver;
+    private readonly IBalanceSnapshotResolver _balanceSnapshotResolver;
     private readonly ILogger<ComputingCore> _logger;
-    private IBalanceSnapshotResolver _balanceSnapshotResolver;
+    private readonly ISignEffectiveBalanceResolver _signEffectiveBalanceResolver;
 
     public ComputingCore(IRewardCycleResolver rewardCycleResolver, IBalanceSnapshotResolver balanceSnapshotResolver,
         IBalanceChangeResolver balanceChangeResolver, IEffectiveBalanceResolver effectiveBalanceResolver,
+        ISignEffectiveBalanceResolver signEffectiveBalanceResolver,
         ILogger<ComputingCore> logger)
     {
+        _signEffectiveBalanceResolver = signEffectiveBalanceResolver;
         _balanceSnapshotResolver = balanceSnapshotResolver;
         _effectiveBalanceResolver = effectiveBalanceResolver;
         _balanceChangeResolver = balanceChangeResolver;
@@ -45,32 +49,46 @@ public class ComputingCore : IComputingCore
         foreach (var rewardCycle in rewardCycles)
         {
             await CalculateOneCycleEffectiveBalance(rewardCycle);
+            await _rewardCycleResolver.CheckRewardCycle(rewardCycle);
         }
     }
-    
+
     private async Task CalculateOneCycleEffectiveBalance(RewardCycle rewardCycle)
     {
         _logger.LogInformation(
             $"Start calculating effective balances for cycle - Era: {rewardCycle.EndEraIndex} StartBlock: {rewardCycle.StartBlock}.");
 
-        //TODO: check if the cycle has the balance snapshot, if not do the calculation 
-        await _balanceSnapshotResolver.CalculateBalanceSnapshotInACycle(rewardCycle); 
-        // load balance snapshot or load genesis validators' balance if it is the first cycle 
-        // load balance snapshot use the one block ahead of start block in the cycle
-        var allUsersBalanceChanges = await _balanceChangeResolver.ResolveBalanceChange(
-            rewardCycle.StartBlock,
-            rewardCycle.EndBlock
-        );
-        _logger.LogInformation($"{allUsersBalanceChanges?.Keys?.Count ?? 0} users balance changes resolved.");
+        try
+        {
+            await _effectiveBalanceResolver.RemoveEffectiveBalanceInBlocksRange(rewardCycle.StartBlock,
+                rewardCycle.EndBlock);
 
-        var effectiveBalances = _effectiveBalanceResolver.CalculateEffectiveBalances(allUsersBalanceChanges);
-        _logger.LogInformation($"{effectiveBalances?.Keys?.Count ?? 0} users effective balances calculated.");
+            await _balanceSnapshotResolver.CalculateBalanceSnapshotInACycle(rewardCycle);
 
-        var effectiveBalancesList = effectiveBalances?.Values.SelectMany(x => x).ToList();
-        _logger.LogInformation(
-            $"{effectiveBalancesList?.Count ?? 0} effective balances calculated. Saving to database.");
-        if (effectiveBalancesList != null)
-            await _effectiveBalanceResolver.SaveEffectiveBalances(effectiveBalancesList);
-            
+            var allUsersBalanceChanges = await _balanceChangeResolver.ResolveBalanceChange(
+                rewardCycle.StartBlock,
+                rewardCycle.EndBlock
+            );
+            _logger.LogInformation($"{allUsersBalanceChanges?.Keys?.Count ?? 0} users balance changes resolved.");
+
+            var effectiveBalances = _effectiveBalanceResolver.CalculateEffectiveBalances(allUsersBalanceChanges);
+            _logger.LogInformation($"{effectiveBalances?.Keys?.Count ?? 0} users effective balances calculated.");
+
+            var effectiveBalancesList = effectiveBalances?.Values.SelectMany(x => x).ToList();
+            _logger.LogInformation(
+                $"{effectiveBalancesList?.Count ?? 0} effective balances calculated. Saving to database.");
+            if (effectiveBalancesList != null)
+            {
+                await _effectiveBalanceResolver.SaveEffectiveBalances(effectiveBalancesList);
+                await _signEffectiveBalanceResolver.Resolve(rewardCycle, effectiveBalancesList);
+                await _signEffectiveBalanceResolver.SignData();
+            }
+        }
+        catch (BalanceSnapshotException bse)
+        {
+            _logger.LogError(bse.Message);
+            _logger.LogError(
+                $"Stop calculating effective balance for cycle {rewardCycle.StartBlock} - {rewardCycle.EndBlock}");
+        }
     }
 }

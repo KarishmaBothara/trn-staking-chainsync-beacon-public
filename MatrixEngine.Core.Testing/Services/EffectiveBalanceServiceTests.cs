@@ -1,6 +1,8 @@
 using MatrixEngine.Core.Models;
 using MatrixEngine.Core.Services;
 using MatrixEngine.Core.Testing.Fixtures;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Xunit.Extensions.Ordering;
 
 namespace MatrixEngine.Core.Testing.Services;
@@ -10,11 +12,13 @@ public class EffectiveBalanceServiceTests : IClassFixture<DatabaseFixture>
 {
     private readonly DatabaseFixture _fixture;
     private readonly EffectiveBalanceService _effectiveBalanceService;
+    private readonly Mock<ILogger<EffectiveBalanceService>> _logger;
 
     public EffectiveBalanceServiceTests(DatabaseFixture fixture)
     {
         _fixture = fixture;
-        _effectiveBalanceService = new EffectiveBalanceService(_fixture.Database);
+        _logger = new Mock<ILogger<EffectiveBalanceService>>();
+        _effectiveBalanceService = new EffectiveBalanceService(_fixture.Database, _logger.Object);
     }
 
     [Fact]

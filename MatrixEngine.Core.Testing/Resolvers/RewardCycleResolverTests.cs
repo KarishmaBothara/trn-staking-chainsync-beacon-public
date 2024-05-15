@@ -1,6 +1,7 @@
 using MatrixEngine.Core.Engine;
 using MatrixEngine.Core.Exceptions;
 using MatrixEngine.Core.Models;
+using MatrixEngine.Core.Models.DTOs;
 using MatrixEngine.Core.Resolvers;
 using MatrixEngine.Core.Services;
 using Microsoft.Extensions.Logging;
@@ -10,10 +11,10 @@ namespace MatrixEngine.Core.Testing.Resolvers;
 
 public class RewardCycleResolverTests
 {
-    private Mock<IEraService> _eraServiceMock;
-    private Mock<IRewardCycleService> _rewardCycleServiceMock;
-    private Mock<ILogger<RewardCycleResolver>> _logger;
-    private RewardCycleResolver _resolver;
+    private readonly Mock<IEraService> _eraServiceMock;
+    private readonly Mock<IRewardCycleService> _rewardCycleServiceMock;
+    private readonly Mock<ILogger<RewardCycleResolver>> _logger;
+    private readonly RewardCycleResolver _resolver;
 
     public RewardCycleResolverTests()
     {
@@ -22,6 +23,7 @@ public class RewardCycleResolverTests
         _logger = new Mock<ILogger<RewardCycleResolver>>();
         _resolver = new RewardCycleResolver(_eraServiceMock.Object, _rewardCycleServiceMock.Object, _logger.Object);
     }
+
     [Fact]
     public void CalculateCycleNumbers_WhenItIsInOneCycle()
     {
@@ -196,7 +198,6 @@ public class RewardCycleResolverTests
     [Fact]
     public async Task GetToBeCalculatedCycles_WhenTwoCyclesNeedToCalculate()
     {
-        
         var currentCycleStartEraIndex = 350;
         var firstCycleEndEraIndex = 439;
         //also the end era index for calculation in current cycle 
@@ -263,6 +264,7 @@ public class RewardCycleResolverTests
         Assert.Equal(440, result.LastOrDefault()?.StartEraIndex);
         Assert.Equal(441, result.LastOrDefault()?.EndEraIndex);
     }
+
     [Fact]
     public void GetToBeCalculatedCycles_WhenNoLastFinishedEra()
     {
@@ -273,7 +275,7 @@ public class RewardCycleResolverTests
 
         Assert.Null(result);
     }
-    
+
     [Fact]
     public void GetToBeCalculatedCycles_WhenNoCurrentRewardCycle()
     {
@@ -287,5 +289,122 @@ public class RewardCycleResolverTests
         var result = _resolver.GetToBeCalculatedCycles().Result;
 
         Assert.Null(result);
+    }
+
+    [Fact]
+    public async Task CheckRewardCycle_WhenCurrentRewardCycleNeedsToComplete()
+    {
+        var rewardCycle = new RewardCycle()
+        {
+            StartBlock = 8973464,
+            EndBlock = 10915471,
+            StartEraIndex = 349,
+            EndEraIndex = 438,
+        };
+
+        var latestFinishedEra = new EraModel()
+        {
+            EraIndex = 492,
+            StartBlock = 12052684,
+            EndBlock = 12074059
+        };
+        _eraServiceMock.Setup(x => x.GetLatestFinishedEra()).ReturnsAsync(latestFinishedEra);
+        var endEra = new EraModel()
+        {
+            EraIndex = 438,
+            StartBlock = 10893877,
+            EndBlock = 10915471
+        };
+        _eraServiceMock.Setup(x => x.GetEraByIndex(438)).ReturnsAsync(endEra);
+
+        var currentRewardCycleModel = new RewardCycleModel()
+        {
+            StartBlock = 8973464,
+            StartEraIndex = 349,
+            CurrentEraIndex = 410,
+            Finished = false,
+        };
+        _rewardCycleServiceMock.Setup(x => x.GetCurrentRewardCycle()).ReturnsAsync(currentRewardCycleModel);
+
+        await _resolver.CheckRewardCycle(rewardCycle);
+
+        _rewardCycleServiceMock.Verify(x => 
+            x.UpdateRewardCycle(It.Is<RewardCycleModel>(
+            x => x.StartBlock == rewardCycle.StartBlock
+                && x.EndBlock == rewardCycle.EndBlock
+                && x.StartEraIndex == rewardCycle.StartEraIndex
+                && x.EndEraIndex == rewardCycle.EndEraIndex
+                && x.CurrentEraIndex == rewardCycle.EndEraIndex
+                && x.Finished == true
+            )), Times.Once);
+        
+        _rewardCycleServiceMock.Verify(x => x.CreateRewardCycle(It.Is<RewardCycleModel>(
+            x => x.StartBlock == rewardCycle.EndBlock + 1
+            && x.StartEraIndex == rewardCycle.EndEraIndex + 1
+            && x.CurrentEraIndex == rewardCycle.EndEraIndex + 1
+            && !x.Finished
+            )), Times.Once);
+    }
+
+    [Fact]
+    public async Task CheckRewardCycle_WhenCurrentRewardCycleDoesNotNeedComplete()
+    {
+        var rewardCycle = new RewardCycle()
+        {
+            StartBlock = 8973464,
+            EndBlock = 10915471,
+            StartEraIndex = 349,
+            EndEraIndex = 438,
+        };
+
+        var latestFinishedEra = new EraModel()
+        {
+            EraIndex = 410,
+            StartBlock = 10289228,
+            EndBlock = 10310821
+        };
+        _eraServiceMock.Setup(x => x.GetLatestFinishedEra()).ReturnsAsync(latestFinishedEra);
+        var endEra = new EraModel()
+        {
+            EraIndex = 409,
+            StartBlock = 10267708,
+            EndBlock = 10289227
+        };
+        _eraServiceMock.Setup(x => x.GetEraByIndex(409)).ReturnsAsync(endEra);
+
+        var currentRewardCycleModel = new RewardCycleModel()
+        {
+            StartBlock = 8973464,
+            StartEraIndex = 349,
+            CurrentEraIndex = 409,
+            Finished = false,
+        };
+        _rewardCycleServiceMock.Setup(x => x.GetCurrentRewardCycle()).ReturnsAsync(currentRewardCycleModel);
+
+        await _resolver.CheckRewardCycle(rewardCycle); 
+        
+        _rewardCycleServiceMock.Verify(x => 
+            x.UpdateRewardCycle(It.Is<RewardCycleModel>(
+                x => x.StartBlock == rewardCycle.StartBlock
+                     && x.EndBlock == rewardCycle.EndBlock
+                     && x.StartEraIndex == rewardCycle.StartEraIndex
+                     && x.EndEraIndex == rewardCycle.EndEraIndex
+                     && x.CurrentEraIndex == rewardCycle.EndEraIndex
+                     && x.Finished == true
+            )), Times.Never);
+        
+        _rewardCycleServiceMock.Verify(x => x.CreateRewardCycle(It.Is<RewardCycleModel>(
+            x => x.StartBlock == rewardCycle.EndBlock + 1
+                 && x.StartEraIndex == rewardCycle.EndEraIndex + 1
+                 && x.CurrentEraIndex == rewardCycle.EndEraIndex + 1
+                 && !x.Finished
+        )), Times.Never);
+        
+        _rewardCycleServiceMock.Verify(x => x.UpdateCurrentEraIndexOfRewardCycle(It.Is<RewardCycleModel>(
+            x => x.CurrentEraIndex == latestFinishedEra.EraIndex
+                && x.StartEraIndex == currentRewardCycleModel.StartEraIndex
+                && x.StartBlock == currentRewardCycleModel.StartBlock
+                && !x.Finished 
+            )), Times.Once);
     }
 }

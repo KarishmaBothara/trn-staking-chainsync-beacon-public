@@ -18,13 +18,13 @@ public class BalanceChangeFixture
         const string path = @"Data/balance-changes.json";
         var data = JsonFileReader.Read<List<BalanceModel>>(path);
 
-        var collection = _database.GetCollection<BalanceModel>(DbCollection.Balance);
+        var collection = _database.GetCollection<BalanceModel>(DbCollectionName.Balance);
         collection.InsertMany(data);
     }
     
     public void ClearData()
     {
-        var collection = _database.GetCollection<BalanceModel>(DbCollection.Balance);
+        var collection = _database.GetCollection<BalanceModel>(DbCollectionName.Balance);
         collection.DeleteMany(Builders<BalanceModel>.Filter.Empty);
     }
 }

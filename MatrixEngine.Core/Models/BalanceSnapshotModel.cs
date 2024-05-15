@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace MatrixEngine.Core.Models;
 
-public class BalanceSnapshotModel
+public class BalanceSnapshotModel : BaseModel
 {
     [BsonId] public ObjectId Id { get; set; }
 
@@ -12,6 +12,4 @@ public class BalanceSnapshotModel
     [BsonElement("endBlock")] public int EndBlock { get; set; }
 
     [BsonElement("balance")] public string? Balance { get; set; }
-
-    [BsonElement("createdAt")] public DateTime CreatedAt { get; set; }
 }

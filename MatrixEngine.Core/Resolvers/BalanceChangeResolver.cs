@@ -46,7 +46,7 @@ public class BalanceChangeResolver : IBalanceChangeResolver
     private readonly ITransactionEventService _transactionEventService;
     private readonly IStakerService _stakerService;
     private readonly ILogger<BalanceChangeResolver> _logger;
-    private IBalanceChangeService _balanceChangeService;
+    private readonly IBalanceChangeService _balanceChangeService;
 
     public BalanceChangeResolver(IBalanceSnapshotService balanceSnapshotService,
         IEraService eraService, ITransactionEventService transactionEventService,
@@ -73,7 +73,7 @@ public class BalanceChangeResolver : IBalanceChangeResolver
         int endBlock)
     {
         var previousBlock = startBlock - 1;
-        var balanceSnapshots = await _balanceSnapshotService.GetBalanceSnapshotByEndBlock(previousBlock);
+        var balanceSnapshots = await _balanceSnapshotService.GetBalanceSnapshotByCycleEndBlock(previousBlock);
         _logger.LogInformation($"Loaded {balanceSnapshots?.Count} balance snapshots from block {previousBlock}.");
         var eras = await _eraService.GetEraListByBlockRange(startBlock, endBlock);
         _logger.LogInformation($"Loaded {eras?.Count} eras from block {startBlock} to {endBlock}.");
@@ -139,40 +139,50 @@ public class BalanceChangeResolver : IBalanceChangeResolver
                 accountBalanceChanges[transaction.Account] = new List<BalanceChangeModel>();
             }
 
-            var balanceChange = string.Equals(TransactionType.Withdrawn, transaction.Type,
-                StringComparison.CurrentCultureIgnoreCase)
-                ? -BigInteger.Parse(transaction.Amount)
-                : BigInteger.Parse(transaction.Amount);
-            // Calculate the new total balance after this transaction
-            var previousBalance = accountBalances[transaction.Account];
-            var newTotalBalance = accountBalances[transaction.Account] + balanceChange;
-
-            // Find the next transaction for this account within the block range to determine the end block
-            var nextTransactionIndex = filteredSortedTransactions.FindIndex(t =>
-                t.Account == transaction.Account && t.BlockNumber > transaction.BlockNumber);
-            var endBlockForChange = (nextTransactionIndex != -1)
-                ? filteredSortedTransactions[nextTransactionIndex].BlockNumber - 1
-                : endBlock;
-
-            accountBalanceChanges[transaction.Account].Add(new BalanceChangeModel
-            {
-                Account = transaction.Account,
-                PreviousBalance = previousBalance,
-                BalanceChange = balanceChange,
-                BalanceInBlockRange = newTotalBalance,
-                StartBlock = transaction.BlockNumber,
-                EndBlock = endBlockForChange
-            });
+            var balanceChangeModel = BuildNewBalanceChangeFromTransactionChanges(endBlock, transaction, accountBalances,
+                filteredSortedTransactions);
+            accountBalanceChanges[transaction.Account].Add(balanceChangeModel);
 
             // Update the account balance
-            accountBalances[transaction.Account] = newTotalBalance;
+            accountBalances[transaction.Account] = balanceChangeModel.BalanceInBlockRange;
         }
-        
+
         // save the balance changes to the database
         var allBalanceChanges = accountBalanceChanges?.Values.SelectMany(x => x).ToList();
         if (allBalanceChanges != null) await _balanceChangeService.UpsertUserBalanceChanges(allBalanceChanges);
 
         return accountBalanceChanges;
+    }
+
+    private static BalanceChangeModel BuildNewBalanceChangeFromTransactionChanges(int endBlock,
+        TransactionModel transaction, Dictionary<string, BigInteger> accountBalances,
+        List<TransactionModel> filteredSortedTransactions)
+    {
+        var balanceChange = string.Equals(TransactionType.Withdrawn, transaction.Type,
+            StringComparison.CurrentCultureIgnoreCase)
+            ? -BigInteger.Parse(transaction.Amount)
+            : BigInteger.Parse(transaction.Amount);
+        // Calculate the new total balance after this transaction
+        var previousBalance = accountBalances[transaction.Account];
+        var newTotalBalance = accountBalances[transaction.Account] + balanceChange;
+
+        // Find the next transaction for this account within the block range to determine the end block
+        var nextTransactionIndex = filteredSortedTransactions.FindIndex(t =>
+            t.Account == transaction.Account && t.BlockNumber > transaction.BlockNumber);
+        var endBlockForChange = (nextTransactionIndex != -1)
+            ? filteredSortedTransactions[nextTransactionIndex].BlockNumber - 1
+            : endBlock;
+
+        var balanceChangeModel = new BalanceChangeModel
+        {
+            Account = transaction.Account,
+            PreviousBalance = previousBalance,
+            BalanceChange = balanceChange,
+            BalanceInBlockRange = newTotalBalance,
+            StartBlock = transaction.BlockNumber,
+            EndBlock = endBlockForChange
+        };
+        return balanceChangeModel;
     }
 
     public async Task<Dictionary<string, List<BalanceChangeModel>>> SplitBalanceChangesAcrossEras(
@@ -211,7 +221,7 @@ public class BalanceChangeResolver : IBalanceChangeResolver
         return adjustedBalanceChanges;
     }
 
-    private Tuple<string, List<BalanceChangeModel>> LoopUserAdjustedBalanceChanges(
+    public Tuple<string, List<BalanceChangeModel>> LoopUserAdjustedBalanceChanges(
         List<EraModel> erasInCycle, KeyValuePair<string, List<BalanceChangeModel>> accountEntry, string account,
         List<StakerModel> stakerTypes)
     {
@@ -219,44 +229,101 @@ public class BalanceChangeResolver : IBalanceChangeResolver
         return new Tuple<string, List<BalanceChangeModel>>(account, userAdjustedBalanceChanges);
     }
 
-    private List<BalanceChangeModel> UserAdjustedBalanceChanges(List<EraModel> erasInCycle,
+    public List<BalanceChangeModel> UserAdjustedBalanceChanges(List<EraModel> erasInCycle,
         KeyValuePair<string, List<BalanceChangeModel>> accountEntry, string account,
         List<StakerModel> stakerTypes)
     {
-        _logger.LogInformation($"Splitting balance changes for account {account}.");
-        var userAdjustedBalanceChanges = new List<BalanceChangeModel>();
+        var adjustedBalanceChanges = new List<BalanceChangeModel>();
+        var changesInEra = new Dictionary<int, List<BalanceChangeModel>>();
         foreach (var change in accountEntry.Value)
         {
             var erasSpanned = erasInCycle
                 .Where(e => e.StartBlock <= change.EndBlock && e.EndBlock >= change.StartBlock).ToList();
             foreach (var era in erasSpanned)
             {
-                var startBlock = Math.Max(change.StartBlock, era.StartBlock);
-                var endBlock = Math.Min(change.EndBlock, era.EndBlock);
+                var balanceChangeModel = BuildBalanceChangeInAnEra(account, stakerTypes, change, era);
 
-                var effectiveBlocks = endBlock - startBlock + 1;
-                var totalBlocksInEra = era.EndBlock - era.StartBlock + 1;
-                var effectiveEras = new decimal(effectiveBlocks) / new decimal(totalBlocksInEra);
-
-                var stakerType = GetStakerType(account, stakerTypes, era.EraIndex);
-
-                userAdjustedBalanceChanges.Add(new BalanceChangeModel
-                    {
-                        Account = account,
-                        BalanceChange = change.BalanceChange,
-                        BalanceInBlockRange = change.BalanceInBlockRange,
-                        StartBlock = startBlock,
-                        EndBlock = endBlock,
-                        EraIndex = era.EraIndex,
-                        EffectiveBlocks = effectiveBlocks,
-                        EffectiveEras = effectiveEras,
-                        StakerType = stakerType
-                    }
-                );
+                changesInEra[era.EraIndex] = changesInEra.ContainsKey(era.EraIndex)
+                    ? changesInEra[era.EraIndex]
+                    : new List<BalanceChangeModel>();
+                changesInEra[era.EraIndex].Add(balanceChangeModel);
             }
         }
 
-        return userAdjustedBalanceChanges;
+        return CalculateWeightedMeanBalanceChanges(erasInCycle, account, stakerTypes, changesInEra);
+    }
+
+    private static BalanceChangeModel BuildBalanceChangeInAnEra(string account, List<StakerModel> stakerTypes,
+        BalanceChangeModel change,
+        EraModel era)
+    {
+        var startBlock = Math.Max(change.StartBlock, era.StartBlock);
+        var endBlock = Math.Min(change.EndBlock, era.EndBlock);
+
+        var effectiveBlocks = endBlock - startBlock + 1;
+        var totalBlocksInEra = era.EndBlock - era.StartBlock + 1;
+        var effectiveEras = new decimal(effectiveBlocks) / new decimal(totalBlocksInEra);
+
+        var stakerType = GetStakerType(account, stakerTypes, era.EraIndex);
+
+        var balanceChangeModel = new BalanceChangeModel
+        {
+            Account = account,
+            BalanceChange = change.BalanceChange,
+            BalanceInBlockRange = change.BalanceInBlockRange,
+            StartBlock = startBlock,
+            EndBlock = endBlock,
+            EraIndex = era.EraIndex,
+            EffectiveBlocks = effectiveBlocks,
+            EffectiveEras = effectiveEras,
+            StakerType = stakerType
+        };
+        return balanceChangeModel;
+    }
+
+    private static List<BalanceChangeModel> CalculateWeightedMeanBalanceChanges(List<EraModel> erasInCycle,
+        string account, List<StakerModel> stakerTypes,
+        Dictionary<int, List<BalanceChangeModel>> changesInEra)
+    {
+        var weightedMeanBalanceChanges = new List<BalanceChangeModel>();
+        const int decimalFactor = 1000000;
+        // loop the changesInEra to calculate effective balance using the weighted mean by effectiveEras 
+        foreach (var eraIndex in changesInEra.Keys)
+        {
+            var era = erasInCycle.FirstOrDefault(e => e.EraIndex == eraIndex);
+            var changes = changesInEra[eraIndex];
+
+            var balanceChange = BigInteger.Zero;
+            var weightedBalanceInBlockRange = BigInteger.Zero;
+
+            var effectiveBlocks = era.EndBlock - era.StartBlock + 1;
+            const int effectiveEras = 1;
+
+            // apply punishment by using the lowest balance in the block range
+            var calculatedLowestChanges = CalculateLowestBalanceChanges(changes).OrderBy(c => c.StartBlock);
+
+            foreach (var change in calculatedLowestChanges)
+            {
+                balanceChange += change.BalanceChange;
+                weightedBalanceInBlockRange +=
+                    change.BalanceInBlockRange * (BigInteger)(change.EffectiveEras * decimalFactor);
+            }
+
+            weightedMeanBalanceChanges.Add(new BalanceChangeModel()
+            {
+                Account = account,
+                BalanceChange = balanceChange,
+                BalanceInBlockRange = weightedBalanceInBlockRange / BigInteger.Parse(decimalFactor.ToString()),
+                StartBlock = era.StartBlock,
+                EndBlock = era.EndBlock,
+                EraIndex = eraIndex,
+                EffectiveBlocks = effectiveBlocks,
+                EffectiveEras = effectiveEras,
+                StakerType = GetStakerType(account, stakerTypes, eraIndex)
+            });
+        }
+
+        return weightedMeanBalanceChanges;
     }
 
     private static string? GetStakerType(string account, List<StakerModel> stakerTypes, int eraIndex)
@@ -280,36 +347,7 @@ public class BalanceChangeResolver : IBalanceChangeResolver
             var balanceChanges = accountEntry.Value;
 
             // Order the balance changes by end block number in descending order
-            var orderedBalanceChanges = balanceChanges.OrderByDescending(c => c.EndBlock).ToList();
-
-            BigInteger lowestBalance = orderedBalanceChanges.First().BalanceInBlockRange;
-            List<BalanceChangeModel> modifiedBalanceChanges = new List<BalanceChangeModel>();
-
-            // Initially set lowestBalance to the first change's total balance
-            foreach (var change in orderedBalanceChanges)
-            {
-                var currentBalance = change.BalanceInBlockRange;
-
-                // If the current balance is lower, update lowestBalance
-                if (currentBalance < lowestBalance)
-                {
-                    lowestBalance = currentBalance;
-                }
-
-                // Modify the change's totalBalance to reflect the lowest balance if needed
-                modifiedBalanceChanges.Add(new BalanceChangeModel
-                {
-                    Account = change.Account,
-                    EraIndex = change.EraIndex,
-                    EffectiveBlocks = change.EffectiveBlocks,
-                    EffectiveEras = change.EffectiveEras,
-                    BalanceChange = change.BalanceChange,
-                    BalanceInBlockRange = lowestBalance,
-                    StartBlock = change.StartBlock,
-                    EndBlock = change.EndBlock,
-                    StakerType = change.StakerType
-                });
-            }
+            var modifiedBalanceChanges = CalculateLowestBalanceChanges(balanceChanges);
 
             // Ensure all changes are included but with adjusted TotalBalance where needed
             effectiveBalanceChanges[accountId] = modifiedBalanceChanges;
@@ -318,4 +356,39 @@ public class BalanceChangeResolver : IBalanceChangeResolver
         return effectiveBalanceChanges;
     }
 
+    private static List<BalanceChangeModel> CalculateLowestBalanceChanges(List<BalanceChangeModel> balanceChanges)
+    {
+        var orderedBalanceChanges = balanceChanges.OrderByDescending(c => c.EndBlock).ToList();
+
+        BigInteger lowestBalance = orderedBalanceChanges.First().BalanceInBlockRange;
+        List<BalanceChangeModel> modifiedBalanceChanges = new List<BalanceChangeModel>();
+
+        // Initially set lowestBalance to the first change's total balance
+        foreach (var change in orderedBalanceChanges)
+        {
+            var currentBalance = change.BalanceInBlockRange;
+
+            // If the current balance is lower, update lowestBalance
+            if (currentBalance < lowestBalance)
+            {
+                lowestBalance = currentBalance;
+            }
+
+            // Modify the change's totalBalance to reflect the lowest balance if needed
+            modifiedBalanceChanges.Add(new BalanceChangeModel
+            {
+                Account = change.Account,
+                EraIndex = change.EraIndex,
+                EffectiveBlocks = change.EffectiveBlocks,
+                EffectiveEras = change.EffectiveEras,
+                BalanceChange = change.BalanceChange,
+                BalanceInBlockRange = lowestBalance,
+                StartBlock = change.StartBlock,
+                EndBlock = change.EndBlock,
+                StakerType = change.StakerType
+            });
+        }
+
+        return modifiedBalanceChanges;
+    }
 }

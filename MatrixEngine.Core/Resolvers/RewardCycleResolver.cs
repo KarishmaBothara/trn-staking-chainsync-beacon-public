@@ -1,6 +1,7 @@
 using MatrixEngine.Core.Constants;
 using MatrixEngine.Core.Exceptions;
 using MatrixEngine.Core.Models;
+using MatrixEngine.Core.Models.DTOs;
 using MatrixEngine.Core.Services;
 using Microsoft.Extensions.Logging;
 
@@ -22,6 +23,8 @@ public interface IRewardCycleResolver
     /// <param name="endBlock"></param>
     /// <returns></returns>
     Task<Tuple<int, int>> GetRewardCycleEraIndexRangeByBlockRange(int startBlock, int endBlock);
+
+    Task CheckRewardCycle(RewardCycle rewardCycle);
 }
 
 /// <summary>
@@ -33,7 +36,7 @@ public class RewardCycleResolver : IRewardCycleResolver
 {
     private readonly IEraService _eraService;
     private readonly IRewardCycleService _rewardCycleService;
-    private ILogger<RewardCycleResolver> _logger;
+    private readonly ILogger<RewardCycleResolver> _logger;
 
     public RewardCycleResolver(IEraService eraService, IRewardCycleService rewardCycleService,
         ILogger<RewardCycleResolver> logger)
@@ -78,10 +81,12 @@ public class RewardCycleResolver : IRewardCycleResolver
         }
         catch (EraException ee)
         {
+            _logger.LogError(ee?.Message);
             return null;
         }
         catch (RewardCycleException re)
         {
+            _logger.LogError(re?.Message);
             return null;
         }
     }
@@ -153,6 +158,61 @@ public class RewardCycleResolver : IRewardCycleResolver
         return cycleNumbers;
     }
 
-  
-    
+    public async Task CheckRewardCycle(RewardCycle rewardCycle)
+    {
+        // get latest finished era
+        var latestFinishedEra = await _eraService.GetLatestFinishedEra();
+        _logger.LogInformation($"Latest finished era: {latestFinishedEra.EraIndex}");
+        // get latest finished era index
+        var latestFinishedEraIndex = latestFinishedEra.EraIndex;
+        var rewardCycleModel = await _rewardCycleService.GetCurrentRewardCycle();
+        // check if latestFinishedEraIndex - rewardCycle + 1 > 90 
+        if (latestFinishedEraIndex - rewardCycle.StartEraIndex + 1 >= RewardCircleConstants.RewardCircleThreshold)
+        {
+            // if yes: need to complete the reward cycle (db)
+            _logger.LogInformation(
+                $"The cycle {rewardCycle.StartBlock} - {rewardCycle.EndBlock} is finished and need to complete");
+            var endEraIndex = rewardCycle.StartEraIndex + RewardCircleConstants.RewardCircleThreshold - 1;
+            await CompleteRewardCycle(endEraIndex, rewardCycleModel);
+
+            _logger.LogInformation($"Finished cycle (Era: {rewardCycle.StartEraIndex} - ) calculation");
+            // create new reward cycle (db)
+            await CreateNewRewardCycle(rewardCycle, endEraIndex);
+        }
+        else
+        {
+            _logger.LogInformation(
+                $"The cycle has not finished yet, going to set {latestFinishedEraIndex} to current era index");
+            // if no: set current era index to the current reward cycle 
+            // update current reward cycle (db)
+            rewardCycleModel.CurrentEraIndex = latestFinishedEraIndex;
+            await _rewardCycleService.UpdateCurrentEraIndexOfRewardCycle(rewardCycleModel);
+            _logger.LogInformation($"Finished cycle (start era: {rewardCycle.StartEraIndex}) calculation");
+        }
+    }
+
+    private async Task CreateNewRewardCycle(RewardCycle rewardCycle, int endEraIndex)
+    {
+        var newRewardCycle = new RewardCycleModel()
+        {
+            StartBlock = rewardCycle.EndBlock + 1,
+            StartEraIndex = endEraIndex + 1,
+            CurrentEraIndex = endEraIndex + 1,
+            Finished = false
+        };
+        _logger.LogInformation(
+            $"Create new reward cycle (block:{newRewardCycle.StartBlock}-{newRewardCycle.EndBlock}) (era start index: {newRewardCycle.StartEraIndex})");
+        await _rewardCycleService.CreateRewardCycle(newRewardCycle);
+    }
+
+    private async Task CompleteRewardCycle(int endEraIndex, RewardCycleModel rewardCycleModel)
+    {
+        _logger.LogInformation($"Complete reward cycle (era: {rewardCycleModel.StartEraIndex} - {endEraIndex})");
+        var lastEra = await _eraService.GetEraByIndex(endEraIndex);
+        rewardCycleModel.EndEraIndex = endEraIndex;
+        rewardCycleModel.EndBlock = lastEra.EndBlock;
+        rewardCycleModel.CurrentEraIndex = lastEra.EraIndex;
+        rewardCycleModel.Finished = true;
+        await _rewardCycleService.UpdateRewardCycle(rewardCycleModel);
+    }
 }

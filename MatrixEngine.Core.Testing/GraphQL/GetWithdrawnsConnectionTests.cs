@@ -9,9 +9,9 @@ namespace MatrixEngine.Core.Testing.GraphQL;
 
 public class GetWithdrawnsConnectionTests
 {
-    private Mock<IGraphQLClient> _client;
-    private Mock<ILogger<GetWithdrawnsConnection>> _logger;
-    private GetWithdrawnsConnection _getWithdrawnsConnection;
+    private readonly Mock<IGraphQLClient> _client;
+    private readonly Mock<ILogger<GetWithdrawnsConnection>> _logger;
+    private readonly GetWithdrawnsConnection _getWithdrawnsConnection;
 
     public GetWithdrawnsConnectionTests()
     {

@@ -1,5 +1,6 @@
 using MatrixEngine.Core.Engine;
 using MatrixEngine.Core.Models;
+using MatrixEngine.Core.Models.DTOs;
 using MatrixEngine.Core.Resolvers;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -14,6 +15,7 @@ public class ComputingTests
     private readonly Mock<ILogger<ComputingCore>> _loggerMock;
     private readonly ComputingCore _computingCore;
     private readonly Mock<IBalanceSnapshotResolver> _balanceSnapshotResolver;
+    private readonly Mock<ISignEffectiveBalanceResolver> _signEffectiveBalanceResolver;
 
     public ComputingTests()
     {
@@ -21,12 +23,14 @@ public class ComputingTests
         _balanceSnapshotResolver = new Mock<IBalanceSnapshotResolver>();
         _balanceChangeResolver = new Mock<IBalanceChangeResolver>();
         _effectiveBalanceResolver = new Mock<IEffectiveBalanceResolver>();
+        _signEffectiveBalanceResolver = new Mock<ISignEffectiveBalanceResolver>(); 
         
         _loggerMock = new Mock<ILogger<ComputingCore>>();
         _computingCore = new Core.Engine.ComputingCore(_rewardCycleResolver.Object,
             _balanceSnapshotResolver.Object,
             _balanceChangeResolver.Object,
             _effectiveBalanceResolver.Object,
+            _signEffectiveBalanceResolver.Object,
             _loggerMock.Object);
     }
 

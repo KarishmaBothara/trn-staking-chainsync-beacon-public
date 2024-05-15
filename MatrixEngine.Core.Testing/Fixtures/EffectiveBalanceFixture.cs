@@ -18,13 +18,13 @@ public class EffectiveBalanceFixture
         const string path = @"Data/effective-balances.json";
         var data = JsonFileReader.Read<List<EffectiveBalanceModel>>(path);
 
-        var collection = _database.GetCollection<EffectiveBalanceModel>(DbCollection.EffectiveBalance);
+        var collection = _database.GetCollection<EffectiveBalanceModel>(DbCollectionName.EffectiveBalance);
         collection.InsertMany(data);
     }
 
     public void ClearData()
     {
-        var collection = _database.GetCollection<EffectiveBalanceModel>(DbCollection.EffectiveBalance);
+        var collection = _database.GetCollection<EffectiveBalanceModel>(DbCollectionName.EffectiveBalance);
         collection.DeleteMany(Builders<EffectiveBalanceModel>.Filter.Empty);
     }
 }

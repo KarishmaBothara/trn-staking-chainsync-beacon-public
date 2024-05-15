@@ -23,7 +23,7 @@ public class EraService : IEraService
         _database = database;
     }
 
-    private IMongoCollection<EraModel> Collection => _database.GetCollection<EraModel>(DbCollection.Era);
+    private IMongoCollection<EraModel> Collection => _database.GetCollection<EraModel>(DbCollectionName.Era);
 
     public async Task<EraModel> GetEraByIndex(int eraIndex)
     {
@@ -44,10 +44,10 @@ public class EraService : IEraService
             .FirstOrDefaultAsync();
 
         if (era == null) throw new EraException("No finished era found");
-        
+
         return era;
     }
-    
+
     public async Task<List<EraModel>> GetEraListByBlockRange(int startBlock, int endBlock)
     {
         var filter = Builders<EraModel>.Filter.Gte(x => x.StartBlock, startBlock) &
@@ -66,6 +66,8 @@ public class EraService : IEraService
         //then create new models with era start and end block numbers with era index  
         //at last upsert db
         var activeEraTypesCount = activeEraTypes.Count;
+
+        var ops = new List<UpdateOneModel<EraModel>>();
         for (var i = 0; i < activeEraTypesCount; i++)
         {
             var activeEra = activeEraTypes[i];
@@ -73,20 +75,17 @@ public class EraService : IEraService
             var startBlock = activeEra.BlockNumber;
             var endBlock = i + 1 < activeEraTypesCount ? activeEraTypes[i + 1].BlockNumber - 1 : -1;
 
-            var era = new EraModel
-            {
-                EraIndex = eraIndex,
-                StartBlock = startBlock,
-                EndBlock = endBlock
-            };
-
             var filter = Builders<EraModel>.Filter.Eq(x => x.EraIndex, eraIndex);
             var update = Builders<EraModel>.Update
-                .SetOnInsert(x => x.EraIndex, eraIndex)
-                .SetOnInsert(x => x.StartBlock, startBlock)
-                .SetOnInsert(x => x.EndBlock, endBlock);
+                .Set(x => x.EraIndex, eraIndex)
+                .Set(x => x.StartBlock, startBlock)
+                .Set(x => x.EndBlock, endBlock)
+                .Set(x => x.UpdatedAt, DateTime.UtcNow)
+                .SetOnInsert(x => x.CreatedAt, DateTime.UtcNow);
 
-            await Collection.UpdateOneAsync(filter, update, new UpdateOptions {IsUpsert = true});
+            ops.Add(new UpdateOneModel<EraModel>(filter, update) { IsUpsert = true });
         }
+
+        await Collection.BulkWriteAsync(ops);
     }
 }

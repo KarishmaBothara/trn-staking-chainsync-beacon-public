@@ -1,8 +1,8 @@
-namespace MatrixEngine.GraphQL.Config;
+namespace MatrixEngine.Core.Config;
 
 public class GraphqlApiOptions
 {
-   public static string SectionName { get; } = "GraphQLApi";
+   public static string SectionName = "GraphQLApi";
 
    public string BaseUrl { get; set; } = String.Empty; 
 }

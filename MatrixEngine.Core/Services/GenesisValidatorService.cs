@@ -19,12 +19,11 @@ public class GenesisValidatorService : IGenesisValidatorService
     }
 
     private IMongoCollection<GenesisValidatorModel> Collection =>
-        _database.GetCollection<GenesisValidatorModel>(DbCollection.GenesisValidators);
+        _database.GetCollection<GenesisValidatorModel>(DbCollectionName.GenesisValidators);
 
     
     public async Task<List<GenesisValidatorModel>> GetGenesisValidators()
     {
         return await Collection.Find(Builders<GenesisValidatorModel>.Filter.Empty).ToListAsync();
     }
-    
 }

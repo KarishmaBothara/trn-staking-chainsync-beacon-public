@@ -18,13 +18,13 @@ public class EraFixtures
         const string path = @"Data/eras.json";
         var eras = JsonFileReader.Read<List<EraModel>>(path);
 
-        var collection = _database.GetCollection<EraModel>(DbCollection.Era);
+        var collection = _database.GetCollection<EraModel>(DbCollectionName.Era);
         collection.InsertMany(eras);
     }
     
     public void ClearData()
     {
-        var collection = _database.GetCollection<EraModel>(DbCollection.Era);
+        var collection = _database.GetCollection<EraModel>(DbCollectionName.Era);
         collection.DeleteMany(Builders<EraModel>.Filter.Empty);
     }
 }

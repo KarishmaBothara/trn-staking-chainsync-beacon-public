@@ -1,6 +1,8 @@
+using System.Numerics;
 using MatrixEngine.Core.Constants;
 using MatrixEngine.Core.Models;
 using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace MatrixEngine.Core.Services;
@@ -9,14 +11,17 @@ public interface IBalanceChangeService
 {
     Task<List<BalanceModel>> GetBalanceChanges(string account, int startBlock, int endBlock);
     Task UpsertUserBalanceChanges(List<BalanceChangeModel> changes);
+
+    Task<List<BalanceModel>> GetUsersLastBalanceChanges(int startBlock, int endBlock);
 }
 
 public class BalanceChangeService : IBalanceChangeService
 {
     private readonly IMongoDatabase _database;
-    private ILogger<BalanceChangeService> _logger;
+    private readonly ILogger<BalanceChangeService> _logger;
 
-    private IMongoCollection<BalanceModel> Collection => _database.GetCollection<BalanceModel>(DbCollection.Balance);
+    private IMongoCollection<BalanceModel> Collection =>
+        _database.GetCollection<BalanceModel>(DbCollectionName.Balance);
 
     public BalanceChangeService(IMongoDatabase database, ILogger<BalanceChangeService> logger)
     {
@@ -40,31 +45,89 @@ public class BalanceChangeService : IBalanceChangeService
     public async Task UpsertUserBalanceChanges(List<BalanceChangeModel> changes)
     {
         _logger.LogInformation($"Upserting {changes.Count} balance changes");
-        //bulk upsert the data
-        var bulkOps = new List<UpdateOneModel<BalanceModel>>();
+        const int pageSize = 500;
+        var totalPages = changes.Count / pageSize + 1;
 
-        foreach (var change in changes)
+        for (var pageNumber = 0; pageNumber < totalPages; pageNumber++)
         {
-            var blocks = change.EndBlock - change.StartBlock + 1;
-            var filter = Builders<BalanceModel>.Filter.Eq(x => x.Account, change.Account) &
-                         Builders<BalanceModel>.Filter.Eq(x => x.StartBlock, change.StartBlock) &
-                         Builders<BalanceModel>.Filter.Lte(x => x.EndBlock, change.EndBlock) &
-                         Builders<BalanceModel>.Filter.Lte(x => x.Blocks, blocks);
+            _logger.LogInformation($"Bulk Upserting page {pageNumber} of {totalPages}.");
 
-            var update = Builders<BalanceModel>.Update
-                .SetOnInsert(x => x.Account, change.Account)
-                .Set(x => x.StartBlock, change.StartBlock)
-                .Set(x => x.EndBlock, change.EndBlock)
-                .Set(x => x.Balance, change.BalanceInBlockRange.ToString())
-                .Set(x => x.BalanceChange, change.BalanceChange.ToString())
-                .Set(x => x.PreviousBalance, change.PreviousBalance.ToString())
-                .Set(x => x.Blocks, blocks);
+            var batch = changes.Skip(pageNumber * pageSize).Take(pageSize).ToList();
+            if(batch.Count == 0) break;
+            
+            //bulk upsert the data
+            var bulkOps = new List<UpdateOneModel<BalanceModel>>();
+            foreach (var change in batch)
+            {
+                var blocks = change.EndBlock - change.StartBlock + 1;
+                var filter = Builders<BalanceModel>.Filter.Eq(x => x.Account, change.Account) &
+                             Builders<BalanceModel>.Filter.Eq(x => x.StartBlock, change.StartBlock) &
+                             Builders<BalanceModel>.Filter.Lte(x => x.EndBlock, change.EndBlock) &
+                             Builders<BalanceModel>.Filter.Lte(x => x.Blocks, blocks);
 
-            var model = new UpdateOneModel<BalanceModel>(filter, update) { IsUpsert = true };
-            bulkOps.Add(model);
+                var update = Builders<BalanceModel>.Update
+                    .SetOnInsert(x => x.Account, change.Account)
+                    .SetOnInsert(x => x.CreatedAt, DateTime.UtcNow)
+                    .Set(x => x.UpdatedAt, DateTime.UtcNow)
+                    .Set(x => x.StartBlock, change.StartBlock)
+                    .Set(x => x.EndBlock, change.EndBlock)
+                    .Set(x => x.Balance, change.BalanceInBlockRange.ToString())
+                    .Set(x => x.BalanceChange, change.BalanceChange.ToString())
+                    .Set(x => x.PreviousBalance, change.PreviousBalance.ToString())
+                    .Set(x => x.Blocks, blocks);
+
+                var model = new UpdateOneModel<BalanceModel>(filter, update) { IsUpsert = true };
+                bulkOps.Add(model);
+            }
+
+            _logger.LogInformation($"Bulk upserting {bulkOps.Count} balance changes");
+            await Collection.BulkWriteAsync(bulkOps);
         }
+    }
 
-        _logger.LogInformation($"Bulk upserting {bulkOps.Count} balance changes");
-        await Collection.BulkWriteAsync(bulkOps);
+
+    public async Task<List<BalanceModel>> GetUsersLastBalanceChanges(int startBlock, int endBlock)
+    {
+        try
+        {
+            //this function is to use aggregation to group by account
+            //and query the largest block number between startBlock and endBlock
+            //use BsonDocument to build aggregation pipeline
+            //implementation as above description
+            var pipeline = new BsonDocument[]
+            {
+                new BsonDocument("$match",
+                    new BsonDocument
+                    {
+                        { "startBlock", new BsonDocument("$gte", startBlock) },
+                        { "endBlock", new BsonDocument("$lte", endBlock) }
+                    }
+                ),
+                new BsonDocument("$sort",
+                    new BsonDocument("endBlock", -1)
+                ),
+                new BsonDocument("$group",
+                    new BsonDocument
+                    {
+                        { "_id", "$account" },
+                        { "latestBalanceDoc", new BsonDocument("$first", "$$ROOT") }
+                    }
+                ),
+                new BsonDocument("$replaceRoot",
+                    new BsonDocument("newRoot", "$latestBalanceDoc")
+                ),
+                new BsonDocument("$project",
+                    new BsonDocument("_id", 0))
+            };
+
+            var results = await Collection.Aggregate<BalanceModel>(pipeline).ToListAsync();
+
+            return results;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            return new List<BalanceModel>();
+        }
     }
 }

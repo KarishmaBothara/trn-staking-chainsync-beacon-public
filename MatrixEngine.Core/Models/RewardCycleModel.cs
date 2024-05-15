@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace MatrixEngine.Core.Models;
 
 [BsonIgnoreExtraElements]
-public class RewardCycleModel
+public class RewardCycleModel: BaseModel
 {
     //use bson element to map lowercase to camelcase
     [BsonId] public ObjectId Id { get; set; }
@@ -30,6 +30,4 @@ public class RewardCycleModel
     public string? WorkpointsRewardInTotal { get; set; }
 
     [BsonElement("vtxDistributionId")] public string? VtxDistributionId { get; set; }
-
-    [BsonElement("createdAt")] public DateTime CreatedAt { get; set; }
 }

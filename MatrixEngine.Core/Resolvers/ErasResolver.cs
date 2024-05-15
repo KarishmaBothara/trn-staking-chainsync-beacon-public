@@ -10,8 +10,8 @@ public interface IErasResolver
 
 public class ErasResolver : IErasResolver
 {
-    private IGetActiveErasConnection _getActiveErasConnection;
-    private IEraService _eraService;
+    private readonly IGetActiveErasConnection _getActiveErasConnection;
+    private readonly IEraService _eraService;
 
     public ErasResolver(IGetActiveErasConnection getActiveErasConnection, IEraService eraService)
     {

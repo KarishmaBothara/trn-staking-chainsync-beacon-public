@@ -23,7 +23,7 @@ public interface IStakerService
 public class StakerService : IStakerService
 {
     private readonly IMongoDatabase _database;
-    private ILogger<StakerService> _logger;
+    private readonly ILogger<StakerService> _logger;
 
     public StakerService(IMongoDatabase database, ILogger<StakerService> logger)
     {
@@ -32,7 +32,7 @@ public class StakerService : IStakerService
     }
 
     private IMongoCollection<StakerModel> Collection =>
-        _database.GetCollection<StakerModel>(DbCollection.Stakers);
+        _database.GetCollection<StakerModel>(DbCollectionName.Stakers);
 
     public async Task<string?> GetAccountType(string account, int eraIndex)
     {
@@ -63,25 +63,35 @@ public class StakerService : IStakerService
 
     public async Task ResolveStakersAndSave(List<StakerNodeType> stakerTypes)
     {
-        //create upsert ops and bulk write 
-        var ops = stakerTypes.Select(stakerType =>
+        //to reduce db load, page by 500 and insert them
+        var pageSize = 500;
+        var totalPages = stakerTypes.Count / pageSize + 1;
+
+        for (var pageNumber = 0; pageNumber < totalPages; pageNumber++)
         {
-            var filter = Builders<StakerModel>.Filter.Eq(x => x.Account, stakerType.Stash) &
-                         Builders<StakerModel>.Filter.Eq(x => x.EraIndex, stakerType.EraIndex);
-            var update = Builders<StakerModel>.Update
-                .SetOnInsert(x => x.Account, stakerType.Stash)
-                .SetOnInsert(x => x.EraIndex, stakerType.EraIndex)
-                .Set(x => x.Type, stakerType.StakerType)
-                .Set(x => x.TotalStake, stakerType.TotalStake)
-                .Set(x => x.ValidatorStash, stakerType.ParentStash);
+            var batch = stakerTypes.Skip(pageNumber * pageSize).Take(pageSize).ToList();
+            //create upsert ops and bulk write 
+            var ops = batch.Select(stakerType =>
+            {
+                var filter = Builders<StakerModel>.Filter.Eq(x => x.Account, stakerType.Stash) &
+                             Builders<StakerModel>.Filter.Eq(x => x.EraIndex, stakerType.EraIndex);
+                var update = Builders<StakerModel>.Update
+                    .SetOnInsert(x => x.Account, stakerType.Stash)
+                    .SetOnInsert(x => x.EraIndex, stakerType.EraIndex)
+                    .SetOnInsert(x => x.CreatedAt, DateTime.UtcNow)
+                    .Set(x => x.UpdatedAt, DateTime.UtcNow)
+                    .Set(x => x.Type, stakerType.StakerType)
+                    .Set(x => x.TotalStake, stakerType.TotalStake)
+                    .Set(x => x.ValidatorStash, stakerType.ParentStash);
 
-            return new UpdateOneModel<StakerModel>(filter, update) { IsUpsert = true };
-        }).ToList();
+                return new UpdateOneModel<StakerModel>(filter, update) { IsUpsert = true };
+            }).ToList();
 
-        //bulk write
-        await Collection.BulkWriteAsync(ops);
+            //bulk write
+            await Collection.BulkWriteAsync(ops);
+        }
     }
-    
+
     /// <summary>
     /// Get the latest era fetched staker types
     /// </summary>
@@ -93,7 +103,7 @@ public class StakerService : IStakerService
         var staker = await Collection.Find(Builders<StakerModel>.Filter.Empty)
             .SortByDescending(x => x.EraIndex)
             .FirstOrDefaultAsync();
-        
+
         _logger.LogInformation($"Latest era fetched staker types: {staker?.EraIndex}");
 
 

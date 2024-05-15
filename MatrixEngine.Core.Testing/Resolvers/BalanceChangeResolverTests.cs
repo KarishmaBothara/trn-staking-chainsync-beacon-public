@@ -10,16 +10,15 @@ using Moq;
 
 namespace MatrixEngine.Core.Testing.Resolvers;
 
-
 public class BalanceChangeResolverTests
 {
     private readonly BalanceChangeResolver _balanceChangeResolver;
-    private Mock<IBalanceSnapshotService> _balanceSnapshotServiceMock;
-    private Mock<IEraService> _eraServiceMock;
-    private Mock<ITransactionEventService> _transactionServiceMock;
-    private Mock<IStakerService> _stakerServiceMock;
-    private Mock<ILogger<BalanceChangeResolver>> _logger;
-    private Mock<IBalanceChangeService> _balanceChangeService;
+    private readonly Mock<IBalanceSnapshotService> _balanceSnapshotServiceMock;
+    private readonly Mock<IEraService> _eraServiceMock;
+    private readonly Mock<ITransactionEventService> _transactionServiceMock;
+    private readonly Mock<IStakerService> _stakerServiceMock;
+    private readonly Mock<ILogger<BalanceChangeResolver>> _logger;
+    private readonly Mock<IBalanceChangeService> _balanceChangeService;
 
     public BalanceChangeResolverTests()
     {
@@ -55,7 +54,7 @@ public class BalanceChangeResolverTests
             JsonFileReader.Read<List<TransactionModel>>(@"./Data/transactions/single-account-bonded.json");
         _transactionServiceMock.Setup(m => m.GetTransactionEventsByBlockRange(It.IsAny<int>(), It.IsAny<int>()))
             .ReturnsAsync(transactions);
-        _balanceSnapshotServiceMock.Setup(m => m.GetBalanceSnapshotByEndBlock(It.IsAny<int>()))
+        _balanceSnapshotServiceMock.Setup(m => m.GetBalanceSnapshotByCycleEndBlock(It.IsAny<int>()))
             .ReturnsAsync(new List<BalanceSnapshotModel>());
 
         var eras = new List<EraModel>
@@ -317,10 +316,10 @@ public class BalanceChangeResolverTests
         Assert.Equal(StakerType.Staker, balanceChangesForAccount[0].StakerType);
 
         Assert.Equal(100, balanceChangesForAccount[1].StartBlock);
-        Assert.Equal(150, balanceChangesForAccount[1].EndBlock);
+        Assert.Equal(200, balanceChangesForAccount[1].EndBlock);
         Assert.Equal(100, balanceChangesForAccount[1].BalanceChange);
-        Assert.Equal(100, balanceChangesForAccount[1].BalanceInBlockRange);
-        Assert.Equal(51, balanceChangesForAccount[1].EffectiveBlocks);
+        Assert.Equal(50, balanceChangesForAccount[1].BalanceInBlockRange);
+        Assert.Equal(101, balanceChangesForAccount[1].EffectiveBlocks);
         Assert.Equal(1, balanceChangesForAccount[1].EraIndex);
         Assert.Equal(StakerType.Staker, balanceChangesForAccount[0].StakerType);
     }
@@ -386,10 +385,10 @@ public class BalanceChangeResolverTests
         Assert.Equal(StakerType.Validator, balanceChangesForAccount[0].StakerType);
 
         Assert.Equal(100, balanceChangesForAccount[1].StartBlock);
-        Assert.Equal(150, balanceChangesForAccount[1].EndBlock);
+        Assert.Equal(200, balanceChangesForAccount[1].EndBlock);
         Assert.Equal(100, balanceChangesForAccount[1].BalanceChange);
-        Assert.Equal(100, balanceChangesForAccount[1].BalanceInBlockRange);
-        Assert.Equal(51, balanceChangesForAccount[1].EffectiveBlocks);
+        Assert.Equal(50, balanceChangesForAccount[1].BalanceInBlockRange);
+        Assert.Equal(101, balanceChangesForAccount[1].EffectiveBlocks);
         Assert.Equal(1, balanceChangesForAccount[1].EraIndex);
         Assert.Equal(StakerType.Staker, balanceChangesForAccount[1].StakerType);
     }
@@ -440,7 +439,7 @@ public class BalanceChangeResolverTests
         Assert.Equal("0x001", account);
 
         var balanceChangesForAccount = adjustedBalanceChanges[account];
-        Assert.Equal(3, balanceChangesForAccount.Count);
+        Assert.Equal(2, balanceChangesForAccount.Count);
 
         Assert.Equal(0, balanceChangesForAccount[0].StartBlock);
         Assert.Equal(99, balanceChangesForAccount[0].EndBlock);
@@ -451,20 +450,13 @@ public class BalanceChangeResolverTests
         Assert.Equal(0, balanceChangesForAccount[0].EraIndex);
 
         Assert.Equal(100, balanceChangesForAccount[1].StartBlock);
-        Assert.Equal(150, balanceChangesForAccount[1].EndBlock);
-        Assert.Equal(100, balanceChangesForAccount[1].BalanceChange);
-        Assert.Equal(100, balanceChangesForAccount[1].BalanceInBlockRange);
-        Assert.Equal(51, balanceChangesForAccount[1].EffectiveBlocks);
-        Assert.Equal(51m / 101m, balanceChangesForAccount[1].EffectiveEras);
+        Assert.Equal(200, balanceChangesForAccount[1].EndBlock);
+        Assert.Equal(200, balanceChangesForAccount[1].BalanceChange);
+        Assert.Equal(149, balanceChangesForAccount[1].BalanceInBlockRange);
+        Assert.Equal(101, balanceChangesForAccount[1].EffectiveBlocks);
+        Assert.Equal(1, balanceChangesForAccount[1].EffectiveEras);
         Assert.Equal(1, balanceChangesForAccount[1].EraIndex);
 
-        Assert.Equal(151, balanceChangesForAccount[2].StartBlock);
-        Assert.Equal(200, balanceChangesForAccount[2].EndBlock);
-        Assert.Equal(100, balanceChangesForAccount[2].BalanceChange);
-        Assert.Equal(200, balanceChangesForAccount[2].BalanceInBlockRange);
-        Assert.Equal(50, balanceChangesForAccount[2].EffectiveBlocks);
-        Assert.Equal(50m / 101m, balanceChangesForAccount[2].EffectiveEras);
-        Assert.Equal(1, balanceChangesForAccount[2].EraIndex);
     }
 
     [Fact]
@@ -518,22 +510,17 @@ public class BalanceChangeResolverTests
 
         var balanceChangesForAccount = applyPunishmentForBalanceChanges[account];
 
-        Assert.Equal(3, balanceChangesForAccount.Count);
+        Assert.Equal(2, balanceChangesForAccount.Count);
 
-        Assert.Equal(151, balanceChangesForAccount[0].StartBlock);
+        Assert.Equal(100, balanceChangesForAccount[0].StartBlock);
         Assert.Equal(200, balanceChangesForAccount[0].EndBlock);
-        Assert.Equal(-50, balanceChangesForAccount[0].BalanceChange);
-        Assert.Equal(50, balanceChangesForAccount[0].BalanceInBlockRange);
+        Assert.Equal(50, balanceChangesForAccount[0].BalanceChange);
+        Assert.Equal(49, balanceChangesForAccount[0].BalanceInBlockRange);
 
-        Assert.Equal(100, balanceChangesForAccount[1].StartBlock);
-        Assert.Equal(150, balanceChangesForAccount[1].EndBlock);
+        Assert.Equal(0, balanceChangesForAccount[1].StartBlock);
+        Assert.Equal(99, balanceChangesForAccount[1].EndBlock);
         Assert.Equal(100, balanceChangesForAccount[1].BalanceChange);
-        Assert.Equal(50, balanceChangesForAccount[1].BalanceInBlockRange);
-
-        Assert.Equal(0, balanceChangesForAccount[2].StartBlock);
-        Assert.Equal(99, balanceChangesForAccount[2].EndBlock);
-        Assert.Equal(100, balanceChangesForAccount[2].BalanceChange);
-        Assert.Equal(50, balanceChangesForAccount[2].BalanceInBlockRange);
+        Assert.Equal(49, balanceChangesForAccount[1].BalanceInBlockRange);
     }
 
     [Fact]
@@ -595,38 +582,94 @@ public class BalanceChangeResolverTests
 
         var balanceChangesForAccount = applyPunishmentForBalanceChanges[account];
 
-        Assert.Equal(4, balanceChangesForAccount.Count);
+        Assert.Equal(2, balanceChangesForAccount.Count);
 
-        Assert.Equal(171, balanceChangesForAccount[0].StartBlock);
+        Assert.Equal(100, balanceChangesForAccount[0].StartBlock);
         Assert.Equal(200, balanceChangesForAccount[0].EndBlock);
         Assert.Equal(1, balanceChangesForAccount[0].EraIndex);
-        Assert.Equal(30, balanceChangesForAccount[0].EffectiveBlocks);
-        Assert.Equal(30m / 101m, balanceChangesForAccount[0].EffectiveEras);
-        Assert.Equal(50, balanceChangesForAccount[0].BalanceChange);
-        Assert.Equal(100, balanceChangesForAccount[0].BalanceInBlockRange);
+        Assert.Equal(101, balanceChangesForAccount[0].EffectiveBlocks);
+        Assert.Equal(1, balanceChangesForAccount[0].EffectiveEras);
+        Assert.Equal(100, balanceChangesForAccount[0].BalanceChange);
+        Assert.Equal(64, balanceChangesForAccount[0].BalanceInBlockRange);
 
-        Assert.Equal(151, balanceChangesForAccount[1].StartBlock);
-        Assert.Equal(170, balanceChangesForAccount[1].EndBlock);
-        Assert.Equal(1, balanceChangesForAccount[1].EraIndex);
-        Assert.Equal(20, balanceChangesForAccount[1].EffectiveBlocks);
-        Assert.Equal(20m / 101m, balanceChangesForAccount[1].EffectiveEras);
-        Assert.Equal(-50, balanceChangesForAccount[1].BalanceChange);
-        Assert.Equal(50, balanceChangesForAccount[1].BalanceInBlockRange);
+        Assert.Equal(0, balanceChangesForAccount[1].StartBlock);
+        Assert.Equal(99, balanceChangesForAccount[1].EndBlock);
+        Assert.Equal(0, balanceChangesForAccount[1].EraIndex);
+        Assert.Equal(100, balanceChangesForAccount[1].EffectiveBlocks);
+        Assert.Equal(1, balanceChangesForAccount[1].EffectiveEras);
+        Assert.Equal(100, balanceChangesForAccount[1].BalanceChange);
+        Assert.Equal(64, balanceChangesForAccount[1].BalanceInBlockRange);
+    }
 
-        Assert.Equal(100, balanceChangesForAccount[2].StartBlock);
-        Assert.Equal(150, balanceChangesForAccount[2].EndBlock);
-        Assert.Equal(1, balanceChangesForAccount[2].EraIndex);
-        Assert.Equal(51, balanceChangesForAccount[2].EffectiveBlocks);
-        Assert.Equal(51m / 101m, balanceChangesForAccount[2].EffectiveEras);
-        Assert.Equal(100, balanceChangesForAccount[2].BalanceChange);
-        Assert.Equal(50, balanceChangesForAccount[2].BalanceInBlockRange);
+    [Fact]
+    public void UserAdjustedBalanceChanges_WhenUsersBalanceChangeCrossEras()
+    {
+        var balanceChanges = new Dictionary<string, List<BalanceChangeModel>>
+        {
+            ["0x001"] = new()
+            {
+                new()
+                {
+                    Account = "0x001",
+                    BalanceChange = 100,
+                    BalanceInBlockRange = 100,
+                    StartBlock = 0,
+                    EndBlock = 150
+                },
+                new()
+                {
+                    Account = "0x001",
+                    BalanceChange = -50,
+                    BalanceInBlockRange = 50,
+                    StartBlock = 151,
+                    EndBlock = 170,
+                },
+                new()
+                {
+                    Account = "0x001",
+                    BalanceChange = 50,
+                    BalanceInBlockRange = 100,
+                    StartBlock = 171,
+                    EndBlock = 200,
+                },
+            }
+        };
 
-        Assert.Equal(0, balanceChangesForAccount[3].StartBlock);
-        Assert.Equal(99, balanceChangesForAccount[3].EndBlock);
-        Assert.Equal(0, balanceChangesForAccount[3].EraIndex);
-        Assert.Equal(100, balanceChangesForAccount[3].EffectiveBlocks);
-        Assert.Equal(100m / 100m, balanceChangesForAccount[3].EffectiveEras);
-        Assert.Equal(100, balanceChangesForAccount[3].BalanceChange);
-        Assert.Equal(50, balanceChangesForAccount[3].BalanceInBlockRange);
+        var eras = new List<EraModel>
+        {
+            new()
+            {
+                EraIndex = 0,
+                StartBlock = 0,
+                EndBlock = 99,
+            },
+            new()
+            {
+                EraIndex = 1,
+                StartBlock = 100,
+                EndBlock = 200,
+            }
+        };
+
+        const string account = "0x001";
+        
+        var userAdjustedBalanceChanges = _balanceChangeResolver.UserAdjustedBalanceChanges(
+            eras, 
+            new KeyValuePair<string, List<BalanceChangeModel>>( "0x001", balanceChanges["0x001"]),
+            account, new List<StakerModel>());
+        
+        Assert.Equal(2, userAdjustedBalanceChanges.Count);
+        
+        Assert.Equal(100, userAdjustedBalanceChanges[0].BalanceChange);
+        Assert.Equal(100, userAdjustedBalanceChanges[0].BalanceInBlockRange);
+        Assert.Equal(100, userAdjustedBalanceChanges[0].EffectiveBlocks);
+        Assert.Equal(0, userAdjustedBalanceChanges[0].EraIndex);
+        Assert.Equal(StakerType.Staker, userAdjustedBalanceChanges[0].StakerType);
+        
+        Assert.Equal(100, userAdjustedBalanceChanges[1].BalanceChange);
+        Assert.Equal(64, userAdjustedBalanceChanges[1].BalanceInBlockRange);
+        Assert.Equal(101, userAdjustedBalanceChanges[1].EffectiveBlocks);
+        Assert.Equal(1, userAdjustedBalanceChanges[1].EraIndex);
+        Assert.Equal(StakerType.Staker, userAdjustedBalanceChanges[1].StakerType);
     }
 }

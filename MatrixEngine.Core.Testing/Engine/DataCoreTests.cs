@@ -7,10 +7,10 @@ namespace MatrixEngine.Core.Testing.Engine;
 
 public class DataCoreTests
 {
-    private Mock<IErasResolver> _eraResolver;
-    private Mock<IStakersResolver> _stakersResolver;
-    private Mock<ITransactionEventsResolver> _transactionEventsResolver;
-    private Mock<ILogger<DataCore>> _logger;
+    private readonly Mock<IErasResolver> _eraResolver;
+    private readonly Mock<IStakersResolver> _stakersResolver;
+    private readonly Mock<ITransactionEventsResolver> _transactionEventsResolver;
+    private readonly Mock<ILogger<DataCore>> _logger;
 
     public DataCoreTests()
     {

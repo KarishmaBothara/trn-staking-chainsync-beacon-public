@@ -9,8 +9,8 @@ namespace MatrixEngine.Core.Testing.Resolvers;
 
 public class ErasResolverTests
 {
-    private Mock<IGetActiveErasConnection> _getActiveErasConnection;
-    private Mock<IEraService> _eraService;
+    private readonly Mock<IGetActiveErasConnection> _getActiveErasConnection;
+    private readonly Mock<IEraService> _eraService;
 
     public ErasResolverTests()
     {

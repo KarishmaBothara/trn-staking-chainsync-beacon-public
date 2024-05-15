@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace MatrixEngine.Core.Models;
 
 [BsonIgnoreExtraElements]
-public class EraModel
+public class EraModel: BaseModel
 {
     [BsonId] public ObjectId Id { get; set; }
 

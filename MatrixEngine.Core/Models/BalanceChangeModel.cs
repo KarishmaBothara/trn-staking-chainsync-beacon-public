@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace MatrixEngine.Core.Models;
 
-public class BalanceChangeModel
+public class BalanceChangeModel: BaseModel
 {
     public string Account { get; set; }
 

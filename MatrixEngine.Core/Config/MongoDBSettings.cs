@@ -1,8 +1,8 @@
-namespace MatrixEngine.Core;
+namespace MatrixEngine.Core.Config;
 
-public class MongoDBSettings
+public class MongoDbSettings
 {
-    public static string SectionName { get; } = "MongoDB";
-    public string ConnectionString { get; set; }
-    public string Database { get; set; }
+    public const string SectionName = "MongoDB";
+    public string ConnectionString { get; set; } = string.Empty;
+    public string Database { get; set; } = string.Empty;
 }

@@ -3,13 +3,14 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace MatrixEngine.Core.Models;
 
-public class EffectiveBalanceModel
+public class EffectiveBalanceModel: BaseModel
 {
     [BsonId] public ObjectId Id { get; set; }
 
     [BsonElement("account")] public string? Account { get; set; }
 
     [BsonElement("eraIndex")] public int EraIndex { get; set; }
+    
     [BsonElement("startBlock")] public int StartBlock { get; set; }
 
     [BsonElement("endBlock")] public int EndBlock { get; set; }
@@ -29,6 +30,4 @@ public class EffectiveBalanceModel
     [BsonElement("type")] public string? Type { get; set; }
 
     [BsonElement("effectiveEras")] public decimal EffectiveEras { get; set; }
-
-    [BsonElement("createdAt")] public DateTime CreatedAt { get; set; }
 }

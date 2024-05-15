@@ -9,9 +9,9 @@ namespace MatrixEngine.Core.Testing.GraphQL;
 
 public class GetStakersConnectionTests
 {
-    private Mock<IGraphQLClient> _client;
-    private Mock<ILogger<GetStakersConnection>> _logger;
-    private GetStakersConnection _getStakersConnection;
+    private readonly Mock<IGraphQLClient> _client;
+    private readonly Mock<ILogger<GetStakersConnection>> _logger;
+    private readonly GetStakersConnection _getStakersConnection;
 
     public GetStakersConnectionTests()
     {

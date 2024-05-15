@@ -1,4 +1,3 @@
-using MatrixEngine.Core.Models;
 using Microsoft.Extensions.Logging;
 
 namespace MatrixEngine.Core.Engine;

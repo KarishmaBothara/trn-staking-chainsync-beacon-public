@@ -11,7 +11,7 @@ public class GetBondedsConnectionTests
 {
     private readonly Mock<ILogger<GetBondedsCnnection>> _logger;
     private readonly Mock<IGraphQLClient> _client;
-    private GetBondedsCnnection _getBondedsConnection;
+    private readonly GetBondedsCnnection _getBondedsConnection;
 
     public GetBondedsConnectionTests()
     {

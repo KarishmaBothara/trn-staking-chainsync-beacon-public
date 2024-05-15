@@ -19,12 +19,13 @@ public interface IEffectiveBalanceResolver
         Dictionary<string, List<BalanceChangeModel>> balanceChanges);
 
     Task SaveEffectiveBalances(List<EffectiveBalanceModel> effectiveBalances);
+    Task RemoveEffectiveBalanceInBlocksRange(int startBlock, int endBlock);
 }
 
 public class EffectiveBalanceResolver : IEffectiveBalanceResolver
 {
     private readonly IEffectiveBalanceService _effectiveBalanceService;
-    private ILogger<EffectiveBalanceResolver> _logger;
+    private readonly ILogger<EffectiveBalanceResolver> _logger;
     private const int ErasInCycle = 90;
 
     public EffectiveBalanceResolver(IEffectiveBalanceService effectiveBalanceService,
@@ -40,6 +41,12 @@ public class EffectiveBalanceResolver : IEffectiveBalanceResolver
         return _effectiveBalanceService.UpsertEffectiveBalance(effectiveBalances);
     }
 
+    public async Task RemoveEffectiveBalanceInBlocksRange(int startBlock, int endBlock)
+    {
+        _logger.LogInformation($"Remove Effective Balance between {startBlock} - {endBlock} blocks");
+        await _effectiveBalanceService.RemoveEffectiveBalanceInBlocksRange(startBlock, endBlock);
+    }
+    
     public Dictionary<string, List<EffectiveBalanceModel>> CalculateEffectiveBalances(
         Dictionary<string, List<BalanceChangeModel>> balanceChanges)
     {

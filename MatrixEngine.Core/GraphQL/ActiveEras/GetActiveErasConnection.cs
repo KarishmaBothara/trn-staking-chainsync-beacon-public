@@ -1,10 +1,6 @@
 using GraphQL;
 using GraphQL.Client.Abstractions;
-using GraphQL.Client.Http;
-using GraphQL.Client.Serializer.Newtonsoft;
-using MatrixEngine.GraphQL.Config;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace MatrixEngine.Core.GraphQL.ActiveEras;
 
@@ -17,7 +13,7 @@ public class GetActiveErasConnection : IGetActiveErasConnection
 {
     private const int FirstFetchBatch = 500;
 
-    private ILogger<GetActiveErasConnection> _logger;
+    private readonly ILogger<GetActiveErasConnection> _logger;
     private readonly IGraphQLClient _client;
 
     private const string Query = @"
@@ -50,28 +46,36 @@ public class GetActiveErasConnection : IGetActiveErasConnection
 
     public async Task<List<ActiveEraType>> FetchActiveEras()
     {
+        _logger.LogInformation("Starting to fetch active eras");
         string? after = null;
-        bool hasNextPage;
         var activeEras = new List<ActiveEraType>();
-
-        do
+        try
         {
-            var request = new GraphQLRequest
+            bool hasNextPage;
+            do
             {
-                Query = Query,
-                OperationName = "GetActiveErasConnection",
-                Variables = new
+                var request = new GraphQLRequest
                 {
-                    first = FirstFetchBatch, after,
-                }
-            };
-            var response = await _client.SendQueryAsync<GetActiveErasConnectionResponseType>(request);
-            var connection = response.Data.ActiveErasConnection;
-            activeEras.AddRange(connection.Edges.Select(e => e.Node));
+                    Query = Query,
+                    OperationName = "GetActiveErasConnection",
+                    Variables = new
+                    {
+                        first = FirstFetchBatch, after,
+                    }
+                };
+                var response = await _client.SendQueryAsync<GetActiveErasConnectionResponseType>(request);
+                var connection = response.Data.ActiveErasConnection;
+                activeEras.AddRange(connection.Edges.Select(e => e.Node));
 
-            hasNextPage = connection.PageInfo.HasNextPage;
-            after = connection.PageInfo.EndCursor;
-        } while (hasNextPage);
+                hasNextPage = connection.PageInfo.HasNextPage;
+                after = connection.PageInfo.EndCursor;
+            } while (hasNextPage);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            return new List<ActiveEraType>();
+        }
 
         return activeEras;
     }

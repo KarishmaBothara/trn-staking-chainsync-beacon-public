@@ -16,7 +16,9 @@
         <PackageReference Include="GraphQL.Client.Serializer.SystemTextJson" Version="6.0.3" />
         <PackageReference Include="GraphQL.Primitives" Version="6.0.3" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0"/>
+        <PackageReference Include="Moq" Version="4.20.70" />
         <PackageReference Include="xunit" Version="2.4.1"/>
+        <PackageReference Include="Xunit.Extensions.Ordering" Version="1.4.5" />
         <PackageReference Include="Xunit.Microsoft.DependencyInjection" Version="6.2.17" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -46,6 +48,24 @@
       </None>
       <None Update="appsettings.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\case-2-two-cycles\balance-snapshots.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\case-2-two-cycles\case2.MD">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\case-2-two-cycles\eras.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\case-2-two-cycles\reward-circle.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\case-2-two-cycles\stakers.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Data\case-2-two-cycles\transactions.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 

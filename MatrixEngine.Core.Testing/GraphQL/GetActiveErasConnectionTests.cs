@@ -9,9 +9,9 @@ namespace MatrixEngine.Core.Testing.GraphQL;
 
 public class GetActiveErasConnectionTests
 {
-    private GetActiveErasConnection _getActiveErasConnection;
-    private Mock<ILogger<GetActiveErasConnection>> _logger;
-    private Mock<IGraphQLClient> _client;
+    private readonly GetActiveErasConnection _getActiveErasConnection;
+    private readonly Mock<ILogger<GetActiveErasConnection>> _logger;
+    private readonly Mock<IGraphQLClient> _client;
 
     public GetActiveErasConnectionTests()
     {
@@ -20,7 +20,6 @@ public class GetActiveErasConnectionTests
         _getActiveErasConnection = new GetActiveErasConnection(_client.Object, _logger.Object);
     }
 
-    //test fetch eras function
     [Fact]
     public async Task FetchEras_WhenApiReturnsEras()
     {

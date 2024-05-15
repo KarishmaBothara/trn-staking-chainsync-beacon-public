@@ -10,7 +10,7 @@ public static class TransactionType
 }
 
 [BsonIgnoreExtraElements]
-public class TransactionModel
+public class TransactionModel: BaseModel
 {
     [BsonId] public ObjectId Id { get; set; }
     [BsonElement("account")] public string Account { get; set; }

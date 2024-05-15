@@ -1,5 +1,6 @@
 using MatrixEngine.Core.GraphQL.Bondeds;
 using MatrixEngine.Core.GraphQL.Withdrawns;
+using MatrixEngine.Core.Models;
 using MatrixEngine.Core.Models.Events;
 using MatrixEngine.Core.Services;
 
@@ -17,12 +18,14 @@ public class TransactionEventsResolver : ITransactionEventsResolver
     private readonly IGetWithdrawnsConnection _getWithdrawnsConnection;
     private readonly IGetBondedsCnnection _getBondedsCnnection;
     private readonly IEraService _eraService;
+    private IAccountPunishmentMarkService _accountPunishmentMarkService;
 
 
     public TransactionEventsResolver(IGetBondedsCnnection getBondedsCnnection,
         IGetWithdrawnsConnection getWithdrawnsConnection, ITransactionEventService transactionEventService,
-        IEraService eraService)
+        IEraService eraService, IAccountPunishmentMarkService accountPunishmentMarkService)
     {
+        _accountPunishmentMarkService = accountPunishmentMarkService;
         _eraService = eraService;
         _getBondedsCnnection = getBondedsCnnection;
         _getWithdrawnsConnection = getWithdrawnsConnection;
@@ -61,5 +64,15 @@ public class TransactionEventsResolver : ITransactionEventsResolver
         var transactionEvents = bondedEvents.Concat(withdrawnEvents).OrderBy(x => x.BlockNumber).ToList();
         //save transaction events
         await _transactionEventService.UpsertTransactionEvents(transactionEvents);
+
+        var accountPunishmentMarks = withdrawnEvents.Select(m => new AccountPunishmentMarkModel()
+        {
+            Account = m.Account,
+            BlockNumber = m.BlockNumber,
+            Type = m.Type,
+            Amount = m.Amount
+        }).ToList();
+
+        await _accountPunishmentMarkService.UpsertAccountPunishmentMarks(accountPunishmentMarks);
     }
 }

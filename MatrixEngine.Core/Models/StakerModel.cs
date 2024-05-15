@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace MatrixEngine.Core.Models;
 
 [BsonIgnoreExtraElements]
-public class StakerModel
+public class StakerModel: BaseModel
 {
     [BsonId] public ObjectId Id { get; set; }
     [BsonElement("account")] public string? Account { get; set; }

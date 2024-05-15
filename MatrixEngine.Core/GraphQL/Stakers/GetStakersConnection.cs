@@ -11,9 +11,9 @@ public interface IGetStakersConnection
 
 public class GetStakersConnection : IGetStakersConnection
 {
-    private ILogger<GetStakersConnection> _logger;
-    private IGraphQLClient _client;
-    
+    private readonly ILogger<GetStakersConnection> _logger;
+    private readonly IGraphQLClient _client;
+
     private const int FirstFetchBatch = 500;
 
     private const string Query = @"
@@ -51,31 +51,40 @@ public class GetStakersConnection : IGetStakersConnection
 
     public async Task<List<StakerNodeType>> FetchStakers(int eraIndex)
     {
+        _logger.LogInformation("Starting to fetch stakers types");
         string? after = null;
         var stakers = new List<StakerNodeType>();
         bool hasNextPage;
 
-        do
+        try
         {
-            var request = new GraphQLRequest
+            do
             {
-                Query = Query,
-                OperationName = "GetStakersConnection",
-                Variables = new
+                var request = new GraphQLRequest
                 {
-                    first = FirstFetchBatch,
-                    eraIndex,
-                    after
-                }
-            };
+                    Query = Query,
+                    OperationName = "GetStakersConnection",
+                    Variables = new
+                    {
+                        first = FirstFetchBatch,
+                        eraIndex,
+                        after
+                    }
+                };
 
-            var response = await _client.SendQueryAsync<GetStakersConnectionResponseType>(request);
-            var connection = response.Data.StakersConnection;
-            stakers.AddRange(connection.Edges.Select(e => e.Node));
-            hasNextPage = connection.PageInfo.HasNextPage;
-            after = connection.PageInfo.EndCursor;
-        } while (hasNextPage);
+                var response = await _client.SendQueryAsync<GetStakersConnectionResponseType>(request);
+                var connection = response.Data.StakersConnection;
+                stakers.AddRange(connection.Edges.Select(e => e.Node));
+                hasNextPage = connection.PageInfo.HasNextPage;
+                after = connection.PageInfo.EndCursor;
+            } while (hasNextPage);
 
-        return stakers;
+            return stakers;
+        }
+        catch (Exception e)
+        {
+            _logger.LogInformation(e.Message);
+            return new List<StakerNodeType>();
+        }
     }
 }

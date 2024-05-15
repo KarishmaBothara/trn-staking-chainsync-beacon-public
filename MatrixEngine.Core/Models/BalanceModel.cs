@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace MatrixEngine.Core.Models;
 
 [BsonIgnoreExtraElements]
-public class BalanceModel
+public class BalanceModel: BaseModel
 {
     [BsonId] public ObjectId Id { get; set; }
 
@@ -21,6 +21,4 @@ public class BalanceModel
     [BsonElement("balanceChange")] public string? BalanceChange { get; set; }
     
     [BsonElement("previousBalanceChange")] public string? PreviousBalance { get; set; }
-
-    // [BsonElement("createdAt")] public DateTime CreatedAt { get; set; }
 }

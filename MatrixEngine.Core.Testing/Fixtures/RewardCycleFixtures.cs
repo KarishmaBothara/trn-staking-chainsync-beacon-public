@@ -18,13 +18,13 @@ public class RewardCycleFixtures
         const string path = @"Data/reward-cycles.json";
         var rewardCycles = JsonFileReader.Read<List<RewardCycleModel>>(path);
 
-        var collection = _database.GetCollection<RewardCycleModel>(DbCollection.RewardCycle);
+        var collection = _database.GetCollection<RewardCycleModel>(DbCollectionName.RewardCycle);
         collection.InsertMany(rewardCycles);
     }
     
     public void ClearData()
     {
-        var collection = _database.GetCollection<RewardCycleModel>(DbCollection.RewardCycle);
+        var collection = _database.GetCollection<RewardCycleModel>(DbCollectionName.RewardCycle);
         collection.DeleteMany(Builders<RewardCycleModel>.Filter.Empty);
     }
 }

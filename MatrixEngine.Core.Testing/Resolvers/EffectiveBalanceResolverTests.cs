@@ -13,7 +13,7 @@ public class EffectiveBalanceResolverTests
 {
     private readonly EffectiveBalanceResolver _effectiveBalanceResolver;
     private readonly Mock<IEffectiveBalanceService> _effectiveBalanceService;
-    private Mock<ILogger<EffectiveBalanceResolver>> _logger;
+    private readonly Mock<ILogger<EffectiveBalanceResolver>> _logger;
 
     public EffectiveBalanceResolverTests()
     {
