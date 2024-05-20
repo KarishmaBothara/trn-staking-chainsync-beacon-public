@@ -29,5 +29,6 @@ public class EngineCoreCore : IEngineCore
         
         await _dataCore.ResolveDataFromIndexer();
         await _computingCore.Compute();
+        await _dataCore.ValidateData();
     }
 }

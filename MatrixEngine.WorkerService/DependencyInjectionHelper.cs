@@ -62,6 +62,8 @@ public static class DependencyInjectionHelper
         services.AddScoped<IBalanceChangeService, BalanceChangeService>();
         services.AddScoped<IGenesisValidatorService, GenesisValidatorService>();
         services.AddScoped<IAccountPunishmentMarkService, AccountPunishmentMarkService>();
+        services.AddScoped<ISignEffectiveBalanceService, SignEffectiveBalanceService>();
+        services.AddScoped<IStakerRateService, StakerRateService>();
         
         //Aws
         services.AddScoped<ISignatureService, SignatureService>();
@@ -81,6 +83,8 @@ public static class DependencyInjectionHelper
         services.AddScoped<IRewardCycleResolver, RewardCycleResolver>();
         services.AddScoped<IBalanceSnapshotResolver, BalanceSnapshotResolver>();
         services.AddScoped<ISignEffectiveBalanceResolver, SignEffectiveBalanceResolver>();
+        services.AddScoped<IStakerRateResolver, StakerRateResolver>();
+        services.AddScoped<IDataValidationResolver, DataValidationResolver>();
         
         //Engine
         services.AddScoped<IDataCore, DataCore>();

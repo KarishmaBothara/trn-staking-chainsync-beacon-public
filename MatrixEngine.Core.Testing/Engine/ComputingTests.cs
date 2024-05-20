@@ -16,6 +16,7 @@ public class ComputingTests
     private readonly ComputingCore _computingCore;
     private readonly Mock<IBalanceSnapshotResolver> _balanceSnapshotResolver;
     private readonly Mock<ISignEffectiveBalanceResolver> _signEffectiveBalanceResolver;
+    private Mock<IStakerRateResolver> _stakerRateResolver;
 
     public ComputingTests()
     {
@@ -25,12 +26,15 @@ public class ComputingTests
         _effectiveBalanceResolver = new Mock<IEffectiveBalanceResolver>();
         _signEffectiveBalanceResolver = new Mock<ISignEffectiveBalanceResolver>(); 
         
+        _stakerRateResolver = new Mock<IStakerRateResolver>();
+        
         _loggerMock = new Mock<ILogger<ComputingCore>>();
-        _computingCore = new Core.Engine.ComputingCore(_rewardCycleResolver.Object,
+        _computingCore = new ComputingCore(_rewardCycleResolver.Object,
             _balanceSnapshotResolver.Object,
             _balanceChangeResolver.Object,
             _effectiveBalanceResolver.Object,
             _signEffectiveBalanceResolver.Object,
+            _stakerRateResolver.Object,
             _loggerMock.Object);
     }
 

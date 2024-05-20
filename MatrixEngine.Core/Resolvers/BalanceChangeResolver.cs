@@ -128,14 +128,24 @@ public class BalanceChangeResolver : IBalanceChangeResolver
             .OrderBy(t => t.BlockNumber)
             .ToList();
 
+        //deem balance snapshot as the bonded transactions at the beginning of the block range
+        var mappedBalanceSnapshots = balanceSnapshots.Select(s => new TransactionModel
+        {
+            Account = s.Account,
+            Amount = s.Balance,
+            BlockNumber = startBlock,
+            Type = TransactionType.Bonded
+        }).ToList();
+        
+        //merge balance snapshot with transactions
+        filteredSortedTransactions.AddRange(mappedBalanceSnapshots);
+        filteredSortedTransactions = filteredSortedTransactions.OrderBy(t => t.BlockNumber).ToList();
+        
         foreach (var transaction in filteredSortedTransactions)
         {
             if (!accountBalances.ContainsKey(transaction.Account))
             {
-                var snapshot = balanceSnapshots.FirstOrDefault(s => s.Account == transaction.Account);
-                accountBalances[transaction.Account] = snapshot != null
-                    ? BigInteger.Parse(snapshot.Balance ?? BigInteger.Zero.ToString())
-                    : BigInteger.Zero;
+                accountBalances[transaction.Account] = BigInteger.Zero;
                 accountBalanceChanges[transaction.Account] = new List<BalanceChangeModel>();
             }
 

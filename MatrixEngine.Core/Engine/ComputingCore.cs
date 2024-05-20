@@ -18,12 +18,15 @@ public class ComputingCore : IComputingCore
     private readonly IBalanceSnapshotResolver _balanceSnapshotResolver;
     private readonly ILogger<ComputingCore> _logger;
     private readonly ISignEffectiveBalanceResolver _signEffectiveBalanceResolver;
+    private readonly IStakerRateResolver _stakerRateResolver;
 
     public ComputingCore(IRewardCycleResolver rewardCycleResolver, IBalanceSnapshotResolver balanceSnapshotResolver,
         IBalanceChangeResolver balanceChangeResolver, IEffectiveBalanceResolver effectiveBalanceResolver,
         ISignEffectiveBalanceResolver signEffectiveBalanceResolver,
+        IStakerRateResolver stakerRateResolver,
         ILogger<ComputingCore> logger)
     {
+        _stakerRateResolver = stakerRateResolver;
         _signEffectiveBalanceResolver = signEffectiveBalanceResolver;
         _balanceSnapshotResolver = balanceSnapshotResolver;
         _effectiveBalanceResolver = effectiveBalanceResolver;
@@ -80,8 +83,12 @@ public class ComputingCore : IComputingCore
             if (effectiveBalancesList != null)
             {
                 await _effectiveBalanceResolver.SaveEffectiveBalances(effectiveBalancesList);
+                
                 await _signEffectiveBalanceResolver.Resolve(rewardCycle, effectiveBalancesList);
                 await _signEffectiveBalanceResolver.SignData();
+                
+                await _stakerRateResolver.ResolveStakerRateFromEffectiveBalance(effectiveBalancesList);
+                await _stakerRateResolver.SignStakerRate();
             }
         }
         catch (BalanceSnapshotException bse)

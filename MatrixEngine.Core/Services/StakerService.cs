@@ -64,7 +64,7 @@ public class StakerService : IStakerService
     public async Task ResolveStakersAndSave(List<StakerNodeType> stakerTypes)
     {
         //to reduce db load, page by 500 and insert them
-        var pageSize = 500;
+        var pageSize = Pagination.DefaultDbPageSize;
         var totalPages = stakerTypes.Count / pageSize + 1;
 
         for (var pageNumber = 0; pageNumber < totalPages; pageNumber++)

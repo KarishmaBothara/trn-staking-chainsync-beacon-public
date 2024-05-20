@@ -1,3 +1,4 @@
+using MatrixEngine.Core.Constants;
 using MatrixEngine.Core.Models;
 using MatrixEngine.Core.Models.DTOs;
 using MatrixEngine.Core.Services;
@@ -9,7 +10,7 @@ namespace MatrixEngine.Core.Resolvers;
 public interface ISignEffectiveBalanceResolver
 {
     Task Resolve(RewardCycle rewardCycle, List<EffectiveBalanceModel> effectiveBalanceModels);
-    Task SignData(int batchSize = 500);
+    Task SignData(int batchSize = Pagination.DefaultSignDataBatch);
 }
 
 /// <summary>
@@ -27,7 +28,7 @@ public class SignEffectiveBalanceResolver : ISignEffectiveBalanceResolver
     private readonly IAccountPunishmentMarkService _accountPunishmentMarkService;
     private readonly ISignEffectiveBalanceService _signEffectiveBalanceService;
     private readonly ISignatureService _signatureService;
-    private ILogger<SignEffectiveBalanceResolver> _logger;
+    private readonly ILogger<SignEffectiveBalanceResolver> _logger;
 
     public SignEffectiveBalanceResolver(IEffectiveBalanceService effectiveBalanceService,
         IAccountPunishmentMarkService accountPunishmentMarkService,
@@ -69,7 +70,7 @@ public class SignEffectiveBalanceResolver : ISignEffectiveBalanceResolver
         {
             var account = eb.Key;
             if (account == null) continue;
-            
+
             // check
             // if account IS in the punishment marked list
             if (punishmentMarksGroupByAccount.ContainsKey(account))
@@ -93,7 +94,8 @@ public class SignEffectiveBalanceResolver : ISignEffectiveBalanceResolver
         await _signEffectiveBalanceService.InsertSignEffectiveBalance(readyToSignEffectiveBalance);
     }
 
-    private async Task<IEnumerable<SignEffectiveBalanceModel>> WhenAccountHasNoPunishmentRecords(RewardCycle rewardCycle,
+    private async Task<IEnumerable<SignEffectiveBalanceModel>> WhenAccountHasNoPunishmentRecords(
+        RewardCycle rewardCycle,
         string account, KeyValuePair<string?, List<EffectiveBalanceModel>> eb)
     {
         // query sign-effective-balance to get the latest era index
@@ -142,7 +144,7 @@ public class SignEffectiveBalanceResolver : ISignEffectiveBalanceResolver
         return mapped;
     }
 
-    public async Task SignData(int batchSize = 100)
+    public async Task SignData(int batchSize = Pagination.DefaultSignDataBatch)
     {
         _logger.LogInformation($"Signing effective balance data. Batch size: {batchSize}.");
         //load all the sign effective balance data that are not signed and timestamp is latest (max)
@@ -151,12 +153,34 @@ public class SignEffectiveBalanceResolver : ISignEffectiveBalanceResolver
 
         _logger.LogInformation($"Loaded {signEffectiveBalances.Count} effective balances to sign.");
 
+        //group by era index and convert to dictionary that key is era index
+        var groupByEraIndex = signEffectiveBalances.GroupBy(s => s.EraIndex)
+            .OrderBy(s => s.Key)
+            .ToDictionary(s => s.Key, s => s.ToList());
+
+        //loop the groupByEraIndex and sign them
+        var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        var tasks = new List<Task<List<SignEffectiveBalanceModel>>>();
+        foreach (var eraIndex in groupByEraIndex.Keys)
+        {
+            var signEffectiveBalance = groupByEraIndex[eraIndex];
+            tasks.Add(BatchSignEffectiveBalances(batchSize, eraIndex, signEffectiveBalance, timestamp));
+        }
+
+        var result = await Task.WhenAll(tasks);
+
+        var allResults = result.SelectMany(x => x).ToList();
+        await _signEffectiveBalanceService.UpdateSignedEffectiveBalance(allResults);
+    }
+
+    private async Task<List<SignEffectiveBalanceModel>> BatchSignEffectiveBalances(int batchSize, int eraIndex,
+        List<SignEffectiveBalanceModel> signEffectiveBalances, long timestamp)
+    {
+        var result = new List<SignEffectiveBalanceModel>();
         //paged by 500 and sign them
         var batch = 1;
         var total = signEffectiveBalances.Count;
         var totalBatch = total / batchSize + 1;
-        var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        //TODO: improve by running this in parallel
         for (var i = 0; i < totalBatch; i++)
         {
             var batchSignEffectiveBalances = signEffectiveBalances.Skip(i * batchSize).Take(batchSize).ToList();
@@ -171,8 +195,9 @@ public class SignEffectiveBalanceResolver : ISignEffectiveBalanceResolver
 
             var base64Data = _signatureService.Base64Encrypt(serializedData);
             var signature = await _signatureService.SignMessage(base64Data);
-            var batchNumber = $"{timestamp}-{batch}";
+            var batchNumber = $"{timestamp}-{eraIndex}-{batch}";
             batch++;
+            _logger.LogInformation($"Signing batch {batchNumber} with {batchSignEffectiveBalances.Count} records.");
             foreach (var signEffectiveBalance in batchSignEffectiveBalances)
             {
                 signEffectiveBalance.Signature = signature;
@@ -180,8 +205,9 @@ public class SignEffectiveBalanceResolver : ISignEffectiveBalanceResolver
                 signEffectiveBalance.BatchNumber = batchNumber;
             }
 
-            _logger.LogInformation($"Signing batch {batchNumber} with {batchSignEffectiveBalances.Count} records.");
-            await _signEffectiveBalanceService.UpdateSignedEffectiveBalance(batchSignEffectiveBalances);
+            result.AddRange(batchSignEffectiveBalances);
         }
+
+        return result;
     }
 }

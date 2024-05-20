@@ -57,4 +57,37 @@ public class BalanceChangeServiceTests: IClassFixture<DatabaseFixture>
         Assert.Single(balanceModel2);
         Assert.Equal("50000000000", balanceModel2[0].Balance);
     }
+    
+    [Fact]
+    public async Task GetTotalStakedBalance_WhenBalanceChangeExisting()
+    {
+        // Arrange
+        _fixture.BuildBalanceChangeData();
+        var changes = new List<BalanceChangeModel>
+        {
+            new()
+            {
+                Account = "0xcb1de4FADCA68F601871f7E6E47fd43D707c779A",
+                StartBlock = 7035347,
+                EndBlock = 8851596,
+                BalanceInBlockRange = 50000000000
+            },
+            new()
+            {
+                Account = "0xcb1de4FADCA68F601871f7E6E47fd43D707c779A",
+                StartBlock = 8851596,
+                EndBlock = 8973463,
+                BalanceInBlockRange = 50000000000
+            }
+        };
+        
+        await _balanceChangeService.UpsertUserBalanceChanges(changes);
+        
+        //Act
+        var totalStakedBalance = await _balanceChangeService.GetTotalStakedBalance(7035347, 8973463);
+        
+        //Assert
+        Assert.NotNull(totalStakedBalance);
+        Assert.Equal("100000000000", totalStakedBalance);
+    }
 }

@@ -12,4 +12,5 @@ public static class DbCollectionName
     public const string GenesisValidators = "genesis-validators";
     public const string AccountPunishmentMark = "account-punishment-marks";
     public const string SignEffectiveBalance = "sign-effective-balances";
+    public const string StakerRates = "staker-rates"; 
 }

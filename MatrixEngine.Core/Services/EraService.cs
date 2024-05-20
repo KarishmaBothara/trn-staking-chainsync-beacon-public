@@ -86,6 +86,9 @@ public class EraService : IEraService
             ops.Add(new UpdateOneModel<EraModel>(filter, update) { IsUpsert = true });
         }
 
-        await Collection.BulkWriteAsync(ops);
+        if (ops.Count > 0)
+        {
+            await Collection.BulkWriteAsync(ops);
+        }
     }
 }

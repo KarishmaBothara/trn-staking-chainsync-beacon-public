@@ -40,7 +40,7 @@ public class TransactionEventService : ITransactionEventService
         _logger.LogInformation($"Upserting {transactionEvents.Count} transaction events");
 
         //to reduce db load, paged by 500
-        const int pageSize = 500;
+        const int pageSize = Pagination.DefaultDbPageSize;;
         var totalPages = transactionEvents.Count / pageSize + 1;
 
         for (var pageNumber = 0; pageNumber < totalPages; pageNumber++)
@@ -48,6 +48,8 @@ public class TransactionEventService : ITransactionEventService
             _logger.LogInformation($"Bulk Upserting page {pageNumber} of {totalPages}.");
 
             var batch = transactionEvents.Skip(pageNumber * pageSize).Take(pageSize).ToList();
+            if(batch.Count == 0) break;
+            
             //bulk upsert the data
             var bulkOps = new List<UpdateOneModel<TransactionModel>>();
             foreach (var transaction in batch)

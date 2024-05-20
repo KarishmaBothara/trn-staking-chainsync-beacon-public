@@ -2,6 +2,7 @@ using System.Numerics;
 using MatrixEngine.Core.Constants;
 using MatrixEngine.Core.Models;
 using MatrixEngine.Core.Services;
+using MatrixEngine.Core.Utils;
 using Microsoft.Extensions.Logging;
 
 namespace MatrixEngine.Core.Resolvers;
@@ -73,8 +74,8 @@ public class EffectiveBalanceResolver : IEffectiveBalanceResolver
             var effectiveBalance =
                 CalculateEffectiveBalanceWithPrecisions(balance.EffectiveEras, balance.BalanceInBlockRange);
             var stakerType = balance.StakerType ?? StakerType.Staker;
-            var rate = GetStakerRate(stakerType);
-            var reward = effectiveBalance * GetStakerRate(stakerType);
+            var rate = StakerUtils.GetStakerRate(stakerType);
+            var reward = effectiveBalance * StakerUtils.GetStakerRate(stakerType);
 
             var effectiveBalanceModel = new EffectiveBalanceModel
             {
@@ -114,15 +115,5 @@ public class EffectiveBalanceResolver : IEffectiveBalanceResolver
         var effectiveBalance = decimal.Parse((effectiveBalanceInMillion / denominator).ToString());
 
         return effectiveBalance;
-    }
-
-    private decimal GetStakerRate(string type)
-    {
-        return type switch
-        {
-            StakerType.Validator => 0.0739m,
-            StakerType.Nominator => 0.0492m,
-            _ => 0.0246m
-        };
     }
 }

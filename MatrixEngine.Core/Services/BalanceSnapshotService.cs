@@ -64,7 +64,7 @@ public class BalanceSnapshotService : IBalanceSnapshotService
     {
         _logger.LogInformation($"Upserting {balanceSnapshots.Count} balance snapshots.");
         //to reduce db load, page by 500 and insert them
-        const int pageSize = 500;
+        const int pageSize = Pagination.DefaultDbPageSize;;
         var totalPages = balanceSnapshots.Count / pageSize + 1;
 
         for (var pageNumber = 0; pageNumber < totalPages; pageNumber++)

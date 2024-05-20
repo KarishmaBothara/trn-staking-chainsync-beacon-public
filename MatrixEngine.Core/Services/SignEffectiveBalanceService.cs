@@ -34,6 +34,12 @@ public class SignEffectiveBalanceService : ISignEffectiveBalanceService
     {
         _logger = logger;
         _database = database;
+        
+        Collection.Indexes.CreateOne(new CreateIndexModel<SignEffectiveBalanceModel>(
+            Builders<SignEffectiveBalanceModel>.IndexKeys.Ascending(x => x.Account)
+                .Ascending(x => x.EraIndex)
+                .Ascending(x => x.EffectiveBalance)
+        ));
     }
 
     public async Task InsertSignEffectiveBalance(List<SignEffectiveBalanceModel> signEffectiveBalanceModels)
@@ -42,7 +48,8 @@ public class SignEffectiveBalanceService : ISignEffectiveBalanceService
         _logger.LogInformation($"Inserting {signEffectiveBalanceModels.Count} ready to sign effective balances.");
 
         //to reduce db load, page by 500 and insert them
-        const int pageSize = 500;
+        const int pageSize = Pagination.DefaultDbPageSize;
+        ;
         var totalPages = signEffectiveBalanceModels.Count / pageSize + 1;
 
         for (var pageNumber = 0; pageNumber < totalPages; pageNumber++)
@@ -50,21 +57,21 @@ public class SignEffectiveBalanceService : ISignEffectiveBalanceService
             _logger.LogInformation($"Inserting page {pageNumber} of {totalPages}.");
 
             var batch = signEffectiveBalanceModels.Skip(pageNumber * pageSize).Take(pageSize).ToList();
-            if(batch.Count == 0) break;
-            
+            if (batch.Count == 0) break;
+
             var ops = batch.Select(x =>
             {
-                var filter = filterDef.Eq(x => x.Account, x.Account) &
-                             filterDef.Eq(x => x.EraIndex, x.EraIndex) &
-                             filterDef.Eq(x => x.EffectiveBalance, x.EffectiveBalance);
+                var filter = filterDef.Eq(f => f.Account, x.Account) &
+                             filterDef.Eq(f => f.EraIndex, x.EraIndex) & 
+                             filterDef.Eq(f => f.EffectiveBalance, x.EffectiveBalance);
 
                 var update = Builders<SignEffectiveBalanceModel>.Update
-                    .SetOnInsert(x => x.CreatedAt, DateTime.UtcNow)
-                    .Set(x => x.Account, x.Account)
-                    .Set(x => x.EffectiveBalance, x.EffectiveBalance)
-                    .Set(x => x.EraIndex, x.EraIndex)
-                    .Set(x => x.EffectiveBlocks, x.EffectiveBlocks)
-                    .Set(x => x.UpdatedAt, DateTime.UtcNow);
+                    .SetOnInsert(u => u.CreatedAt, DateTime.UtcNow)
+                    .Set(u => u.Account, x.Account)
+                    .Set(u => u.EffectiveBalance, x.EffectiveBalance)
+                    .Set(u => u.EraIndex, x.EraIndex)
+                    .Set(u => u.EffectiveBlocks, x.EffectiveBlocks)
+                    .Set(u => u.UpdatedAt, DateTime.UtcNow);
                 return new UpdateOneModel<SignEffectiveBalanceModel>(filter, update) { IsUpsert = true };
             });
 
@@ -80,7 +87,9 @@ public class SignEffectiveBalanceService : ISignEffectiveBalanceService
         var filter = filterDefinition.Eq(x => x.BatchNumber, null) &
                      filterDefinition.Eq(x => x.Signature, null) &
                      filterDefinition.Or(filterDefinition.Exists(x => x.Timestamp, false),
-                         filterDefinition.Eq(x => x.Timestamp, 0));
+                         filterDefinition.Eq(x => x.Timestamp, 0)) &
+                     filterDefinition.Or(filterDefinition.Exists(x => x.Submitted, false),
+                         filterDefinition.Eq(x => x.Submitted, false));
         return await Collection.Find(filter).ToListAsync();
     }
 
@@ -89,15 +98,16 @@ public class SignEffectiveBalanceService : ISignEffectiveBalanceService
         _logger.LogInformation($"Updating {batchSignEffectiveBalances.Count} singed effective balances.");
         //use bulk write to update signature and batch number and timestamp
         //to reduce db load, page by 500 and update them
-        const int pageSize = 500;
+        const int pageSize = Pagination.DefaultDbPageSize;
+        ;
         var totalPages = batchSignEffectiveBalances.Count / pageSize + 1;
         for (var pageNumber = 0; pageNumber < totalPages; pageNumber++)
         {
             _logger.LogInformation($"Updating page {pageNumber} of {totalPages}.");
 
             var batch = batchSignEffectiveBalances.Skip(pageNumber * pageSize).Take(pageSize).ToList();
-            if(batch.Count == 0) break;
-            
+            if (batch.Count == 0) break;
+
             var ops = batch.Select(x =>
             {
                 var filter = Builders<SignEffectiveBalanceModel>.Filter.Eq(e => e.Account, x.Account) &

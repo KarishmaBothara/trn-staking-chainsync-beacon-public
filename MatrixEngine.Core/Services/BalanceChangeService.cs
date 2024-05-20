@@ -1,6 +1,7 @@
 using System.Numerics;
 using MatrixEngine.Core.Constants;
 using MatrixEngine.Core.Models;
+using MatrixEngine.Core.Models.DTOs;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -13,6 +14,7 @@ public interface IBalanceChangeService
     Task UpsertUserBalanceChanges(List<BalanceChangeModel> changes);
 
     Task<List<BalanceModel>> GetUsersLastBalanceChanges(int startBlock, int endBlock);
+    Task<string?> GetTotalStakedBalance(int startBlock, int endBlock);
 }
 
 public class BalanceChangeService : IBalanceChangeService
@@ -45,7 +47,8 @@ public class BalanceChangeService : IBalanceChangeService
     public async Task UpsertUserBalanceChanges(List<BalanceChangeModel> changes)
     {
         _logger.LogInformation($"Upserting {changes.Count} balance changes");
-        const int pageSize = 500;
+        const int pageSize = Pagination.DefaultDbPageSize;
+        ;
         var totalPages = changes.Count / pageSize + 1;
 
         for (var pageNumber = 0; pageNumber < totalPages; pageNumber++)
@@ -53,8 +56,8 @@ public class BalanceChangeService : IBalanceChangeService
             _logger.LogInformation($"Bulk Upserting page {pageNumber} of {totalPages}.");
 
             var batch = changes.Skip(pageNumber * pageSize).Take(pageSize).ToList();
-            if(batch.Count == 0) break;
-            
+            if (batch.Count == 0) break;
+
             //bulk upsert the data
             var bulkOps = new List<UpdateOneModel<BalanceModel>>();
             foreach (var change in batch)
@@ -128,6 +131,54 @@ public class BalanceChangeService : IBalanceChangeService
         {
             _logger.LogError(e.Message);
             return new List<BalanceModel>();
+        }
+    }
+
+    public async Task<string?> GetTotalStakedBalance(int startBlock, int endBlock)
+    {
+        try
+        {
+            var pipeline = new BsonDocument[]
+            {
+                new BsonDocument("$match",
+                    new BsonDocument
+                    {
+                        { "startBlock", new BsonDocument("$gte", startBlock) },
+                        { "endBlock", new BsonDocument("$lte", endBlock) }
+                    }
+                ),
+                new BsonDocument("$sort",
+                    new BsonDocument("endBlock", -1)
+                ),
+                new BsonDocument("$group",
+                    new BsonDocument
+                    {
+                        { "_id", "$account" },
+                        { "latestBalanceDoc", new BsonDocument("$first", "$$ROOT") }
+                    }
+                ),
+                new BsonDocument("$replaceRoot",
+                    new BsonDocument("newRoot", "$latestBalanceDoc")
+                ),
+                new BsonDocument("$project",
+                    new BsonDocument("balance", new BsonDocument("$toDecimal", "$balance"))),
+                new BsonDocument("$group",
+                    new BsonDocument
+                    {
+                        { "_id", "" },
+                        { "TotalStaked", new BsonDocument("$sum", "$balance") }
+                    }
+                ),
+            };
+
+            var results = await Collection.Aggregate<TotalStakedBalance>(pipeline).FirstOrDefaultAsync();
+
+            return results.TotalStaked.ToString();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e.Message);
+            return null;
         }
     }
 }

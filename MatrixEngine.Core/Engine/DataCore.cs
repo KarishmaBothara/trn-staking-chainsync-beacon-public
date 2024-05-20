@@ -6,6 +6,7 @@ namespace MatrixEngine.Core.Engine;
 public interface IDataCore
 {
     Task ResolveDataFromIndexer();
+    Task ValidateData();
 }
 
 public class DataCore : IDataCore
@@ -14,12 +15,15 @@ public class DataCore : IDataCore
     private readonly IStakersResolver _stakersResolver;
     private readonly ITransactionEventsResolver _transactionEventsResolver;
     private readonly ILogger<DataCore> _logger;
+    private readonly IDataValidationResolver _dataValidationResolver;
 
     public DataCore(
         IErasResolver erasResolver, IStakersResolver stakersResolver,
         ITransactionEventsResolver transactionEventsResolver,
+        IDataValidationResolver dataValidationResolver,
         ILogger<DataCore> logger)
     {
+        _dataValidationResolver = dataValidationResolver;
         _logger = logger;
         _transactionEventsResolver = transactionEventsResolver;
         _stakersResolver = stakersResolver;
@@ -33,5 +37,11 @@ public class DataCore : IDataCore
         await _erasResolver.Resolve();
         await _stakersResolver.Resolve();
         await _transactionEventsResolver.Resolve();
+    }
+    
+    public async Task ValidateData()
+    {
+        _logger.LogTrace("Validating Data.");
+        await _dataValidationResolver.ValidateEffectiveBalanceRange();
     }
 }

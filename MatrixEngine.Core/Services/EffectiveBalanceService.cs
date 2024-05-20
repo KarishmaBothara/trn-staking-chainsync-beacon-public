@@ -50,8 +50,8 @@ public class EffectiveBalanceService : IEffectiveBalanceService
     {
         _logger.LogInformation($"Upserting {data.Count} effective balances");
         //to reduce db load, page by 500 and insert them
-        
-        var pageSize = 500;
+
+        var pageSize = Pagination.DefaultDbPageSize;
         var totalPages = data.Count / pageSize + 1;
 
         for (var pageNumber = 0; pageNumber < totalPages; pageNumber++)
@@ -129,18 +129,18 @@ public class EffectiveBalanceService : IEffectiveBalanceService
                 {
                     { "_id", "$account" },
                     {
-                        "totalReward", new BsonDocument("$sum",
+                        "TotalReward", new BsonDocument("$sum",
                             new BsonDocument("$toDouble", "$reward"))
                     }
                 }
             )
         };
 
-        var result = await Collection.AggregateAsync<AccountTotalReward>(pipeline);
+        var result = await Collection.Aggregate<AccountTotalReward>(pipeline).ToListAsync();
         var totalReward = await GetTotalRewardInEffectiveBalanceForCycle(startBlock, endBlock);
-        var accountsRewardWithPercentage = result.ToEnumerable().Select(r => new AccountRewardWithPercentage
+        var accountsRewardWithPercentage = result.Select(r => new AccountRewardWithPercentage
         {
-            Account = r.Account.ToLower(),
+            Account = r._id.ToLower(),
             Reward = r.TotalReward,
             Percentage = 100 * r.TotalReward / totalReward
         }).ToList();
@@ -177,9 +177,9 @@ public class EffectiveBalanceService : IEffectiveBalanceService
             new BsonDocument("$group",
                 new BsonDocument
                 {
-                    { "_id", null },
+                    { "_id", "" },
                     {
-                        "totalReward",
+                        "TotalReward",
                         new BsonDocument("$sum", "$rewardInt")
                     }
                 }
@@ -187,7 +187,7 @@ public class EffectiveBalanceService : IEffectiveBalanceService
         };
 
         var rewards = await Collection.AggregateAsync<BsonDocument>(pipeline);
-        var totalReward = rewards.First()["totalReward"].AsDouble;
+        var totalReward = rewards.First()["TotalReward"].AsDouble;
 
         return totalReward;
     }

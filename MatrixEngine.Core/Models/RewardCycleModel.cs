@@ -30,4 +30,8 @@ public class RewardCycleModel: BaseModel
     public string? WorkpointsRewardInTotal { get; set; }
 
     [BsonElement("vtxDistributionId")] public string? VtxDistributionId { get; set; }
+    
+    [BsonElement("stakersReward")] public string? StakersReward { get; set; }
+    
+    [BsonElement("validatorsReward")] public string? ValidatorsReward { get; set; }
 }

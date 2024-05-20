@@ -147,7 +147,7 @@ public class SignEffectiveBalanceResolverTests
             {
                 Account = "0x123",
                 EffectiveBalance = "100",
-                EraIndex = 2,
+                EraIndex = 1,
                 EffectiveBlocks = 30
             },
             new SignEffectiveBalanceModel()
@@ -155,6 +155,20 @@ public class SignEffectiveBalanceResolverTests
                 Account = "0x234",
                 EffectiveBalance = "100",
                 EraIndex = 2,
+                EffectiveBlocks = 30
+            },
+            new SignEffectiveBalanceModel()
+            {
+                Account = "0x123",
+                EffectiveBalance = "100",
+                EraIndex = 3,
+                EffectiveBlocks = 30
+            },
+            new SignEffectiveBalanceModel()
+            {
+                Account = "0x234",
+                EffectiveBalance = "100",
+                EraIndex = 4,
                 EffectiveBlocks = 30
             }
         };
@@ -177,6 +191,6 @@ public class SignEffectiveBalanceResolverTests
                 l=>l.Any(s => 
                     s.Signature == signature 
                     && s.BatchNumber != null && s.Timestamp > 0)
-                )), Times.Once());
+                )), Times.Exactly(4));
     }
 }
