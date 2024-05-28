@@ -1,0 +1,34 @@
+[
+  {
+    "startBlock": 7035347,
+    "startEraIndex": 259,
+    "currentEraIndex": 348,
+    "finished": true,
+    "needToCalculate": false,
+    "vtxDistributionId": "0",
+    "endBlock": 8973463,
+    "endEraIndex": 348,
+    "bootstrapRewardInTotal": "4713749077835.309",
+    "workpointsRewardInTotal": "38754347.85837921"
+  },
+  {
+    "startBlock": 8973464,
+    "startEraIndex": 349,
+    "createdAt": "2023-11-20T02:10:26.113Z",
+    "currentEraIndex": 438,
+    "finished": true,
+    "needToCalculate": false,
+    "endBlock": 10915471,
+    "endEraIndex": 438,
+    "vtxDistributionId": "1",
+    "bootstrapRewardInTotal": "10674317280549.928",
+    "workpointsRewardInTotal": "38839214.931614034"
+  },
+  {
+    "startBlock": 10915472,
+    "startEraIndex": 439,
+    "currentEraIndex": 440,
+    "finished": false,
+    "needToCalculate": false
+  }
+]

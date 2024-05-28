@@ -1,0 +1,32 @@
+[
+  {
+    "account": "0xcb1de4FADCA68F601871f7E6E47fd43D707c7791",
+    "effectiveBalance": "1000000",
+    "eraIndex": 1,
+    "effectiveEras": 1
+  },
+  {
+    "account": "0xcb1de4FADCA68F601871f7E6E47fd43D707c7792",
+    "effectiveBalance": "1000000",
+    "eraIndex": 1,
+    "effectiveEras": 1
+  },
+  {
+    "account": "0xcb1de4FADCA68F601871f7E6E47fd43D707c7793",
+    "effectiveBalance": "1000000",
+    "eraIndex": 1,
+    "effectiveEras": 1,
+    "signature": "signed signature",
+    "timestamp": 1714882149,
+    "batchNumber": "1714882149-1"
+  },
+  {
+    "account": "0xcb1de4FADCA68F601871f7E6E47fd43D707c7794",
+    "effectiveBalance": "1000000",
+    "eraIndex": 1,
+    "effectiveEras": 1,
+    "signature": "signed signature",
+    "timestamp": 1714882149,
+    "batchNumber": "1714882149-1"
+  }
+]

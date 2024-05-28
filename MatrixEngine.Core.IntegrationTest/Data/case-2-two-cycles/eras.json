@@ -1,0 +1,727 @@
+[
+  {
+    "eraIndex": 349,
+    "startBlock": 8973464,
+    "endBlock": 8995036
+  },
+  {
+    "eraIndex": 350,
+    "startBlock": 8995037,
+    "endBlock": 9016603
+  },
+  {
+    "eraIndex": 351,
+    "startBlock": 9016604,
+    "endBlock": 9038113
+  },
+  {
+    "eraIndex": 352,
+    "startBlock": 9038114,
+    "endBlock": 9059636
+  },
+  {
+    "eraIndex": 353,
+    "startBlock": 9059637,
+    "endBlock": 9081128
+  },
+  {
+    "eraIndex": 354,
+    "startBlock": 9081129,
+    "endBlock": 9102725
+  },
+  {
+    "eraIndex": 355,
+    "startBlock": 9102726,
+    "endBlock": 9124325
+  },
+  {
+    "eraIndex": 356,
+    "startBlock": 9124326,
+    "endBlock": 9145737
+  },
+  {
+    "eraIndex": 357,
+    "startBlock": 9145738,
+    "endBlock": 9167109
+  },
+  {
+    "eraIndex": 358,
+    "startBlock": 9167110,
+    "endBlock": 9188536
+  },
+  {
+    "eraIndex": 359,
+    "startBlock": 9188537,
+    "endBlock": 9210108
+  },
+  {
+    "eraIndex": 360,
+    "startBlock": 9210109,
+    "endBlock": 9231707
+  },
+  {
+    "eraIndex": 361,
+    "startBlock": 9231708,
+    "endBlock": 9253242
+  },
+  {
+    "eraIndex": 362,
+    "startBlock": 9253243,
+    "endBlock": 9274816
+  },
+  {
+    "eraIndex": 363,
+    "startBlock": 9274817,
+    "endBlock": 9296408
+  },
+  {
+    "eraIndex": 364,
+    "startBlock": 9296409,
+    "endBlock": 9317997
+  },
+  {
+    "eraIndex": 365,
+    "startBlock": 9317998,
+    "endBlock": 9339561
+  },
+  {
+    "eraIndex": 366,
+    "startBlock": 9339562,
+    "endBlock": 9361041
+  },
+  {
+    "eraIndex": 367,
+    "startBlock": 9361042,
+    "endBlock": 9382629
+  },
+  {
+    "eraIndex": 368,
+    "startBlock": 9382630,
+    "endBlock": 9404221
+  },
+  {
+    "eraIndex": 369,
+    "startBlock": 9404222,
+    "endBlock": 9425806
+  },
+  {
+    "eraIndex": 370,
+    "startBlock": 9425807,
+    "endBlock": 9447378
+  },
+  {
+    "eraIndex": 371,
+    "startBlock": 9447379,
+    "endBlock": 9468969
+  },
+  {
+    "eraIndex": 372,
+    "startBlock": 9468970,
+    "endBlock": 9490520
+  },
+  {
+    "eraIndex": 373,
+    "startBlock": 9490521,
+    "endBlock": 9512113
+  },
+  {
+    "eraIndex": 374,
+    "startBlock": 9512114,
+    "endBlock": 9533707
+  },
+  {
+    "eraIndex": 375,
+    "startBlock": 9533708,
+    "endBlock": 9555300
+  },
+  {
+    "eraIndex": 376,
+    "startBlock": 9555301,
+    "endBlock": 9576893
+  },
+  {
+    "eraIndex": 377,
+    "startBlock": 9576894,
+    "endBlock": 9598491
+  },
+  {
+    "eraIndex": 378,
+    "startBlock": 9598492,
+    "endBlock": 9620075
+  },
+  {
+    "eraIndex": 379,
+    "startBlock": 9620076,
+    "endBlock": 9641672
+  },
+  {
+    "eraIndex": 380,
+    "startBlock": 9641673,
+    "endBlock": 9663188
+  },
+  {
+    "eraIndex": 381,
+    "startBlock": 9663189,
+    "endBlock": 9684780
+  },
+  {
+    "eraIndex": 382,
+    "startBlock": 9684781,
+    "endBlock": 9706376
+  },
+  {
+    "eraIndex": 383,
+    "startBlock": 9706377,
+    "endBlock": 9727962
+  },
+  {
+    "eraIndex": 384,
+    "startBlock": 9727963,
+    "endBlock": 9749556
+  },
+  {
+    "eraIndex": 385,
+    "startBlock": 9749557,
+    "endBlock": 9771148
+  },
+  {
+    "eraIndex": 386,
+    "startBlock": 9771149,
+    "endBlock": 9792730
+  },
+  {
+    "eraIndex": 387,
+    "startBlock": 9792731,
+    "endBlock": 9814285
+  },
+  {
+    "eraIndex": 388,
+    "startBlock": 9814286,
+    "endBlock": 9835859
+  },
+  {
+    "eraIndex": 389,
+    "startBlock": 9835860,
+    "endBlock": 9857448
+  },
+  {
+    "eraIndex": 390,
+    "startBlock": 9857449,
+    "endBlock": 9879041
+  },
+  {
+    "eraIndex": 391,
+    "startBlock": 9879042,
+    "endBlock": 9900628
+  },
+  {
+    "eraIndex": 392,
+    "startBlock": 9900629,
+    "endBlock": 9922221
+  },
+  {
+    "eraIndex": 393,
+    "startBlock": 9922222,
+    "endBlock": 9943816
+  },
+  {
+    "eraIndex": 394,
+    "startBlock": 9943817,
+    "endBlock": 9965413
+  },
+  {
+    "eraIndex": 395,
+    "startBlock": 9965414,
+    "endBlock": 9987006
+  },
+  {
+    "eraIndex": 396,
+    "startBlock": 9987007,
+    "endBlock": 10008601
+  },
+  {
+    "eraIndex": 397,
+    "startBlock": 10008602,
+    "endBlock": 10030191
+  },
+  {
+    "eraIndex": 398,
+    "startBlock": 10030192,
+    "endBlock": 10051776
+  },
+  {
+    "eraIndex": 399,
+    "startBlock": 10051777,
+    "endBlock": 10073366
+  },
+  {
+    "eraIndex": 400,
+    "startBlock": 10073367,
+    "endBlock": 10094954
+  },
+  {
+    "eraIndex": 401,
+    "startBlock": 10094955,
+    "endBlock": 10116551
+  },
+  {
+    "eraIndex": 402,
+    "startBlock": 10116552,
+    "endBlock": 10138150
+  },
+  {
+    "eraIndex": 403,
+    "startBlock": 10138151,
+    "endBlock": 10159747
+  },
+  {
+    "eraIndex": 404,
+    "startBlock": 10159748,
+    "endBlock": 10181339
+  },
+  {
+    "eraIndex": 405,
+    "startBlock": 10181340,
+    "endBlock": 10202938
+  },
+  {
+    "eraIndex": 406,
+    "startBlock": 10202939,
+    "endBlock": 10224527
+  },
+  {
+    "eraIndex": 407,
+    "startBlock": 10224528,
+    "endBlock": 10246114
+  },
+  {
+    "eraIndex": 408,
+    "startBlock": 10246115,
+    "endBlock": 10267707
+  },
+  {
+    "eraIndex": 409,
+    "startBlock": 10267708,
+    "endBlock": 10289227
+  },
+  {
+    "eraIndex": 410,
+    "startBlock": 10289228,
+    "endBlock": 10310821
+  },
+  {
+    "eraIndex": 411,
+    "startBlock": 10310822,
+    "endBlock": 10332415
+  },
+  {
+    "eraIndex": 412,
+    "startBlock": 10332416,
+    "endBlock": 10354007
+  },
+  {
+    "eraIndex": 413,
+    "startBlock": 10354008,
+    "endBlock": 10375604
+  },
+  {
+    "eraIndex": 414,
+    "startBlock": 10375605,
+    "endBlock": 10397198
+  },
+  {
+    "eraIndex": 415,
+    "startBlock": 10397199,
+    "endBlock": 10418793
+  },
+  {
+    "eraIndex": 416,
+    "startBlock": 10418794,
+    "endBlock": 10440384
+  },
+  {
+    "eraIndex": 417,
+    "startBlock": 10440385,
+    "endBlock": 10461981
+  },
+  {
+    "eraIndex": 418,
+    "startBlock": 10461982,
+    "endBlock": 10483571
+  },
+  {
+    "eraIndex": 419,
+    "startBlock": 10483572,
+    "endBlock": 10505166
+  },
+  {
+    "eraIndex": 420,
+    "startBlock": 10505167,
+    "endBlock": 10526759
+  },
+  {
+    "eraIndex": 421,
+    "startBlock": 10526760,
+    "endBlock": 10548356
+  },
+  {
+    "eraIndex": 422,
+    "startBlock": 10548357,
+    "endBlock": 10569953
+  },
+  {
+    "eraIndex": 423,
+    "startBlock": 10569954,
+    "endBlock": 10591549
+  },
+  {
+    "eraIndex": 424,
+    "startBlock": 10591550,
+    "endBlock": 10613144
+  },
+  {
+    "eraIndex": 425,
+    "startBlock": 10613145,
+    "endBlock": 10634744
+  },
+  {
+    "eraIndex": 426,
+    "startBlock": 10634745,
+    "endBlock": 10656342
+  },
+  {
+    "eraIndex": 427,
+    "startBlock": 10656343,
+    "endBlock": 10677939
+  },
+  {
+    "eraIndex": 428,
+    "startBlock": 10677940,
+    "endBlock": 10699503
+  },
+  {
+    "eraIndex": 429,
+    "startBlock": 10699504,
+    "endBlock": 10721094
+  },
+  {
+    "eraIndex": 430,
+    "startBlock": 10721095,
+    "endBlock": 10742692
+  },
+  {
+    "eraIndex": 431,
+    "startBlock": 10742693,
+    "endBlock": 10764291
+  },
+  {
+    "eraIndex": 432,
+    "startBlock": 10764292,
+    "endBlock": 10785889
+  },
+  {
+    "eraIndex": 433,
+    "startBlock": 10785890,
+    "endBlock": 10807489
+  },
+  {
+    "eraIndex": 434,
+    "startBlock": 10807490,
+    "endBlock": 10829086
+  },
+  {
+    "eraIndex": 435,
+    "startBlock": 10829087,
+    "endBlock": 10850681
+  },
+  {
+    "eraIndex": 436,
+    "startBlock": 10850682,
+    "endBlock": 10872278
+  },
+  {
+    "eraIndex": 437,
+    "startBlock": 10872279,
+    "endBlock": 10893876
+  },
+  {
+    "eraIndex": 438,
+    "startBlock": 10893877,
+    "endBlock": 10915471
+  },
+  {
+    "eraIndex": 439,
+    "startBlock": 10915472,
+    "endBlock": 10937071
+  },
+  {
+    "eraIndex": 440,
+    "startBlock": 10937072,
+    "endBlock": 10958671
+  },
+  {
+    "eraIndex": 441,
+    "startBlock": 10958672,
+    "endBlock": 10980258
+  },
+  {
+    "eraIndex": 442,
+    "startBlock": 10980259,
+    "endBlock": 11001536
+  },
+  {
+    "eraIndex": 443,
+    "startBlock": 11001537,
+    "endBlock": 11023122
+  },
+  {
+    "eraIndex": 444,
+    "startBlock": 11023123,
+    "endBlock": 11044684
+  },
+  {
+    "eraIndex": 445,
+    "startBlock": 11044685,
+    "endBlock": 11066261
+  },
+  {
+    "eraIndex": 446,
+    "startBlock": 11066262,
+    "endBlock": 11087839
+  },
+  {
+    "eraIndex": 447,
+    "startBlock": 11087840,
+    "endBlock": 11109415
+  },
+  {
+    "eraIndex": 448,
+    "startBlock": 11109416,
+    "endBlock": 11130991
+  },
+  {
+    "eraIndex": 449,
+    "startBlock": 11130992,
+    "endBlock": 11152577
+  },
+  {
+    "eraIndex": 450,
+    "startBlock": 11152578,
+    "endBlock": 11174147
+  },
+  {
+    "eraIndex": 451,
+    "startBlock": 11174148,
+    "endBlock": 11195719
+  },
+  {
+    "eraIndex": 452,
+    "startBlock": 11195720,
+    "endBlock": 11217295
+  },
+  {
+    "eraIndex": 453,
+    "startBlock": 11217296,
+    "endBlock": 11238877
+  },
+  {
+    "eraIndex": 454,
+    "startBlock": 11238878,
+    "endBlock": 11260455
+  },
+  {
+    "eraIndex": 455,
+    "startBlock": 11260456,
+    "endBlock": 11281790
+  },
+  {
+    "eraIndex": 456,
+    "startBlock": 11281791,
+    "endBlock": 11303370
+  },
+  {
+    "eraIndex": 457,
+    "startBlock": 11303371,
+    "endBlock": 11324967
+  },
+  {
+    "eraIndex": 458,
+    "startBlock": 11324968,
+    "endBlock": 11346558
+  },
+  {
+    "eraIndex": 459,
+    "startBlock": 11346559,
+    "endBlock": 11368151
+  },
+  {
+    "eraIndex": 460,
+    "startBlock": 11368152,
+    "endBlock": 11389751
+  },
+  {
+    "eraIndex": 461,
+    "startBlock": 11389752,
+    "endBlock": 11411348
+  },
+  {
+    "eraIndex": 462,
+    "startBlock": 11411349,
+    "endBlock": 11432921
+  },
+  {
+    "eraIndex": 463,
+    "startBlock": 11432922,
+    "endBlock": 11454504
+  },
+  {
+    "eraIndex": 464,
+    "startBlock": 11454505,
+    "endBlock": 11476092
+  },
+  {
+    "eraIndex": 465,
+    "startBlock": 11476093,
+    "endBlock": 11497686
+  },
+  {
+    "eraIndex": 466,
+    "startBlock": 11497687,
+    "endBlock": 11518856
+  },
+  {
+    "eraIndex": 467,
+    "startBlock": 11518857,
+    "endBlock": 11540440
+  },
+  {
+    "eraIndex": 468,
+    "startBlock": 11540441,
+    "endBlock": 11562032
+  },
+  {
+    "eraIndex": 469,
+    "startBlock": 11562033,
+    "endBlock": 11583624
+  },
+  {
+    "eraIndex": 470,
+    "startBlock": 11583625,
+    "endBlock": 11605203
+  },
+  {
+    "eraIndex": 471,
+    "startBlock": 11605204,
+    "endBlock": 11626785
+  },
+  {
+    "eraIndex": 472,
+    "startBlock": 11626786,
+    "endBlock": 11648195
+  },
+  {
+    "eraIndex": 473,
+    "startBlock": 11648196,
+    "endBlock": 11669074
+  },
+  {
+    "eraIndex": 474,
+    "startBlock": 11669075,
+    "endBlock": 11690666
+  },
+  {
+    "eraIndex": 475,
+    "startBlock": 11690667,
+    "endBlock": 11712252
+  },
+  {
+    "eraIndex": 476,
+    "startBlock": 11712253,
+    "endBlock": 11733822
+  },
+  {
+    "eraIndex": 477,
+    "startBlock": 11733823,
+    "endBlock": 11755380
+  },
+  {
+    "eraIndex": 478,
+    "startBlock": 11755381,
+    "endBlock": 11776951
+  },
+  {
+    "eraIndex": 479,
+    "startBlock": 11776952,
+    "endBlock": 11798316
+  },
+  {
+    "eraIndex": 480,
+    "startBlock": 11798317,
+    "endBlock": 11819513
+  },
+  {
+    "eraIndex": 481,
+    "startBlock": 11819514,
+    "endBlock": 11840668
+  },
+  {
+    "eraIndex": 482,
+    "startBlock": 11840669,
+    "endBlock": 11861535
+  },
+  {
+    "eraIndex": 483,
+    "startBlock": 11861536,
+    "endBlock": 11882666
+  },
+  {
+    "eraIndex": 484,
+    "startBlock": 11882667,
+    "endBlock": 11904075
+  },
+  {
+    "eraIndex": 485,
+    "startBlock": 11904076,
+    "endBlock": 11924721
+  },
+  {
+    "eraIndex": 486,
+    "startBlock": 11924722,
+    "endBlock": 11945876
+  },
+  {
+    "eraIndex": 487,
+    "startBlock": 11945877,
+    "endBlock": 11967437
+  },
+  {
+    "eraIndex": 488,
+    "startBlock": 11967438,
+    "endBlock": 11989030
+  },
+  {
+    "eraIndex": 489,
+    "startBlock": 11989031,
+    "endBlock": 12010626
+  },
+  {
+    "eraIndex": 490,
+    "startBlock": 12010627,
+    "endBlock": 12031546
+  },
+  {
+    "eraIndex": 491,
+    "startBlock": 12031547,
+    "endBlock": 12052683
+  },
+  {
+    "eraIndex": 492,
+    "startBlock": 12052684,
+    "endBlock": 12074059
+  },
+  {
+    "eraIndex": 493,
+    "startBlock": 12074060,
+    "endBlock": -1 
+  }
+]

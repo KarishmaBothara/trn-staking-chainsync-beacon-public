@@ -1,0 +1,84 @@
+{
+  "data": {
+    "bondedsConnection": {
+      "edges": [
+        {
+          "node": {
+            "blockNumber": 11528453,
+            "stash": "0xFFFfffFF000000000000000000000000000390db",
+            "amount": "239344314"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11529158,
+            "stash": "0xffffFFff00000000000000000000000000000ee0",
+            "amount": "2000000000"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11530164,
+            "stash": "0xFFffFfFf00000000000000000000000000038E5c",
+            "amount": "3946287199"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11530294,
+            "stash": "0xfffFffFf00000000000000000000000000036d03",
+            "amount": "68797200"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11531797,
+            "stash": "0xfFFffFFf000000000000000000000000000006c9",
+            "amount": "11825000000"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11533234,
+            "stash": "0xFFfffFFf00000000000000000000000000002b39",
+            "amount": "18558070400"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11533757,
+            "stash": "0xFFFFFffF00000000000000000000000000002b31",
+            "amount": "15000000000"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11534067,
+            "stash": "0xfFfFfFFF00000000000000000000000000002AbD",
+            "amount": "16274118928"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11534397,
+            "stash": "0xfFFfFfFf000000000000000000000000000003F1",
+            "amount": "14000000000"
+          }
+        },
+        {
+          "node": {
+            "blockNumber": 11535458,
+            "stash": "0xfFFfFfff0000000000000000000000000003B572",
+            "amount": "551382800"
+          }
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": true,
+        "startCursor": "1",
+        "endCursor": "10"
+      },
+      "totalCount": 20
+    }
+  }
+}

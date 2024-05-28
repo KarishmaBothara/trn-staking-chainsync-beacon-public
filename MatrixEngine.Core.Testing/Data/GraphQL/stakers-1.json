@@ -1,0 +1,104 @@
+{
+  "data": {
+    "stakersConnection": {
+      "edges": [
+        {
+          "node": {
+            "stash": "0x884601c76294aA0DD977732264feD4f5BC669b31",
+            "eraIndex": 1,
+            "stakerType": "Validator",
+            "totalStake": "4137931000000",
+            "parentStash": ""
+          }
+        },
+        {
+          "node": {
+            "stash": "0x6A05416157dFDBA48C2BB638CFA908D893a6B764",
+            "eraIndex": 1,
+            "stakerType": "Validator",
+            "totalStake": "4137931000000",
+            "parentStash": ""
+          }
+        },
+        {
+          "node": {
+            "stash": "0xcb1de4FADCA68F601871f7E6E47fd43D707c779A",
+            "eraIndex": 1,
+            "stakerType": "Validator",
+            "totalStake": "4137931000000",
+            "parentStash": ""
+          }
+        },
+        {
+          "node": {
+            "stash": "0xA76bFE6d90952Eb0a3b8fA31dF2580692acEf772",
+            "eraIndex": 1,
+            "stakerType": "Validator",
+            "totalStake": "4137931000000",
+            "parentStash": ""
+          }
+        },
+        {
+          "node": {
+            "stash": "0x541F4DfED4656C65C9F3767bEfA350910A4ae41F",
+            "eraIndex": 1,
+            "stakerType": "Validator",
+            "totalStake": "4137931000000",
+            "parentStash": ""
+          }
+        },
+        {
+          "node": {
+            "stash": "0x11b2bd0CDe33e1dC1205E89F02f60e633115B315",
+            "eraIndex": 1,
+            "stakerType": "Validator",
+            "totalStake": "4137931000000",
+            "parentStash": ""
+          }
+        },
+        {
+          "node": {
+            "stash": "0xf919D4b98EF6b3EFBcCE6085bA352b1abA5c7265",
+            "eraIndex": 1,
+            "stakerType": "Validator",
+            "totalStake": "4137931000000",
+            "parentStash": ""
+          }
+        },
+        {
+          "node": {
+            "stash": "0x9E3260035D26Aa3bCD5084Ec99B7726Fc6b1359F",
+            "eraIndex": 1,
+            "stakerType": "Validator",
+            "totalStake": "4137931000000",
+            "parentStash": ""
+          }
+        },
+        {
+          "node": {
+            "stash": "0x954Ec2d3aBd17747b94FA070CBF4f3B6fD897645",
+            "eraIndex": 1,
+            "stakerType": "Validator",
+            "totalStake": "4137931000000",
+            "parentStash": ""
+          }
+        },
+        {
+          "node": {
+            "stash": "0x0Fa787f51333D9cA66a4A6563b56EececDA49a06",
+            "eraIndex": 1,
+            "stakerType": "Validator",
+            "totalStake": "4137931000000",
+            "parentStash": ""
+          }
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": true,
+        "startCursor": "1",
+        "endCursor": "10"
+      },
+      "totalCount": 20
+    }
+  }
+}

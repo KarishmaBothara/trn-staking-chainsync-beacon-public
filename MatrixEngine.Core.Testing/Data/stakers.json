@@ -1,0 +1,23 @@
+[
+  {
+    "account": "0xA76bFE6d90952Eb0a3b8fA31dF2580692acEf772",
+    "eraIndex": 48,
+    "type": "validator",
+    "validatorStash": "",
+    "totalStake": "4137931000000"
+  },
+  {
+    "account": "0xA76bFE6d90952Eb0a3b8fA31dF2580692acEf772",
+    "eraIndex": 48,
+    "type": "nominator",
+    "validatorStash": "",
+    "totalStake": "4137931000000"
+  },
+  {
+    "account": "0x541F4DfED4656C65C9F3767bEfA350910A4ae41F",
+    "eraIndex": 48,
+    "type": "validator",
+    "validatorStash": "",
+    "totalStake": "4137931000000"
+  }
+]
