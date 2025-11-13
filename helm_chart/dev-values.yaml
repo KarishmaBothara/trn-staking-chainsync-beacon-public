@@ -1,0 +1,29 @@
+namespace: vortex
+replicaCount: 1
+
+image:
+  repository: "ghcr.io/futureversecom/trn-chainsync-beacon"
+  pullPolicy: Always
+  tag: "f453b4c"
+
+configMap:
+  name: vortex-beacon
+  data:
+    NODE_ENV: "development"
+    Cron__Schedule: "50 01 * * *"
+    Kms__Region: "ap-southeast-2"
+    Kms__AccountId: "839526125914"
+    Kms__KeyId: "4d494f6f-8871-481e-89da-a9944928cb59"
+    MongoDB__Database: "trn-staking"
+    GraphQLApi__BaseUrl: "http://vortex-indexer.vortex.svc.cluster.local:4350/graphql"
+
+service:
+  type: ClusterIP
+  port: 8080
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: "vortex-beacon-sa"
+  imagePullSecrets:
+    - name: github-registry

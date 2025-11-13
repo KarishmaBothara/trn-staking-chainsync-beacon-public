@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helm_chart.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "helm_chart.labels" . | nindent 4 }}
+  annotations:
+    datree.skip/DEPLOYMENT_INCORRECT_REPLICAS_VALUE: only 1 replia is needed for web deployment, skipping.
+    datree.skip/CONTAINERS_MISSING_LIVENESSPROBE_KEY: no need for web deployment, skipping.
+    datree.skip/CONTAINERS_MISSING_READINESSPROBE_KEY: no need for web deployment, skipping.
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ include "helm_chart.fullname" . }}
+      {{- include "helm_chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: {{ include "helm_chart.fullname" . }}
+        {{- include "helm_chart.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "helm_chart.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.envFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          # livenessProbe:
+          #   httpGet:
+          #     path: /api/health
+          #     port: http
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 10
+          #   timeoutSeconds: 10
+          # readinessProbe:
+          #   httpGet:
+          #     path: /api/health
+          #     port: http
+          #   initialDelaySeconds: 30
+          #   periodSeconds: 10
+          #   timeoutSeconds: 10
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

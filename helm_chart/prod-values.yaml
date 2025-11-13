@@ -1,0 +1,22 @@
+namespace: vortex-prod
+replicaCount: 1
+
+image:
+  repository: "ghcr.io/futureversecom/trn-chainsync-beacon"
+  pullPolicy: Always
+  tag: "f453b4c"
+
+configMap:
+  name: vortex-beacon
+  data:
+
+service:
+  type: ClusterIP
+  port: 8080
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: "vortex-beacon-sa"
+  imagePullSecrets:
+    - name: github-registry
