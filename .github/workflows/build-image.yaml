@@ -21,7 +21,7 @@ on:
 env:
   APP_NAME: "MatrixEngine.WorkerService"
   REGISTRY: "ghcr.io"
-  IMAGE_NAME: "futureversecom/trn-chainsync-beacon"
+  IMAGE_NAME: "karishmabothara/trn-chainsync-beacon"
 
 jobs:
   build:
