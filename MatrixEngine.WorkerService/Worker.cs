@@ -25,6 +25,7 @@ public class Worker : BackgroundService
             _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
             await Task.Delay(1000, stoppingToken);
             var utcNow = DateTime.UtcNow;
+             _logger.LogInformation("UTC now: {time}", utcNow);
             var nextUtc = _cronExpression.GetNextOccurrence(utcNow);
 
             if (nextUtc == null) continue;

@@ -83,12 +83,12 @@ public class ComputingCore : IComputingCore
             if (effectiveBalancesList != null)
             {
                 await _effectiveBalanceResolver.SaveEffectiveBalances(effectiveBalancesList);
-                
+
                 await _signEffectiveBalanceResolver.Resolve(rewardCycle, effectiveBalancesList);
-                await _signEffectiveBalanceResolver.SignData();
-                
+//                 await _signEffectiveBalanceResolver.SignData();
+
                 await _stakerRateResolver.ResolveStakerRateFromEffectiveBalance(effectiveBalancesList);
-                await _stakerRateResolver.SignStakerRate();
+//                 await _stakerRateResolver.SignStakerRate();
             }
         }
         catch (BalanceSnapshotException bse)
