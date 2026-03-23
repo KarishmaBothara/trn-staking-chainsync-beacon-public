@@ -27,7 +27,7 @@ public class EffectiveBalanceResolver : IEffectiveBalanceResolver
 {
     private readonly IEffectiveBalanceService _effectiveBalanceService;
     private readonly ILogger<EffectiveBalanceResolver> _logger;
-    private const int ErasInCycle = 90;
+    private const int ErasInCycle = 180;
 
     public EffectiveBalanceResolver(IEffectiveBalanceService effectiveBalanceService,
         ILogger<EffectiveBalanceResolver> logger)
@@ -47,7 +47,7 @@ public class EffectiveBalanceResolver : IEffectiveBalanceResolver
         _logger.LogInformation($"Remove Effective Balance between {startBlock} - {endBlock} blocks");
         await _effectiveBalanceService.RemoveEffectiveBalanceInBlocksRange(startBlock, endBlock);
     }
-    
+
     public Dictionary<string, List<EffectiveBalanceModel>> CalculateEffectiveBalances(
         Dictionary<string, List<BalanceChangeModel>> balanceChanges)
     {
