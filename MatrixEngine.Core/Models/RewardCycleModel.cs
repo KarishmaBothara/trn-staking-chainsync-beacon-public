@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace MatrixEngine.Core.Models;
 
+
 [BsonIgnoreExtraElements]
 public class RewardCycleModel: BaseModel
 {
@@ -19,9 +20,12 @@ public class RewardCycleModel: BaseModel
 
     [BsonElement("endBlock")] public int EndBlock { get; set; }
 
-    [BsonElement("finished")] public bool Finished { get; set; }
+    [BsonElement("calculationComplete")] public bool CalculationComplete { get; set; }
 
-    [BsonElement("needToCalculate")] public bool NeedToCalculate { get; set; }
+    // Used by validator to determine if work points have been calculated yet
+    [BsonElement("calculateWorkPoint")] public bool CalculateWorkPoint { get; set; }
+    // Used by validator to determine if points have been submitted
+    [BsonElement("registerPointsOnChain")] public bool RegisterPointsOnChain { get; set; }
 
     [BsonElement("bootstrapRewardInTotal")]
     public string? BootstrapRewardInTotal { get; set; }
@@ -29,9 +33,5 @@ public class RewardCycleModel: BaseModel
     [BsonElement("workpointsRewardInTotal")]
     public string? WorkpointsRewardInTotal { get; set; }
 
-    [BsonElement("vtxDistributionId")] public string? VtxDistributionId { get; set; }
-    
-    [BsonElement("stakersReward")] public string? StakersReward { get; set; }
-    
-    [BsonElement("validatorsReward")] public string? ValidatorsReward { get; set; }
+    [BsonElement("vtxDistributionId")] public int VtxDistributionId { get; set; }
 }

@@ -1,0 +1,57 @@
+[
+  {
+    "eraIndex": 0,
+    "startBlock": 0,
+    "endBlock": 9
+  },
+  {
+    "eraIndex": 1,
+    "startBlock": 10,
+    "endBlock": 19
+  },
+  {
+      "eraIndex": 2,
+      "startBlock": 20,
+      "endBlock": 29
+  },
+  {
+      "eraIndex": 3,
+      "startBlock": 30,
+      "endBlock": 39
+  },
+  {
+      "eraIndex": 4,
+      "startBlock": 40,
+      "endBlock": 49
+  },
+  {
+      "eraIndex": 5,
+      "startBlock": 50,
+      "endBlock": 59
+  },
+  {
+      "eraIndex": 6,
+      "startBlock": 60,
+      "endBlock": 69
+  },
+  {
+      "eraIndex": 7,
+      "startBlock": 70,
+      "endBlock": 79
+  },
+  {
+      "eraIndex": 8,
+      "startBlock": 80,
+      "endBlock": 89
+  },
+  {
+      "eraIndex": 9,
+      "startBlock": 90,
+      "endBlock": 99
+  },
+  {
+      "eraIndex": 10,
+      "startBlock": 100,
+      "endBlock": 109
+  }
+] 

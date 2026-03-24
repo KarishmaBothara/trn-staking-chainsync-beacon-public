@@ -1,0 +1,26 @@
+[
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "blockNumber": 0,
+    "amount": "10000",
+    "type": "bonded"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "blockNumber": 10,
+    "amount": "5000",
+    "type": "unbonded"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "blockNumber": 20,
+    "amount": "2000",
+    "type": "withdrawn"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "blockNumber": 30,
+    "amount": "3000",
+    "type": "rebonded"
+  }
+]

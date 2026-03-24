@@ -1,0 +1,11 @@
+[
+  {
+    "startBlock": 0,
+    "endBlock": 899,
+    "startEraIndex": 0,
+    "endEraIndex": 89,
+    "currentEraIndex": 89,
+    "calculationComplete": false,
+    "vtxDistributionId": 0
+  }
+]

@@ -22,9 +22,14 @@ internal class Program
             .ConfigureAppConfiguration(app =>
                 app.AddJsonFile("appsettings.json", false, true)
                     .AddJsonFile($"appsettings.{environment}.json", true)
+                    .AddEnvironmentVariables()
             )
             .ConfigureServices((context, services) => { services.ConfigureConsoleApplicationServices(context.Configuration); })
             .Build();
+        
+        var logger = host.Services.GetRequiredService<ILogger<Program>>();
+        logger.LogTrace("Running App.");
+        
         var scope = host.Services.CreateScope();
         var services = scope.ServiceProvider;
         try

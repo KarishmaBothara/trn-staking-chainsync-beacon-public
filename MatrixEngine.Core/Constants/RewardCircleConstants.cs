@@ -1,6 +1,6 @@
 namespace MatrixEngine.Core.Constants;
 
-public static class RewardCircleConstants 
+public static class RewardCycleConstants 
 {
-    public const int RewardCircleThreshold = 90;
+    public const int RewardCycleThreshold = 90;
 }

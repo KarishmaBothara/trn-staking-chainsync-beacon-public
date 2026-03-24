@@ -6,7 +6,7 @@ namespace MatrixEngine.Core.GraphQL.ActiveEras;
 
 public interface IGetActiveErasConnection
 {
-    Task<List<ActiveEraType>> FetchActiveEras();
+    Task<List<ActiveEraType>> FetchActiveEras(int lastEraIndex);
 }
 
 public class GetActiveErasConnection : IGetActiveErasConnection
@@ -17,8 +17,13 @@ public class GetActiveErasConnection : IGetActiveErasConnection
     private readonly IGraphQLClient _client;
 
     private const string Query = @"
-       query GetActiveErasConnection($first: Int!, $after: String) {
-        activeErasConnection(first: $first, after: $after, orderBy: [eraIndex_ASC]) {
+       query GetActiveErasConnection($first: Int!, $after: String, $minEraIndex: Int!) {
+        activeErasConnection(
+          first: $first, 
+          after: $after, 
+          orderBy: [eraIndex_ASC],
+          where: {eraIndex_gt: $minEraIndex}
+        ) {
           edges {
               node {
                 eraIndex
@@ -44,9 +49,9 @@ public class GetActiveErasConnection : IGetActiveErasConnection
     }
 
 
-    public async Task<List<ActiveEraType>> FetchActiveEras()
+    public async Task<List<ActiveEraType>> FetchActiveEras(int lastEraIndex)
     {
-        _logger.LogInformation("Starting to fetch active eras");
+        _logger.LogInformation("Starting to fetch active eras with eraIndex > {LastEraIndex}", lastEraIndex);
         string? after = null;
         var activeEras = new List<ActiveEraType>();
         try
@@ -60,7 +65,9 @@ public class GetActiveErasConnection : IGetActiveErasConnection
                     OperationName = "GetActiveErasConnection",
                     Variables = new
                     {
-                        first = FirstFetchBatch, after,
+                        first = FirstFetchBatch,
+                        after,
+                        minEraIndex = lastEraIndex
                     }
                 };
                 var response = await _client.SendQueryAsync<GetActiveErasConnectionResponseType>(request);
@@ -73,8 +80,8 @@ public class GetActiveErasConnection : IGetActiveErasConnection
         }
         catch (Exception e)
         {
-            _logger.LogError(e.Message);
-            return new List<ActiveEraType>();
+            _logger.LogError(e, "Error fetching active eras: {ErrorMessage}", e.Message);
+            throw new Exception("Error fetching active eras", e);
         }
 
         return activeEras;

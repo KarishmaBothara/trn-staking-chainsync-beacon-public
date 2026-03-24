@@ -1,0 +1,56 @@
+[
+  {
+    "account": "0xE566475DE82dd261cA0b2a8625bD8a3D822A7546",
+    "blockNumber": 5,
+    "amount": "100000000",
+    "type": "bonded"
+  },
+  {
+    "account": "0xE566475DE82dd261cA0b2a8625bD8a3D822A7546",
+    "blockNumber": 15,
+    "amount": "60000000",
+    "type": "unbonded"
+  },
+  {
+    "account": "0xE566475DE82dd261cA0b2a8625bD8a3D822A7546",
+    "blockNumber": 15,
+    "amount": "60000000",
+    "type": "withdrawn"
+  },
+  {
+    "account": "0xE566475DE82dd261cA0b2a8625bD8a3D822A7546",
+    "blockNumber": 25,
+    "amount": "50000000",
+    "type": "bonded"
+  },
+  {
+    "account": "0xE566475DE82dd261cA0b2a8625bD8a3D822A7546",
+    "blockNumber": 35,
+    "amount": "50000000",
+    "type": "bonded"
+  },
+  {
+    "account": "0xE566475DE82dd261cA0b2a8625bD8a3D822A7546",
+    "blockNumber": 45,
+    "amount": "30000000",
+    "type": "bonded"
+  },
+  {
+    "account": "0xE566475DE82dd261cA0b2a8625bD8a3D822A7546",
+    "blockNumber": 55,
+    "amount": "60000000",
+    "type": "unbonded"
+  },
+  {
+    "account": "0xE566475DE82dd261cA0b2a8625bD8a3D822A7546",
+    "blockNumber": 55,
+    "amount": "60000000",
+    "type": "withdrawn"
+  },
+  {
+    "account": "0xE566475DE82dd261cA0b2a8625bD8a3D822A7546",
+    "blockNumber": 65,
+    "amount": "50000000",
+    "type": "bonded"
+  }
+]

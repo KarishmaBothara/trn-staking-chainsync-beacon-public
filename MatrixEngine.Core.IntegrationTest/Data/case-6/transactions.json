@@ -1,0 +1,44 @@
+[
+  {
+    "account": "0xE566475DE82dd261cA0b2a8625bD8a3D822A7546",
+    "blockNumber": 5,
+    "amount": "100000000",
+    "type": "bonded"
+  },
+  {
+    "account": "0xE566475DE82dd261cA0b2a8625bD8a3D822A7546",
+    "blockNumber": 14,
+    "amount": "50000000",
+    "type": "unbonded"
+  },
+  {
+    "account": "0xE566475DE82dd261cA0b2a8625bD8a3D822A7546",
+    "blockNumber": 15,
+    "amount": "50000000",
+    "type": "withdrawn"
+  },
+  {
+    "account": "0xE566475DE82dd261cA0b2a8625bD8a3D822A7546",
+    "blockNumber": 125,
+    "amount": "50000000",
+    "type": "bonded"
+  },
+  {
+    "account": "0xE566475DE82dd261cA0b2a8625bD8a3D822A7546",
+    "blockNumber": 134,
+    "amount": "100000000",
+    "type": "unbonded"
+  },
+  {
+    "account": "0xE566475DE82dd261cA0b2a8625bD8a3D822A7546",
+    "blockNumber": 135,
+    "amount": "100000000",
+    "type": "withdrawn"
+  },
+  {
+    "account": "0xE566475DE82dd261cA0b2a8625bD8a3D822A7546",
+    "blockNumber": 450,
+    "amount": "50000000",
+    "type": "bonded"
+  }
+]

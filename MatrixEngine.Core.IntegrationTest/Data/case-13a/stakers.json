@@ -1,0 +1,1094 @@
+[
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 0,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 1,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 2,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 3,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 4,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 5,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 6,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 7,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 8,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 9,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 10,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 11,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 12,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 13,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 14,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 15,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 16,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 17,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 18,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 19,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 20,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 21,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 22,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 23,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 24,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 25,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 26,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 27,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 28,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 29,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 30,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 31,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 32,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 33,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 34,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 35,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 36,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 37,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 38,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 39,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 40,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 41,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 42,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 43,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 44,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 45,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 46,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 47,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 48,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 49,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 50,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 51,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 52,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 53,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 54,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 55,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 56,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 57,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 58,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 59,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 60,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 61,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 62,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 63,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 64,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 65,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 66,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 67,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 68,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 69,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 70,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 71,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 72,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 73,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 74,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 75,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 76,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 77,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 78,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 79,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 80,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 81,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 82,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 83,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 84,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 85,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 86,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 87,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 88,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 89,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 90,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 91,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 92,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 93,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 94,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 95,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 96,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 97,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 98,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 99,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 100,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 101,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 102,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 103,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 104,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 105,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 106,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 107,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 108,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 109,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 110,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 111,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 112,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 113,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 114,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 115,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 116,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 117,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 118,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 119,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 120,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 121,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 122,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 123,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 124,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 125,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 126,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 127,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 128,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 129,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 130,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 131,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 132,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 133,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 134,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 135,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 136,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 137,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 138,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 139,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 140,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 141,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 142,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 143,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 144,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 145,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 146,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 147,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 148,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 149,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 150,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 151,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 152,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 153,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 154,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 155,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 156,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 157,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 158,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 159,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 160,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 161,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 162,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 163,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 164,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 165,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 166,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 167,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 168,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 169,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 170,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 171,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 172,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 173,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 174,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 175,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 176,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 177,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 178,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 179,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 180,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "eraIndex": 181,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  }
+] 

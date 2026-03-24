@@ -1,0 +1,542 @@
+[
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 0,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 1,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 2,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 3,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 4,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 5,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 6,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 7,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 8,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 9,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 10,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 11,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 12,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 13,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 14,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 15,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 16,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 17,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 18,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 19,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 20,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 21,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 22,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 23,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 24,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 25,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 26,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 27,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 28,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 29,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 30,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 31,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 32,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 33,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 34,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 35,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 36,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 37,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 38,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 39,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 40,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 41,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 42,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 43,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 44,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 45,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 46,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 47,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 48,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 49,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 50,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 51,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 52,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 53,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 54,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 55,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 56,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 57,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 58,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 59,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 60,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 61,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 62,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 63,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 64,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 65,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 66,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 67,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 68,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 69,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 70,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 71,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 72,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 73,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 74,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 75,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 76,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 77,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 78,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 79,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 80,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 81,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 82,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 83,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 84,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 85,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 86,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 87,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 88,
+    "totalStake": "200000000",
+    "type": "Validator"
+  },
+  {
+    "account": "0x0000000000000000000000000000000000000000",
+    "eraIndex": 89,
+    "totalStake": "200000000",
+    "type": "Nominator"
+  }
+] 

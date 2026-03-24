@@ -16,7 +16,9 @@ public class FixturesBase<T>
         var list = JsonFileReader.Read<List<T>>(path);
 
         var collection = _database.GetCollection<T>(collectionName);
-        await collection.InsertManyAsync(list);
+        if (list.Any()) {
+            await collection.InsertManyAsync(list);
+        }
     }
 
     public async Task ClearData(string collectionName)

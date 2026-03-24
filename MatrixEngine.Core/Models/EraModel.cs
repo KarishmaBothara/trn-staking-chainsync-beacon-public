@@ -13,4 +13,6 @@ public class EraModel: BaseModel
     [BsonElement("startBlock")] public int StartBlock { get; set; }
 
     [BsonElement("endBlock")] public int EndBlock { get; set; }
+    [BsonElement("balancesProcessed")] public bool BalancesProcessed { get; set; }
+    
 }

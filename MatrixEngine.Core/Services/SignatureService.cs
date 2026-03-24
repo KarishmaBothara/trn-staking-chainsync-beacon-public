@@ -28,7 +28,6 @@ public class SignatureService : ISignatureService
 
     public async Task<string> SignMessage(string message)
     {
-        _logger.LogInformation($"Signing message");
         try
         {
             var awsCredentials = new Amazon.Runtime.EnvironmentVariablesAWSCredentials();
@@ -41,6 +40,7 @@ public class SignatureService : ISignatureService
             using SHA256 sha256 = SHA256.Create();
             // Compute the hash of the JSON bytes
             byte[] hashBytes = sha256.ComputeHash(messageByte);
+            
             // // Convert the hash bytes to a hexadecimal string
             // string hashHex = BitConverter.ToString(hashBytes).Replace("-", "");
             // Console.WriteLine($"SHA-256 Hash: {hashHex}");
@@ -52,12 +52,7 @@ public class SignatureService : ISignatureService
                 SigningAlgorithm = SigningAlgorithmSpec.RSASSA_PKCS1_V1_5_SHA_256,
             };
 
-            _logger.LogInformation($"Signing message with key");
-
             var signResponse = await kmsClient.SignAsync(signRequest);
-
-            _logger.LogInformation($"Got signature");
-
             var signature = signResponse.Signature.ToArray();
             return Convert.ToBase64String(signature);
         }
@@ -68,6 +63,7 @@ public class SignatureService : ISignatureService
         }
     }
 
+    // Not used in current implementation
     public string Base64Encrypt(string message)
     {
         var plainTextBytes = Encoding.UTF8.GetBytes(message);

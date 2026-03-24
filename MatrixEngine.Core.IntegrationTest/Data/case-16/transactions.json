@@ -1,0 +1,44 @@
+[
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "blockNumber": 0,
+    "amount": "3000",
+    "type": "bonded"
+  },
+  // 3000 bonded
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "blockNumber": 10,
+    "amount": "2400",
+    "type": "unbonded"
+  },
+  // 600 bonded
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "blockNumber": 20,
+    "amount": "1700",
+    "type": "bonded"
+  },
+  // 2300 bonded
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "blockNumber": 30,
+    "amount": "1500",
+    "type": "unbonded"
+  },
+  // 800 bonded
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "blockNumber": 40,
+    "amount": "500",
+    "type": "bonded"
+  },
+  // 1300 bonded
+  {
+    "account": "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b",
+    "blockNumber": 50,
+    "amount": "200",
+    "type": "unbonded"
+  }
+  // 1100 bonded
+]

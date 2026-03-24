@@ -10,6 +10,7 @@ public interface IStakerService
 {
     Task<string?> GetAccountType(string account, int eraIndex);
     Task<List<StakerModel>> GetAccountStakerTypesByEraIndexes(string account, List<int> eraIndexes);
+    Task<List<StakerModel>> GetAllStakerTypesByEraIndex(int eraIndex);
     Task<List<StakerModel>> GetAccountsStakerTypesByEraIndexes(List<string> accounts, List<int> eraIndexes);
     Task ResolveStakersAndSave(List<StakerNodeType> stakerTypes);
 
@@ -29,6 +30,7 @@ public class StakerService : IStakerService
     {
         _logger = logger;
         _database = database;
+        EnsureStakerIndexes();
     }
 
     private IMongoCollection<StakerModel> Collection =>
@@ -49,6 +51,13 @@ public class StakerService : IStakerService
     {
         var filter = Builders<StakerModel>.Filter.Eq(x => x.Account, account) &
                      Builders<StakerModel>.Filter.In(x => x.EraIndex, eraIndexes);
+        var stakers = await Collection.Find(filter).ToListAsync();
+        return stakers;
+    }
+
+    public async Task<List<StakerModel>> GetAllStakerTypesByEraIndex(int eraIndex)
+    {
+        var filter = Builders<StakerModel>.Filter.Eq(x => x.EraIndex, eraIndex);
         var stakers = await Collection.Find(filter).ToListAsync();
         return stakers;
     }
@@ -87,8 +96,16 @@ public class StakerService : IStakerService
                 return new UpdateOneModel<StakerModel>(filter, update) { IsUpsert = true };
             }).ToList();
 
+            if (ops.Count == 0)
+            {
+                _logger.LogWarning($"Ops length is 0, skipping");
+                continue;
+            }
+            _logger.LogInformation($"Inserting {ops.Count} stakers to db");
             //bulk write
-            await Collection.BulkWriteAsync(ops);
+            var result = await Collection.BulkWriteAsync(ops);
+            _logger.LogInformation($"Bulk write result: Inserted {result.InsertedCount}, Modified {result.ModifiedCount}, Matched {result.MatchedCount}");
+            _logger.LogInformation($"Finished inserting {ops.Count} stakers to db");
         }
     }
 
@@ -110,5 +127,64 @@ public class StakerService : IStakerService
         if (staker != null) return staker.EraIndex;
 
         return -1;
+    }
+
+    /// Creates necessary indexes for the Stakers collection
+    public void EnsureStakerIndexes()
+    {
+        try
+        {
+            _logger.LogInformation("Creating indexes for stakers collection");
+            
+            // Try-catch each index creation separately to handle cases where some indexes already exist
+            try
+            {
+                // Create a compound index on Account + EraIndex
+                // This will greatly speed up your queries that filter on these fields
+                var compoundIndexModel = new CreateIndexModel<StakerModel>(
+                    Builders<StakerModel>.IndexKeys
+                        .Ascending(s => s.Account)
+                        .Ascending(s => s.EraIndex),
+                    new CreateIndexOptions 
+                    { 
+                        Name = "account_eraIndex_compound",
+                        Background = true,   // Create in background to avoid blocking operations
+                        Unique = true        // Enforce uniqueness at the database level
+                    }
+                );
+                
+                Collection.Indexes.CreateOne(compoundIndexModel);
+                _logger.LogInformation("Successfully created compound index on Account and EraIndex");
+            }
+            catch (MongoCommandException ex) when (ex.Message.Contains("Index already exists"))
+            {
+                _logger.LogInformation("Compound index on Account and EraIndex already exists");
+            }
+            
+            try
+            {
+                // Create a single-field index on EraIndex to support queries that filter only by era
+                var eraIndexModel = new CreateIndexModel<StakerModel>(
+                    Builders<StakerModel>.IndexKeys.Ascending(s => s.EraIndex),
+                    new CreateIndexOptions 
+                    { 
+                        Name = "eraIndex",
+                        Background = true
+                    }
+                );
+                
+                Collection.Indexes.CreateOne(eraIndexModel);
+                _logger.LogInformation("Successfully created index on EraIndex");
+            }
+            catch (MongoCommandException ex) when (ex.Message.Contains("Index already exists"))
+            {
+                _logger.LogInformation("Index on EraIndex already exists");
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating indexes for stakers collection");
+            throw;
+        }
     }
 }

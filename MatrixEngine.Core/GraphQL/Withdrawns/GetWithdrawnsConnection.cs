@@ -23,7 +23,7 @@ public class GetWithdrawnsConnection : IGetWithdrawnsConnection
         withdrawnsConnection(
           first: $first
           after: $after
-          where: { blockNumber_gte: $startBlock, blockNumber_lt: $endBlock },
+          where: { blockNumber_gte: $startBlock, blockNumber_lte: $endBlock },
 
           orderBy: [blockNumber_ASC]) {
             edges {
@@ -85,7 +85,7 @@ public class GetWithdrawnsConnection : IGetWithdrawnsConnection
         catch (Exception e)
         {
             _logger.LogError(e.Message);
-            return new List<WithdrawnNodeType>();
+            throw new Exception("Error fetching withdrawns", e);
         }
     }
 }

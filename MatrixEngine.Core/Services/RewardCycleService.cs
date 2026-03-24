@@ -1,6 +1,7 @@
 using MatrixEngine.Core.Constants;
 using MatrixEngine.Core.Exceptions;
 using MatrixEngine.Core.Models;
+using MatrixEngine.Core.Models.DTOs;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
@@ -8,13 +9,12 @@ namespace MatrixEngine.Core.Services;
 
 public interface IRewardCycleService
 {
-    Task<RewardCycleModel> GetCurrentRewardCycle();
-    Task<Boolean> IsRewardCycleTheFirstCycle(int startBlock);
-    Task<RewardCycleModel> GetRewardCycleByEndBlock(int endBlock);
-    Task UpdateRewardCycle(RewardCycleModel rewardCycleModel);
+    Task<RewardCycleModel?> GetCurrentRewardCycle();
     Task CreateRewardCycle(RewardCycleModel newRewardCycle);
-    Task UpdateCurrentEraIndexOfRewardCycle(RewardCycleModel updateModel);
-    Task SetNeedToCalculate(RewardCycleModel currentRewardCycle);
+    Task UpdateCurrentEraIndexOfRewardCycle(int vtxDistId, int currentEraIndex);
+    Task UpdateRewardCycleToComplete(RewardCycle rewardCycle, int endBlock);
+    Task UpdateRewardCycleCurrentEra(RewardCycle rewardCycle, int currentEra);
+
 }
 
 public class RewardCycleService : IRewardCycleService
@@ -35,86 +35,75 @@ public class RewardCycleService : IRewardCycleService
     public async Task<RewardCycleModel> GetCurrentRewardCycle()
     {
         _logger.LogInformation("GetCurrentRewardCycle");
-        var filter = Builders<RewardCycleModel>.Filter.Eq(x => x.Finished, false);
-
-        var rewardCycle = await Collection.Find(filter)
-            .SortByDescending(x => x.CreatedAt).FirstOrDefaultAsync();
-
-        if (rewardCycle == null)
-        {
-            _logger.LogError("No active reward cycle found");
-            throw new RewardCycleException("No active reward cycle found");
-        }
-
-        return rewardCycle;
-    }
-
-    public async Task<Boolean> IsRewardCycleTheFirstCycle(int startBlock)
-    {
-        var filter = Builders<RewardCycleModel>.Filter.Lt(x => x.StartBlock, startBlock);
-
-        var count = await Collection.CountDocumentsAsync(filter);
-
-        return count == 0;
-    }
-
-    public async Task<RewardCycleModel> GetRewardCycleByEndBlock(int endBlock)
-    {
-        var filter = Builders<RewardCycleModel>.Filter.Eq(x => x.EndBlock, endBlock);
-
+        var filter = Builders<RewardCycleModel>.Filter.Eq(x => x.CalculationComplete, false);
         var rewardCycle = await Collection.Find(filter).FirstOrDefaultAsync();
-
         return rewardCycle;
     }
 
-    public async Task UpdateRewardCycle(RewardCycleModel rewardCycleModel)
-    {
-        var filter = Builders<RewardCycleModel>.Filter.Eq(x => x.StartBlock, rewardCycleModel.StartBlock);
-        var update = Builders<RewardCycleModel>.Update
-            .SetOnInsert(x => x.CreatedAt, DateTime.UtcNow)
-            .Set(x => x.UpdatedAt, DateTime.UtcNow)
-            .Set(x => x.EndBlock, rewardCycleModel.EndBlock)
-            .Set(x => x.Finished, rewardCycleModel.Finished)
-            .Set(x => x.CurrentEraIndex, rewardCycleModel.CurrentEraIndex)
-            .Set(x => x.EndEraIndex, rewardCycleModel.EndEraIndex);
-
-        await Collection.UpdateOneAsync(filter, update);
-    }
-
+    // Create a brand new reward cycle and save to DB
     public async Task CreateRewardCycle(RewardCycleModel newRewardCycle)
     {
-        var filter = Builders<RewardCycleModel>.Filter.Eq(x => x.StartBlock, newRewardCycle.StartBlock) &
-                     Builders<RewardCycleModel>.Filter.Eq(x => x.StartEraIndex, newRewardCycle.StartEraIndex);
+        var filter = Builders<RewardCycleModel>.Filter
+            .Eq(x => x.VtxDistributionId, newRewardCycle.VtxDistributionId);
 
-        var update = Builders<RewardCycleModel>.Update.Set(x => x.StartBlock, newRewardCycle.StartBlock)
+        var update = Builders<RewardCycleModel>.Update.SetOnInsert(x => x.StartBlock, newRewardCycle.StartBlock)
             .SetOnInsert(x => x.CreatedAt, DateTime.UtcNow)
+            .SetOnInsert(x => x.VtxDistributionId, newRewardCycle.VtxDistributionId)
+            .Set(x => x.EndBlock, newRewardCycle.EndBlock)
             .Set(x => x.UpdatedAt, DateTime.UtcNow)
             .Set(x => x.StartEraIndex, newRewardCycle.StartEraIndex)
-            .Set(x => x.Finished, newRewardCycle.Finished)
-            .Set(x => x.CurrentEraIndex, newRewardCycle.CurrentEraIndex);
+            .Set(x => x.EndEraIndex, newRewardCycle.EndEraIndex)
+            .Set(x => x.CalculationComplete, newRewardCycle.CalculationComplete)
+            .Set(x => x.CurrentEraIndex, newRewardCycle.CurrentEraIndex)
+            .Set(x => x.CalculateWorkPoint, false)
+            .Set(x => x.RegisterPointsOnChain, false);
 
         await Collection.UpdateOneAsync(filter, update, new UpdateOptions() { IsUpsert = true });
     }
+    
 
-    public async Task UpdateCurrentEraIndexOfRewardCycle(RewardCycleModel updateModel)
+    // Updates the current era index of the reward cycle, this is called when the reward cycle is updated but not complete
+    public async Task UpdateCurrentEraIndexOfRewardCycle(int vtxDistId, int currentEraIndex)
     {
-        var filter = Builders<RewardCycleModel>.Filter.Eq(x => x.StartBlock, updateModel.StartBlock) &
-                     Builders<RewardCycleModel>.Filter.Eq(x => x.StartEraIndex, updateModel.StartEraIndex);
-
+        var filter = Builders<RewardCycleModel>.Filter.Eq(x => x.VtxDistributionId, vtxDistId);
+        
         var update = Builders<RewardCycleModel>.Update
-            .Set(x => x.CurrentEraIndex, updateModel.CurrentEraIndex)
+            .Set(x => x.CurrentEraIndex, currentEraIndex)
             .Set(x => x.UpdatedAt, DateTime.UtcNow);
 
         await Collection.UpdateOneAsync(filter, update);
     }
 
-    public async Task SetNeedToCalculate(RewardCycleModel currentRewardCycle)
+    // Called once a reward cycle has been completely calculated and the current era is beyond the end era
+    // Sets Finished to true
+    // Sets NeedToCalculate to true
+    // Sets the final end block of the reward cycle, up until this point the end block will be unknown
+    public async Task UpdateRewardCycleToComplete(RewardCycle rewardCycle, int endBlock)
     {
-        _filterDefinitionBuilder = Builders<RewardCycleModel>.Filter;
-        var filter = _filterDefinitionBuilder.Eq(x => x.StartBlock, currentRewardCycle.StartBlock) &
-                     _filterDefinitionBuilder.Eq(x => x.EndBlock, currentRewardCycle.EndBlock);
+        var filter = Builders<RewardCycleModel>.Filter
+            .Eq(x => x.VtxDistributionId, rewardCycle.VtxDistributionId);
         
-        var update = Builders<RewardCycleModel>.Update.Set(x => x.NeedToCalculate, true);
+        var update = Builders<RewardCycleModel>.Update
+            .Set(x => x.CalculationComplete, true)
+            .Set(x => x.EndBlock, endBlock)
+            .Set(x => x.UpdatedAt, DateTime.UtcNow)
+            .Set(x => x.EndEraIndex, rewardCycle.EndEraIndex)
+            .Set(x => x.CurrentEraIndex, rewardCycle.EndEraIndex);
+        
+        await Collection.UpdateOneAsync(filter, update);
+    }
+
+    // After processing a reward cycle, we need to update the current block of the reward cycle to the last processed era
+    public async Task UpdateRewardCycleCurrentEra(RewardCycle rewardCycle, int currentEra)
+    {
+        var filter = Builders<RewardCycleModel>.Filter
+            .Eq(x => x.VtxDistributionId, rewardCycle.VtxDistributionId);
+        
+        var update = Builders<RewardCycleModel>.Update
+            .Set(x => x.EndBlock, -1) // Set to -1 as the cycle is not finished
+            .Set(x => x.EndEraIndex, -1) // Set to -1 as the cycle is not finished
+            .Set(x => x.CurrentEraIndex, currentEra)
+            .Set(x => x.UpdatedAt, DateTime.UtcNow);
         
         await Collection.UpdateOneAsync(filter, update);
     }

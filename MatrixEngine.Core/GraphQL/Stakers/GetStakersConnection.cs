@@ -55,11 +55,15 @@ public class GetStakersConnection : IGetStakersConnection
         string? after = null;
         var stakers = new List<StakerNodeType>();
         bool hasNextPage;
+        int pageCount = 0;
 
         try
         {
             do
             {
+                pageCount++;
+                _logger.LogInformation("Fetching stakers page {PageCount} with cursor {Cursor}", pageCount, after ?? "null");
+
                 var request = new GraphQLRequest
                 {
                     Query = Query,
@@ -73,18 +77,36 @@ public class GetStakersConnection : IGetStakersConnection
                 };
 
                 var response = await _client.SendQueryAsync<GetStakersConnectionResponseType>(request);
+                
+                
+                if (response?.Data?.StakersConnection == null)
+                {
+                    _logger.LogWarning("Received null response from GraphQL server");
+                    break;
+                }
+                
                 var connection = response.Data.StakersConnection;
-                stakers.AddRange(connection.Edges.Select(e => e.Node));
+                var newItems = connection.Edges.Select(e => e.Node).ToList();
+                _logger.LogInformation("Fetched {Count} stakers in this page", newItems.Count);
+                stakers.AddRange(newItems);
                 hasNextPage = connection.PageInfo.HasNextPage;
                 after = connection.PageInfo.EndCursor;
+                
+                // If we got zero items but hasNextPage is true, something is wrong
+                if (newItems.Count == 0 && hasNextPage)
+                {
+                    _logger.LogWarning("Received 0 items but hasNextPage is true, breaking pagination loop");
+                    break;
+                }
             } while (hasNextPage);
 
+            _logger.LogInformation("Completed fetching all stakers for era {EraIndex}. Total count: {TotalCount}", eraIndex, stakers.Count);
             return stakers;
         }
         catch (Exception e)
         {
-            _logger.LogInformation(e.Message);
-            return new List<StakerNodeType>();
+            _logger.LogError(e.Message);
+            throw new Exception("Error fetching stakers ", e);
         }
     }
 }

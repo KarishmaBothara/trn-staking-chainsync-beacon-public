@@ -25,5 +25,4 @@ public class StakerNodeType
     public string StakerType { get; set; }
     public string TotalStake { get; set; }
     public string ParentStash { get; set; }
-    
 }

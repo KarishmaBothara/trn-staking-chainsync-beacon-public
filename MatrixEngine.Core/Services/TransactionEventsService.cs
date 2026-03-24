@@ -37,37 +37,31 @@ public class TransactionEventService : ITransactionEventService
 
     public async Task UpsertTransactionEvents(List<TransactionModel> transactionEvents)
     {
+        if (!transactionEvents.Any())
+        {
+            _logger.LogInformation("No transaction events to upsert");
+            return;
+        }
+
         _logger.LogInformation($"Upserting {transactionEvents.Count} transaction events");
 
-        //to reduce db load, paged by 500
-        const int pageSize = Pagination.DefaultDbPageSize;;
-        var totalPages = transactionEvents.Count / pageSize + 1;
-
-        for (var pageNumber = 0; pageNumber < totalPages; pageNumber++)
+        var bulkOps = new List<UpdateOneModel<TransactionModel>>();
+        foreach (var transaction in transactionEvents)
         {
-            _logger.LogInformation($"Bulk Upserting page {pageNumber} of {totalPages}.");
-
-            var batch = transactionEvents.Skip(pageNumber * pageSize).Take(pageSize).ToList();
-            if(batch.Count == 0) break;
+            var filter = Builders<TransactionModel>.Filter.Eq(x => x.Account, transaction.Account) &
+                         Builders<TransactionModel>.Filter.Eq(x => x.Amount, transaction.Amount) &
+                         Builders<TransactionModel>.Filter.Eq(x => x.BlockNumber, transaction.BlockNumber);
+            var update = Builders<TransactionModel>.Update.Set(x => x.Type, transaction.Type)
+                .SetOnInsert(x => x.CreatedAt, DateTime.UtcNow)
+                .Set(x => x.UpdatedAt, DateTime.UtcNow);
             
-            //bulk upsert the data
-            var bulkOps = new List<UpdateOneModel<TransactionModel>>();
-            foreach (var transaction in batch)
-            {
-                var filter = Builders<TransactionModel>.Filter.Eq(x => x.Account, transaction.Account) &
-                             Builders<TransactionModel>.Filter.Eq(x => x.Amount, transaction.Amount) &
-                             Builders<TransactionModel>.Filter.Eq(x => x.BlockNumber, transaction.BlockNumber);
-                var update = Builders<TransactionModel>.Update.Set(x => x.Type, transaction.Type)
-                    .SetOnInsert(x => x.CreatedAt, DateTime.UtcNow)
-                    .Set(x => x.UpdatedAt, DateTime.UtcNow);
-                ;
-                bulkOps.Add(new UpdateOneModel<TransactionModel>(filter, update) { IsUpsert = true });
-            }
-
-            await Collection.BulkWriteAsync(bulkOps);
+            bulkOps.Add(new UpdateOneModel<TransactionModel>(filter, update) { IsUpsert = true });
         }
+
+        await Collection.BulkWriteAsync(bulkOps);
     }
 
+    // Get the latest block number from the transaction events, this is to prevent fetching indexed results multiple times per block
     public async Task<int> GetLatestBlockNumber()
     {
         var sort = Builders<TransactionModel>.Sort.Descending(x => x.BlockNumber);
