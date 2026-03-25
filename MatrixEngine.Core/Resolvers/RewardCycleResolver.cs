@@ -27,7 +27,7 @@ public interface IRewardCycleResolver
     Task<Tuple<int, int>> GetRewardCycleEraIndexRangeByBlockRange(int startBlock, int endBlock);
 
     Task CheckRewardCycle(RewardCycle rewardCycle);
-    
+
     Task UpdateRewardCycleCurrentEra(RewardCycle rewardCycle, int currentEra);
 
     Task CreateNewRewardCycle(RewardCycle cycle);
@@ -36,7 +36,7 @@ public interface IRewardCycleResolver
 /// <summary>
 /// Reward Cycle Resolver
 /// It is responsible for calculating reward cycles
-/// 
+///
 /// </summary>
 public class RewardCycleResolver : IRewardCycleResolver
 {
@@ -47,7 +47,7 @@ public class RewardCycleResolver : IRewardCycleResolver
 
     public RewardCycleResolver(
         IOptions<SubstrateSettings> options,
-        IEraService eraService, 
+        IEraService eraService,
         IRewardCycleService rewardCycleService,
         ILogger<RewardCycleResolver> logger)
     {
@@ -90,7 +90,7 @@ public class RewardCycleResolver : IRewardCycleResolver
                 await CreateNewRewardCycle(genesisCycle);
                 rewardCycles.Add(genesisCycle);
             }
-            
+
             var currentCycleStartEraIndex = currentRewardCycle.StartEraIndex;
             var notFinishedRewardCycles = await CalculateNotFinishedRewardCycles(
                 latestFinishedEraIndex,
@@ -115,7 +115,7 @@ public class RewardCycleResolver : IRewardCycleResolver
             return null;
         }
     }
-    
+
     // Get the current reward cycle.
     // If there is none, create the first one depending on if we are on Porcini or Mainnet
     private async Task<RewardCycleModel?> GetCurrentRewardCycle()
@@ -159,7 +159,7 @@ public class RewardCycleResolver : IRewardCycleResolver
             _logger.LogError("No active reward cycle found");
             return null;
         }
-        
+
         _logger.LogInformation(
             $"==> Current reward cycle start era {rewardCycle.StartEraIndex} - start block {rewardCycle.StartBlock} ");
         return rewardCycle;
@@ -186,7 +186,7 @@ public class RewardCycleResolver : IRewardCycleResolver
         {
             // Add the threshold (90) - 1 onto the startEraIndex. startEraIndex is updated each iteration
             var endEraIndex = startEraIndex + RewardCycleConstants.RewardCycleThreshold - 1;
-            
+
             // Special cases
             if (startEraIndex == 709)
             {
@@ -195,11 +195,14 @@ public class RewardCycleResolver : IRewardCycleResolver
             }
             else if (startEraIndex == 890 && _network == "porcini")
             {
-                // On Porcini we want to test reward cycle at 955 for the current cycle. For this reason we are cutting the 
+                // On Porcini we want to test reward cycle at 955 for the current cycle. For this reason we are cutting the
                 // threshold short
                 endEraIndex = 955;
+            } else if (startEraIndex === 890) {
+                // On mainnet we missed two reward cycles, so combining these to 180 days cycle
+                endEraIndex = 1069
             }
-            
+
             // If we have not yet completed the reward cycle, set the endBlock to -1
             // We should still return the cycle so we can calculate the balance change ledger per cycle
             var endBlock = -1;
@@ -217,7 +220,7 @@ public class RewardCycleResolver : IRewardCycleResolver
                 EndBlock = endBlock,
                 VtxDistributionId = currentVtxDistId
             });
-            
+
             // Moved to end of function to add constant amount per iteration.
             startEraIndex = endEraIndex + 1;
             currentVtxDistId += 1;
@@ -236,7 +239,7 @@ public class RewardCycleResolver : IRewardCycleResolver
         _logger.LogInformation($"Latest finished era: {latestFinishedEra.EraIndex}");
         // get latest finished era index
         var latestFinishedEraIndex = latestFinishedEra.EraIndex;
-        
+
         var cycleLength = RewardCycleConstants.RewardCycleThreshold;
         if (rewardCycle.StartEraIndex == 709)
         {
@@ -245,8 +248,10 @@ public class RewardCycleResolver : IRewardCycleResolver
         else if (rewardCycle.StartEraIndex == 890 && _network == "porcini")
         {
             cycleLength = 66;
+        } else if (rewardCycle.StartEraIndex == 890) {
+            cycleLength = 180
         }
-        
+
         // check if the reward cycle is complete
         // This is checked by comparing the supposed end with the 90 era threshold
         if (latestFinishedEraIndex - rewardCycle.StartEraIndex + 1 >= cycleLength)
@@ -255,19 +260,19 @@ public class RewardCycleResolver : IRewardCycleResolver
             _logger.LogInformation($"The cycle of ID: {rewardCycle.VtxDistributionId} " +
                                    $"for blocks {rewardCycle.StartBlock} - {rewardCycle.EndBlock} " +
                                    $"is finished and needs to complete");
-            
+
             await CompleteRewardCycle(rewardCycle);
             // create next reward cycle (db)
             await CreateNextRewardCycle(rewardCycle);
         }
         else
         {
-            // Current Reward Cycle Ongoing: set current era index to the current reward cycle 
+            // Current Reward Cycle Ongoing: set current era index to the current reward cycle
             // update current reward cycle (db)
             _logger.LogInformation($"The cycle has not finished yet, going to set {latestFinishedEraIndex} to current era index");
             await _rewardCycleService.UpdateCurrentEraIndexOfRewardCycle(rewardCycle.VtxDistributionId, latestFinishedEraIndex);
         }
-        
+
         _logger.LogInformation($"Finished cycle (Era: {rewardCycle.StartEraIndex} - ) calculation");
     }
 
