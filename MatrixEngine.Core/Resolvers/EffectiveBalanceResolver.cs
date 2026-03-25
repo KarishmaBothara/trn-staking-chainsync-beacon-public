@@ -16,13 +16,13 @@ public interface IEffectiveBalanceResolver
         Dictionary<string, List<BalanceChangeModel>> balanceChanges,
         RewardCycle rewardCycle
     );
-    
+
     // Get the effective balances for the previous cycle
     // rewardCycleStartBlock is the start block of the current cycle
     Task<List<EffectiveBalanceModel>> GetPreviousCycleEffectiveBalances(
         int rewardCycleStartBlock
     );
-    
+
     Task SaveEffectiveBalances(List<EffectiveBalanceModel> effectiveBalances);
 }
 
@@ -61,16 +61,16 @@ public class EffectiveBalanceResolver : IEffectiveBalanceResolver
         _logger.LogInformation($"VtxDistributionId: {rewardCycle.VtxDistributionId}, " +
                                $"StartBlock: {rewardCycle.StartBlock}, " +
                                $"EndBlock: {rewardCycle.EndBlock}");
-        
+
         var effectiveBalances = new Dictionary<string, List<EffectiveBalanceModel>>();
         var signedEffectiveBalances = new List<SignedEffectiveBalanceModel>();
 
         foreach (var account in balanceChanges.Keys)
         {
             var balanceChangesForAccount = balanceChanges[account];
-            (BigInteger totalRewardPoints, var effectiveBalanceModel) = 
+            (BigInteger totalRewardPoints, var effectiveBalanceModel) =
                 CalculateOneAccountEffectiveBalance(account, balanceChangesForAccount, rewardCycle);
-            
+
             // Sign and add to list of signed effective balances
             signedEffectiveBalances.Add(await SignEffectiveBalance(account, totalRewardPoints, rewardCycle));
             // Console.WriteLine("\n\n Signature: " + effectiveBalanceModel.Signature + "\n\n");
@@ -86,7 +86,7 @@ public class EffectiveBalanceResolver : IEffectiveBalanceResolver
         return effectiveBalances;
     }
 
-    // Sign the effective balance for an account using the signature service. 
+    // Sign the effective balance for an account using the signature service.
     private async Task<SignedEffectiveBalanceModel> SignEffectiveBalance(
         string account,
         BigInteger totalRewardPoints,
@@ -95,23 +95,23 @@ public class EffectiveBalanceResolver : IEffectiveBalanceResolver
     {
         // Construct the payload with just the total reward points over the whole cycle per account
         var payload = JsonConvert.SerializeObject(new SignEffectiveBalanceDto(
-            account, 
-            rewardCycle.VtxDistributionId, 
+            account,
+            rewardCycle.VtxDistributionId,
             totalRewardPoints.ToString()
         ));
-        var signature = await _signatureService.SignMessage(payload);
+//         var signature = await _signatureService.SignMessage(payload);
 
         SignedEffectiveBalanceModel signedModel = new SignedEffectiveBalanceModel()
         {
             Account = account,
             TotalRewardPoints = totalRewardPoints.ToString(),
-            Signature = signature,
+//             Signature = signature,
             Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
             VtxDistributionId = rewardCycle.VtxDistributionId,
             StartBlock = rewardCycle.StartBlock,
             EndBlock = rewardCycle.EndBlock
         };
-        
+
         // _logger.LogTrace("Signing effective balance for account: " + account +
         //                  " Total Effective Balance: " + totalRewardPoints + "\n" +
         //                  "Payload: " + payload + "\n" +
@@ -143,15 +143,15 @@ public class EffectiveBalanceResolver : IEffectiveBalanceResolver
         BigInteger currentBondedMax = firstBalanceChange.Bonded.BalanceInBlockRange;
         BigInteger currentUnlockingMax = firstBalanceChange.Unlocking.BalanceInBlockRange;
         BigInteger totalRewardPoints = 0;
-        
+
         // // decimal totalEffectiveBalance = 0;
         List<EffectiveBalanceModel> effectiveBalances = new List<EffectiveBalanceModel>(balanceChangesForAccount.Count);
-        
+
         foreach (var balance in balanceChangesForAccount)
         {
             var blockRange = balance.EndBlock - balance.StartBlock + 1;
             var blockPercentage = (decimal)blockRange / rewardCycleLength;
-        
+
             // Calculate Bonded Effective Balance Portion
             var newBondedBalance = balance.Bonded.BalanceInBlockRange;
             if (newBondedBalance < currentBondedMax)
@@ -164,7 +164,7 @@ public class EffectiveBalanceResolver : IEffectiveBalanceResolver
                 currentBondedMax,
                 blockPercentage
             );
-            
+
             // Calculate Unlocking Effective Balance Portion
             var newUnlockingBalance = balance.Unlocking.BalanceInBlockRange;
             if (newUnlockingBalance < currentUnlockingMax)
@@ -179,7 +179,7 @@ public class EffectiveBalanceResolver : IEffectiveBalanceResolver
             );
             var totalRewardPointsForBlock = unlockingReward + bondedReward;
             totalRewardPoints += totalRewardPointsForBlock;
-            
+
             var percentage = Math.Round((double)blockPercentage, 7);
             effectiveBalances.Add(new EffectiveBalanceModel
             {
@@ -193,7 +193,7 @@ public class EffectiveBalanceResolver : IEffectiveBalanceResolver
                 Unlocking = unlockingBalanceDetail,
                 TotalRewardPoints = totalRewardPointsForBlock.ToString(),
             });
-            
+
             _logger.LogTrace($"Block {balance.StartBlock}-{balance.EndBlock}: " +
                              $"Range={blockRange}, +" +
                              $"Percentage={percentage}, " +
@@ -211,11 +211,11 @@ public class EffectiveBalanceResolver : IEffectiveBalanceResolver
         var contribution = (BigInteger)(blockPercentage * 10000000) * currentMax / 10000000;
         string stakerType = balanceDetail.StakerType ?? StakerType.Staker;
         var rate = StakerUtils.GetStakerRate(stakerType);
-          
+
         // We have 5 decimal places of precision for staker rate
         // 0.0739 -> 7390
         var reward = (BigInteger)(rate * 100000) * contribution / 100000;
-            
+
         var effectiveBalanceDetail = new EffectiveBalanceDetail(
             balance: balanceDetail.BalanceInBlockRange,
             effectiveBalance: currentMax,

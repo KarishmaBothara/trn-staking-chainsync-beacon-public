@@ -23,7 +23,7 @@ public class SignEffectiveBalanceService : ISignEffectiveBalanceService
     {
         _logger = logger;
         _database = database;
-        
+
         Collection.Indexes.CreateOne(new CreateIndexModel<SignedEffectiveBalanceModel>(
             Builders<SignedEffectiveBalanceModel>.IndexKeys.Ascending(x => x.Account)
                 .Ascending(x => x.VtxDistributionId)
@@ -44,7 +44,7 @@ public class SignEffectiveBalanceService : ISignEffectiveBalanceService
         for (var pageNumber = 0; pageNumber < totalPages; pageNumber++)
         {
             _logger.LogInformation($"Inserting page {pageNumber} of {totalPages}.");
-        
+
             var batch = signEffectiveBalanceModels.Skip(pageNumber * pageSize).Take(pageSize).ToList();
             if (batch.Count == 0) break;
             var ops = batch.Select(x =>
@@ -52,7 +52,7 @@ public class SignEffectiveBalanceService : ISignEffectiveBalanceService
                 var filter = _filterDef.Eq(f => f.Account, x.Account) &
                              _filterDef.Eq(f => f.StartBlock, x.StartBlock) &
                              _filterDef.Eq(f => f.EndBlock, x.EndBlock);
-        
+
                 var update = Builders<SignedEffectiveBalanceModel>.Update
                     .SetOnInsert(u => u.CreatedAt, DateTime.UtcNow)
                     .SetOnInsert(u => u.Account, x.Account)
@@ -60,14 +60,14 @@ public class SignEffectiveBalanceService : ISignEffectiveBalanceService
                     .SetOnInsert(u => u.EndBlock, x.EndBlock)
                     .Set(u => u.TotalRewardPoints, x.TotalRewardPoints)
                     .Set(u => u.VtxDistributionId, x.VtxDistributionId)
-                    .Set(u => u.Signature, x.Signature)
+//                     .Set(u => u.Signature, x.Signature)
                     .Set(u => u.Timestamp, x.Timestamp)
                     .Set(u => u.Verified, x.Verified)
                     .Set(u => u.Submitted, x.Submitted)
                     .Set(u => u.UpdatedAt, DateTime.UtcNow);
                 return new UpdateOneModel<SignedEffectiveBalanceModel>(filter, update) { IsUpsert = true };
             });
-        
+
             await Collection.BulkWriteAsync(ops);
         }
     }

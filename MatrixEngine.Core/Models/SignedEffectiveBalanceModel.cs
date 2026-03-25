@@ -10,7 +10,7 @@ public class SignedEffectiveBalanceModel : BaseModel
     [BsonElement("startBlock")] public int StartBlock { get; set; }
     [BsonElement("endBlock")] public int EndBlock { get; set; }
     [BsonElement("vtxDistributionId")] public int VtxDistributionId { get; set; }
-    [BsonElement("signature")] public string? Signature { get; set; }
+//     [BsonElement("signature")] public string? Signature { get; set; }
     [BsonElement("timestamp")] public long Timestamp  { get; set; }
     // Validator has verified the signature
     [BsonElement("verified")] public bool Verified { get; set; } = false;
