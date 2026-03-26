@@ -198,9 +198,9 @@ public class RewardCycleResolver : IRewardCycleResolver
                 // On Porcini we want to test reward cycle at 955 for the current cycle. For this reason we are cutting the
                 // threshold short
                 endEraIndex = 955;
-            } else if (startEraIndex == 890) {
+            } else if (startEraIndex == 980) {
                 // On mainnet we missed two reward cycles, so combining these to 180 days cycle
-                endEraIndex = 1069;
+                endEraIndex = 1159;
             }
 
             // If we have not yet completed the reward cycle, set the endBlock to -1
@@ -248,7 +248,7 @@ public class RewardCycleResolver : IRewardCycleResolver
         else if (rewardCycle.StartEraIndex == 890 && _network == "porcini")
         {
             cycleLength = 66;
-        } else if (rewardCycle.StartEraIndex == 890) {
+        } else if (rewardCycle.StartEraIndex == 980) {
             cycleLength = 180;
         }
 
